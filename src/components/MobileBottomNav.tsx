@@ -59,7 +59,7 @@ const moreLinks = [
 const MobileBottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const [showMore, setShowMore] = useState(false);
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
