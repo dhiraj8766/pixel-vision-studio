@@ -17,6 +17,7 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         serif: ['Playfair Display', 'serif'],
         button: ['Ropa Sans', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -45,6 +46,8 @@ export default {
           foreground: "hsl(var(--accent-foreground))",
           yellow: "hsl(var(--accent-yellow))",
           red: "hsl(var(--accent-red))",
+          cyan: "hsl(var(--accent-cyan))",
+          green: "hsl(var(--accent-green))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -71,6 +74,7 @@ export default {
       boxShadow: {
         glow: "var(--shadow-glow)",
         card: "var(--shadow-card)",
+        "card-hover": "var(--shadow-card-hover)",
       },
       keyframes: {
         "accordion-down": {
