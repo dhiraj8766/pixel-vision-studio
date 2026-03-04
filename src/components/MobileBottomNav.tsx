@@ -113,8 +113,7 @@ const MobileBottomNav = () => {
                     setShowMore(!showMore);
                   } else {
                     setShowMore(false);
-                    // Navigate using window.location for simplicity in button
-                    window.location.href = tab.path;
+                    navigate(tab.path);
                   }
                 }}
                 className={`flex flex-col items-center gap-1 rounded-xl px-4 py-1.5 transition-colors ${
