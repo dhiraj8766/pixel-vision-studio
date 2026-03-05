@@ -1,59 +1,20 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Home, CalendarDays, Users, Menu, X, Info, GraduationCap, Phone, Trophy } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
 
 const mainTabs = [
-  {
-    name: "Home",
-    path: "/",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-        <polyline points="9 22 9 12 15 12 15 22" />
-      </svg>
-    ),
-  },
-  {
-    name: "Events",
-    path: "/events",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-        <line x1="16" y1="2" x2="16" y2="6" />
-        <line x1="8" y1="2" x2="8" y2="6" />
-        <line x1="3" y1="10" x2="21" y2="10" />
-      </svg>
-    ),
-  },
-  {
-    name: "Team",
-    path: "/team",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    ),
-  },
-  {
-    name: "More",
-    path: "",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
-    ),
-  },
+  { name: "Home", path: "/", icon: Home },
+  { name: "Events", path: "/events", icon: CalendarDays },
+  { name: "Team", path: "/team", icon: Users },
+  { name: "More", path: "", icon: Menu },
 ];
 
 const moreLinks = [
-  { name: "About Us", path: "/about" },
-  { name: "Faculty", path: "/faculty" },
-  { name: "Contact", path: "/contact" },
+  { name: "About Us", path: "/about", icon: Info },
+  { name: "Faculty", path: "/faculty", icon: GraduationCap },
+  { name: "Past Events", path: "/xevents", icon: Trophy },
+  { name: "Contact", path: "/contact", icon: Phone },
 ];
 
 const MobileBottomNav = () => {
@@ -74,25 +35,30 @@ const MobileBottomNav = () => {
             className="absolute bottom-20 left-4 right-4 rounded-2xl border border-border bg-card p-4 shadow-card animate-[fadeIn_0.2s_ease-out]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Logo header */}
-            <div className="flex items-center gap-3 mb-4 pb-3 border-b border-border">
-              <img src={picselLogo} alt="PICSEL" className="h-8 w-8 rounded-full" />
-              <div>
-                <span className="block text-sm font-bold text-foreground">PICSEL</span>
-                <span className="block text-[10px] uppercase tracking-widest text-muted-foreground">KDKCE</span>
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
+              <div className="flex items-center gap-3">
+                <img src={picselLogo} alt="PICSEL" className="h-8 w-8 rounded-full" />
+                <div>
+                  <span className="block text-sm font-bold text-foreground font-heading">PICSEL</span>
+                  <span className="block text-[10px] uppercase tracking-widest text-muted-foreground">KDKCE</span>
+                </div>
               </div>
+              <button onClick={() => setShowMore(false)} className="p-1 text-muted-foreground">
+                <X size={20} />
+              </button>
             </div>
             {moreLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
                 onClick={() => setShowMore(false)}
-                className={`block rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
                   isActive(link.path)
                     ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    : "text-muted-foreground active:text-foreground active:bg-muted/50"
                 }`}
               >
+                <link.icon size={18} />
                 {link.name}
               </Link>
             ))}
@@ -120,13 +86,12 @@ const MobileBottomNav = () => {
                   active ? "text-primary" : "text-muted-foreground"
                 }`}
               >
-                {tab.icon}
+                <tab.icon size={22} strokeWidth={active ? 2.2 : 1.8} />
                 <span className="text-[10px] font-semibold uppercase tracking-wider">{tab.name}</span>
               </button>
             );
           })}
         </div>
-        {/* Safe area for iOS */}
         <div className="h-[env(safe-area-inset-bottom)]" />
       </nav>
     </>
