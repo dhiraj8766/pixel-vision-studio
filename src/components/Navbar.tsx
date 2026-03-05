@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import picselLogo from "@/assets/picsel-logo.png";
+import { Instagram, Linkedin, Github } from "lucide-react";
 
 const menuItems = [
   { name: "Home", path: "/" },
@@ -17,7 +18,7 @@ const menuItems = [
     path: "/events",
     dropdown: [
       { name: "Upcoming Events", path: "/events", description: "See what's next on our calendar." },
-      { name: "Past Events", path: "/events#past", description: "Browse our gallery of past events." },
+      { name: "Successful Events", path: "/xevents", description: "Browse our past events gallery." },
     ],
   },
   { name: "Team", path: "/team" },
@@ -30,7 +31,6 @@ const Navbar = () => {
   const leaveTimeout = useRef<ReturnType<typeof setTimeout>>();
   const location = useLocation();
 
-  // Close menu on route change
   useEffect(() => {
     setIsOpen(false);
     setActiveDropdown(null);
@@ -53,14 +53,14 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 hidden md:block">
       <div className="flex items-center justify-center pt-5">
         <div
-          className="flex items-center gap-5 rounded-full border border-border bg-card/70 px-4 py-2.5 backdrop-blur-xl shadow-card"
+          className="flex items-center gap-5 rounded-full border border-border bg-card/80 px-4 py-2.5 backdrop-blur-xl shadow-card"
           onMouseLeave={handleMouseLeave}
         >
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <img src={picselLogo} alt="PICSEL" className="h-9 w-9 rounded-full object-cover" />
+            <img src={picselLogo} alt="PICSEL Club" className="h-9 w-9 rounded-full object-cover" />
             <div className="leading-none">
-              <span className="block text-sm font-extrabold tracking-tight text-foreground">PICSEL</span>
+              <span className="block text-sm font-extrabold tracking-tight text-foreground font-heading">PICSEL</span>
               <span className="block text-[9px] font-medium uppercase tracking-[2px] text-muted-foreground">KDKCE</span>
             </div>
           </Link>
@@ -68,7 +68,7 @@ const Navbar = () => {
           {/* Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`rounded-full border border-border px-6 py-2 text-sm font-medium text-foreground transition-all hover:border-primary/40 ${
+            className={`rounded-full border border-border px-6 py-2 text-sm font-medium text-foreground transition-all hover:border-primary/40 font-button tracking-wider ${
               isOpen ? "max-w-0 overflow-hidden opacity-0 px-0 border-0" : "opacity-100"
             }`}
           >
@@ -78,7 +78,7 @@ const Navbar = () => {
           {/* Nav links */}
           <div
             className={`flex items-center gap-1 overflow-hidden transition-all duration-500 ${
-              isOpen ? "max-w-[600px] opacity-100" : "max-w-0 opacity-0"
+              isOpen ? "max-w-[700px] opacity-100" : "max-w-0 opacity-0"
             }`}
           >
             {menuItems.map((item) => (
@@ -95,6 +95,18 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            {/* Social icons in nav */}
+            <div className="flex items-center gap-1 ml-2 border-l border-border pl-3">
+              {[
+                { icon: Instagram, url: "#" },
+                { icon: Linkedin, url: "#" },
+                { icon: Github, url: "#" },
+              ].map((s, i) => (
+                <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                  <s.icon size={15} />
+                </a>
+              ))}
+            </div>
             <button
               onClick={() => setIsOpen(false)}
               className="ml-2 rounded-full p-2 text-muted-foreground transition-colors hover:text-foreground"
@@ -114,7 +126,7 @@ const Navbar = () => {
           onMouseEnter={() => clearTimeout(leaveTimeout.current)}
           onMouseLeave={handleMouseLeave}
         >
-          <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{activeDropdown}</h4>
+          <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">{activeDropdown}</h4>
           <div className="grid grid-cols-2 gap-2">
             {currentDropdown.map((item, i) => (
               <Link

@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import { ArrowRight, Users, Calendar, Award, Code2 } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
 
 const stats = [
-  { value: "500+", label: "Members" },
-  { value: "50+", label: "Events" },
-  { value: "15+", label: "Workshops" },
-  { value: "3", label: "Years" },
+  { value: "500+", label: "Members", icon: Users },
+  { value: "50+", label: "Events", icon: Calendar },
+  { value: "15+", label: "Workshops", icon: Code2 },
+  { value: "3", label: "Years", icon: Award },
 ];
 
 const timeline = [
@@ -15,85 +16,112 @@ const timeline = [
   { year: "2026", title: "Expanding Horizons", description: "Launching new verticals in AI/ML, Cloud Computing, and Competitive Programming." },
 ];
 
+const values = [
+  { title: "Innovation", description: "We push boundaries and explore emerging technologies to stay ahead.", color: "text-primary" },
+  { title: "Collaboration", description: "We believe great things happen when diverse minds work together.", color: "text-accent-cyan" },
+  { title: "Learning", description: "Continuous growth through hands-on projects, workshops, and peer mentoring.", color: "text-accent-yellow" },
+  { title: "Leadership", description: "Empowering students to lead initiatives and create lasting impact.", color: "text-accent-green" },
+];
+
 const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16">
-      {/* Hero */}
-      <div className="mx-auto max-w-4xl text-center mb-16">
-        <div className="mb-6 flex justify-center">
-          <img src={picselLogo} alt="PICSEL" className="h-20 w-20 rounded-full border-2 border-primary/20" />
-        </div>
-        <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[3px] text-primary">About Us</span>
-        <h1 className="font-serif text-4xl font-normal text-foreground md:text-6xl">
-          We are <span className="italic text-primary">PICSEL</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          PICSEL (Programming, Innovation, Coding, Skills, Engineering & Leadership) is the flagship technical club of 
-          the Department of Computer Science & Engineering at K.D.K. College of Engineering, Nagpur. 
-          We are a community of passionate learners, builders, and innovators.
-        </p>
-      </div>
-
-      {/* Stats */}
-      <div className="mx-auto max-w-3xl mb-20">
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map((stat, i) => (
-            <div key={i} className="rounded-2xl border border-border bg-card p-6 text-center transition-all hover:border-primary/20 hover:shadow-glow">
-              <span className="block text-3xl font-bold text-primary md:text-4xl">{stat.value}</span>
-              <span className="mt-1 block text-xs font-medium uppercase tracking-widest text-muted-foreground">{stat.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mission & Vision */}
-      <div className="mx-auto max-w-4xl mb-20 grid gap-8 md:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-8">
-          <h3 className="mb-4 font-serif text-2xl text-foreground">Our Mission</h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            To create a vibrant ecosystem where students can explore, learn, and master emerging technologies 
-            through hands-on projects, workshops, hackathons, and peer collaboration. We believe in learning by doing.
+    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16">
+      <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
+      
+      <div className="relative z-10">
+        {/* Hero */}
+        <div className="mx-auto max-w-4xl text-center mb-16">
+          <div className="mb-6 flex justify-center">
+            <img src={picselLogo} alt="PICSEL" className="h-20 w-20 rounded-full border-2 border-primary/20 shadow-glow" />
+          </div>
+          <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[3px] text-primary font-heading">About Us</span>
+          <h1 className="font-heading text-4xl font-bold text-foreground md:text-6xl">
+            We are <span className="text-primary">PICSEL</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            PICSEL (Programming, Innovation, Coding, Skills, Engineering & Leadership) is the flagship technical club of 
+            the Department of Computer Science & Engineering at K.D.K. College of Engineering, Nagpur. 
+            We are a community of passionate learners, builders, and innovators.
           </p>
         </div>
-        <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-card to-secondary p-8">
-          <h3 className="mb-4 font-serif text-2xl text-primary">Our Vision</h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            To be the leading student-run technical community in the region, producing industry-ready engineers 
-            who are not just skilled programmers, but creative problem-solvers and effective leaders.
+
+        {/* Stats */}
+        <div className="mx-auto max-w-3xl mb-20">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {stats.map((stat, i) => (
+              <div key={i} className="rounded-2xl border border-border bg-card p-6 text-center transition-all hover:border-primary/20 hover:shadow-glow">
+                <stat.icon className="mx-auto mb-2 text-primary" size={24} />
+                <span className="block text-3xl font-bold text-primary md:text-4xl font-heading">{stat.value}</span>
+                <span className="mt-1 block text-xs font-medium uppercase tracking-widest text-muted-foreground">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mission & Vision */}
+        <div className="mx-auto max-w-4xl mb-20 grid gap-8 md:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-card p-8">
+            <h3 className="mb-4 font-heading text-2xl font-bold text-foreground">Our Mission</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              To create a vibrant ecosystem where students can explore, learn, and master emerging technologies 
+              through hands-on projects, workshops, hackathons, and peer collaboration. We believe in learning by doing.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-card to-secondary p-8">
+            <h3 className="mb-4 font-heading text-2xl font-bold text-primary">Our Vision</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              To be the leading student-run technical community in the region, producing industry-ready engineers 
+              who are not just skilled programmers, but creative problem-solvers and effective leaders.
+            </p>
+          </div>
+        </div>
+
+        {/* Core Values */}
+        <div className="mx-auto max-w-4xl mb-20">
+          <h2 className="mb-8 text-center font-heading text-3xl font-bold text-foreground">Core Values</h2>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {values.map((v, i) => (
+              <div key={i} className="rounded-xl border border-border bg-card/50 p-5 text-center transition-all hover:border-primary/20">
+                <h4 className={`text-sm font-bold ${v.color} font-heading`}>{v.title}</h4>
+                <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{v.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="mx-auto max-w-3xl mb-16">
+          <h2 className="mb-8 text-center font-heading text-3xl font-bold text-foreground">Our Journey</h2>
+          <div className="relative border-l-2 border-border ml-4">
+            {timeline.map((item, index) => (
+              <div key={index} className="relative pl-8 pb-8">
+                <div className="absolute -left-[7px] top-1 h-3 w-3 rounded-full border-2 border-primary bg-background" />
+                <span className="font-mono text-xs font-bold text-primary">{item.year}</span>
+                <h3 className="mt-1 text-lg font-bold text-foreground font-heading">{item.title}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mx-auto max-w-2xl text-center mb-8">
+          <h2 className="mb-4 font-heading text-2xl font-bold text-foreground">Want to join us?</h2>
+          <p className="mb-6 text-sm text-muted-foreground">
+            We're always looking for passionate individuals who want to learn, grow, and make an impact.
           </p>
-        </div>
-      </div>
-
-      {/* Timeline */}
-      <div className="mx-auto max-w-3xl mb-16">
-        <h2 className="mb-8 text-center font-serif text-3xl text-foreground">Our Journey</h2>
-        <div className="relative border-l-2 border-border ml-4">
-          {timeline.map((item, index) => (
-            <div key={index} className="relative pl-8 pb-8">
-              <div className="absolute -left-[7px] top-1 h-3 w-3 rounded-full border-2 border-primary bg-background" />
-              <span className="font-mono text-xs font-bold text-primary">{item.year}</span>
-              <h3 className="mt-1 text-lg font-bold text-foreground">{item.title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="mx-auto max-w-2xl text-center mb-8">
-        <h2 className="mb-4 font-serif text-2xl text-foreground">Want to join us?</h2>
-        <p className="mb-6 text-sm text-muted-foreground">
-          We're always looking for passionate individuals who want to learn, grow, and make an impact.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/team">
-            <div className="valorant-btn-wrapper">
-              <button className="valorant-btn">Meet the Team</button>
-            </div>
-          </Link>
-          <Link to="/events">
-            <button className="valorant-btn-outline">Explore Events</button>
-          </Link>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/team">
+              <div className="hidden md:block valorant-btn-wrapper">
+                <button className="valorant-btn flex items-center gap-2">Meet the Team <ArrowRight size={16} /></button>
+              </div>
+              <button className="btn-mobile-primary md:hidden flex items-center gap-2">Meet the Team <ArrowRight size={16} /></button>
+            </Link>
+            <Link to="/events">
+              <button className="hidden md:block valorant-btn-outline">Explore Events</button>
+              <button className="btn-mobile-outline md:hidden">Explore Events</button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

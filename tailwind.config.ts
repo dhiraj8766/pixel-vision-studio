@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
+        sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        heading: ['Syne', 'sans-serif'],
         button: ['Ropa Sans', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
@@ -48,6 +48,7 @@ export default {
           red: "hsl(var(--accent-red))",
           cyan: "hsl(var(--accent-cyan))",
           green: "hsl(var(--accent-green))",
+          purple: "hsl(var(--accent-purple))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
