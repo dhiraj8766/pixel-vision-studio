@@ -24,7 +24,7 @@ interface ProfileModalProps {
   onClose: () => void;
 }
 
-const iconMap: Record<string, React.FC<{ size?: number }>> = {
+const iconMap: Record<string, any> = {
   instagram: Instagram,
   linkedin: Linkedin,
   github: Github,
