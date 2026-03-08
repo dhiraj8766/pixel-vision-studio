@@ -103,7 +103,6 @@
 /* Geometric circles + floating shapes */
 .bg-geo-pattern {
   position: relative;
-  overflow: hidden;
 }
 .bg-geo-pattern::before {
   content: '';
