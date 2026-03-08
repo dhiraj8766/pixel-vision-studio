@@ -236,13 +236,13 @@ const EventsPage = () => {
                     <h3 className="text-sm sm:text-lg font-bold text-[#2d5a3d] font-heading">{type.label}</h3>
                     <span className="text-[10px] sm:text-xs text-[#8a7a6a]">{typeEvents.length} events</span>
                   </div>
-                  {/* Mobile: horizontal swipe slider / Desktop: flex wrap */}
-                  <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 sm:pb-4 scrollbar-hide snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0">
+                  {/* Horizontal swipe slider for all devices */}
+                  <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 sm:pb-4 scrollbar-hide snap-x snap-mandatory -mx-4 px-4">
                     {typeEvents.map((event) => (
                       <div
                         key={event.id}
                         onClick={() => setSelectedEvent(event)}
-                        className="group flex-shrink-0 w-[75vw] sm:w-[260px] md:w-[300px] snap-start cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/60 transition-all hover:border-[#2d5a3d]/30 hover:shadow-lg hover:-translate-y-1 active:scale-[0.98]"
+                        className="group flex-shrink-0 w-[72vw] sm:w-[280px] md:w-[300px] lg:w-[320px] snap-start cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/60 transition-all hover:border-[#2d5a3d]/30 hover:shadow-lg hover:-translate-y-1 active:scale-[0.98]"
                       >
                         <div className="relative h-36 sm:h-40 overflow-hidden">
                           <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform group-hover:scale-110" loading="lazy" />
@@ -265,12 +265,8 @@ const EventsPage = () => {
                       </div>
                     ))}
                   </div>
-                  {/* Mobile scroll indicator */}
-                  <div className="flex justify-center gap-1 mt-2 sm:hidden">
-                    {typeEvents.map((_, i) => (
-                      <div key={i} className="h-1 w-6 rounded-full bg-[#c4a97d]/40" />
-                    ))}
-                  </div>
+                  {/* Scroll hint */}
+                  <p className="text-center text-[9px] sm:text-[10px] text-[#8a7a6a] mt-1">← Swipe to see more →</p>
                 </div>
               );
             })}
