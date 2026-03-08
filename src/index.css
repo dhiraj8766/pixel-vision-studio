@@ -6,44 +6,46 @@
 
 @layer base {
   :root {
-    --background: 220 15% 5%;
+    --background: 240 20% 6%;
     --foreground: 0 0% 95%;
 
-    --card: 220 12% 8%;
+    --card: 250 18% 10%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 220 12% 10%;
+    --popover: 250 18% 12%;
     --popover-foreground: 0 0% 95%;
 
     --primary: 174 72% 40%;
-    --primary-foreground: 220 15% 5%;
+    --primary-foreground: 240 20% 6%;
 
-    --secondary: 220 12% 12%;
+    --secondary: 260 20% 14%;
     --secondary-foreground: 0 0% 85%;
 
-    --muted: 220 10% 15%;
-    --muted-foreground: 220 8% 50%;
+    --muted: 255 15% 16%;
+    --muted-foreground: 230 15% 55%;
 
     --accent: 174 72% 40%;
-    --accent-foreground: 220 15% 5%;
+    --accent-foreground: 240 20% 6%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 10% 16%;
-    --input: 220 10% 16%;
+    --border: 260 15% 18%;
+    --input: 260 15% 18%;
     --ring: 174 72% 40%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
     --accent-yellow: 43 96% 56%;
-    --accent-red: 0 84% 60%;
+    --accent-red: 350 84% 60%;
     --accent-cyan: 174 80% 55%;
     --accent-green: 142 70% 55%;
     --accent-purple: 270 70% 60%;
-    --surface-elevated: 220 12% 10%;
-    --hero-muted: 220 8% 46%;
+    --accent-pink: 330 80% 60%;
+    --accent-orange: 25 95% 55%;
+    --surface-elevated: 250 18% 12%;
+    --hero-muted: 230 15% 50%;
 
     --font-heading: 'Syne', sans-serif;
     --font-sans: 'Space Grotesk', sans-serif;
@@ -51,8 +53,8 @@
     --font-mono: 'JetBrains Mono', monospace;
 
     --shadow-glow: 0 0 60px -10px hsl(174 72% 40% / 0.3);
-    --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.6);
-    --shadow-card-hover: 0 30px 80px rgba(0, 0, 0, 0.8);
+    --shadow-card: 0 20px 60px rgba(10, 5, 30, 0.7);
+    --shadow-card-hover: 0 30px 80px rgba(10, 5, 30, 0.9);
     --radius-xl: 32px;
     --radius-card: 24px;
   }
