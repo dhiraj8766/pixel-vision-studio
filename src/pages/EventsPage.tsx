@@ -137,8 +137,8 @@ const EventsPage = () => {
           <div className="flex-1 min-w-0">
             {/* Upcoming */}
             {upcomingEvents.length > 0 && (
-              <div className="mb-10">
-                <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-[#2d5a3d] font-heading flex items-center gap-2">
+              <div className="mb-8 sm:mb-10">
+                <h2 className="mb-3 sm:mb-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#2d5a3d] font-heading flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-[#2d5a3d] animate-pulse" />
                   Upcoming
                 </h2>
