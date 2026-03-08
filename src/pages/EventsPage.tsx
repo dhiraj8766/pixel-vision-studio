@@ -47,19 +47,19 @@ const MiniCalendar = ({ events: calEvents }: { events: typeof allEvents }) => {
   for (let i = 1; i <= daysInMonth; i++) days.push(i);
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5">
+    <div className="rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/70 p-5">
       <div className="flex items-center justify-between mb-4">
-        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-1 text-muted-foreground hover:text-foreground">
+        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-1 text-[#8a7a6a] hover:text-[#1a3a2a]">
           <ChevronLeft size={18} />
         </button>
-        <h3 className="text-sm font-bold text-foreground font-heading">{monthName}</h3>
-        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} className="p-1 text-muted-foreground hover:text-foreground">
+        <h3 className="text-sm font-bold text-[#1a3a2a] font-heading">{monthName}</h3>
+        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} className="p-1 text-[#8a7a6a] hover:text-[#1a3a2a]">
           <ChevronRight size={18} />
         </button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center">
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
-          <div key={d} className="text-[10px] font-bold text-muted-foreground py-1">{d}</div>
+          <div key={d} className="text-[10px] font-bold text-[#8a7a6a] py-1">{d}</div>
         ))}
         {days.map((day, i) => (
           <div
@@ -67,16 +67,16 @@ const MiniCalendar = ({ events: calEvents }: { events: typeof allEvents }) => {
             className={`h-8 w-8 mx-auto flex items-center justify-center rounded-lg text-xs transition-colors ${
               day === null ? "" :
               eventDates.has(day)
-                ? "bg-primary/20 text-primary font-bold border border-primary/30"
-                : "text-muted-foreground hover:bg-muted/50"
+                ? "bg-[#2d5a3d]/15 text-[#2d5a3d] font-bold border border-[#2d5a3d]/30"
+                : "text-[#5a7d6a] hover:bg-[#c4a97d]/20"
             }`}
           >
             {day}
           </div>
         ))}
       </div>
-      <div className="mt-3 flex items-center gap-2 text-[10px] text-muted-foreground">
-        <div className="h-2 w-2 rounded-full bg-primary/40" />
+      <div className="mt-3 flex items-center gap-2 text-[10px] text-[#8a7a6a]">
+        <div className="h-2 w-2 rounded-full bg-[#2d5a3d]/40" />
         <span>Event scheduled</span>
       </div>
     </div>
@@ -90,17 +90,16 @@ const EventsPage = () => {
   const completedEvents = allEvents.filter((e) => e.status === "completed").sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-events-cosmic">
-      {/* Decorative blobs */}
-      <div className="absolute top-[30%] left-[15%] w-[400px] h-[400px] rounded-[60%_40%_50%_50%/50%_60%_40%_50%] bg-gradient-to-br from-[hsl(350,80%,45%,0.25)] to-transparent pointer-events-none z-0 blur-[60px]" />
-      <div className="absolute top-[60%] right-[10%] w-[350px] h-[350px] rounded-[50%_50%_40%_60%/40%_60%_50%_50%] bg-gradient-to-tl from-[hsl(340,70%,40%,0.2)] to-transparent pointer-events-none z-0 blur-[50px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(hsl(0_0%_100%_/_0.04)_1px,transparent_1px)] bg-[length:28px_28px] pointer-events-none z-0" />
+    <div className="relative min-h-screen pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-events-cosmic">
+      {/* Subtle decorative shapes */}
+      <div className="absolute top-[20%] right-[5%] w-[300px] h-[300px] rounded-full bg-[hsl(35,40%,75%,0.2)] pointer-events-none z-0 blur-[80px]" />
+      <div className="absolute bottom-[15%] left-[8%] w-[250px] h-[250px] rounded-full bg-[hsl(30,35%,70%,0.15)] pointer-events-none z-0 blur-[70px]" />
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="mb-8 border-b border-border pb-6">
-          <span className="block text-xs font-semibold uppercase tracking-[3px] text-primary mb-2 font-heading">Schedule</span>
-          <h1 className="font-heading text-4xl font-bold text-foreground md:text-5xl">
+        <div className="mb-8 border-b border-[#c4a97d]/30 pb-6">
+          <span className="block text-xs font-semibold uppercase tracking-[3px] text-[#2d5a3d] mb-2 font-heading">Schedule</span>
+          <h1 className="font-heading text-4xl font-bold text-[#1a3a2a] md:text-5xl">
             Upcoming & Past Events
           </h1>
         </div>
@@ -112,36 +111,35 @@ const EventsPage = () => {
             {/* Upcoming */}
             {upcomingEvents.length > 0 && (
               <div className="mb-10">
-                <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-accent-green font-heading flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-accent-green animate-pulse" />
+                <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-[#2d5a3d] font-heading flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-[#2d5a3d] animate-pulse" />
                   Upcoming
                 </h2>
-                <div className="relative border-l-2 border-primary/30 ml-3 space-y-0">
+                <div className="relative border-l-2 border-[#2d5a3d]/30 ml-3 space-y-0">
                   {upcomingEvents.map((event, i) => {
                     const total = upcomingEvents.length;
                     const progress = ((i + 1) / total) * 100;
                     return (
                       <div key={event.id} className="group relative pl-8 pb-6 cursor-pointer" onClick={() => setSelectedEvent(event)}>
-                        <div className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-primary bg-background group-hover:bg-primary transition-colors shadow-glow" />
-                        <div className="flex items-center gap-4 rounded-xl border border-transparent p-3 transition-all hover:border-border hover:bg-card/50 active:bg-card/80">
+                        <div className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-[#2d5a3d] bg-[#f3ecdc] group-hover:bg-[#2d5a3d] transition-colors" />
+                        <div className="flex items-center gap-4 rounded-xl border border-transparent p-3 transition-all hover:border-[#c4a97d]/40 hover:bg-[#ebe4d2]/60 active:bg-[#ebe4d2]/80">
                           <div className="hidden md:block min-w-[90px]">
-                            <span className="font-mono text-xs text-primary">{event.date}</span>
-                            {/* Mini progress bar */}
-                            <div className="mt-1 h-1 w-full rounded-full bg-muted overflow-hidden">
-                              <div className="h-full rounded-full bg-gradient-to-r from-primary to-accent-green" style={{ width: `${progress}%` }} />
+                            <span className="font-mono text-xs text-[#2d5a3d]">{event.date}</span>
+                            <div className="mt-1 h-1 w-full rounded-full bg-[#c4a97d]/30 overflow-hidden">
+                              <div className="h-full rounded-full bg-gradient-to-r from-[#2d5a3d] to-[#4a8c6a]" style={{ width: `${progress}%` }} />
                             </div>
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-base font-semibold text-foreground font-heading">{event.title}</h3>
-                            <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-2">
+                            <h3 className="text-base font-semibold text-[#1a3a2a] font-heading">{event.title}</h3>
+                            <p className="text-xs text-[#5a7d6a] mt-0.5 flex items-center gap-2">
                               <span className="flex items-center gap-1"><Clock size={10} /> {event.time}</span>
                               <span className="flex items-center gap-1"><MapPin size={10} /> {event.location}</span>
                             </p>
-                            <span className="md:hidden font-mono text-[10px] text-primary">{event.date}</span>
+                            <span className="md:hidden font-mono text-[10px] text-[#2d5a3d]">{event.date}</span>
                           </div>
                           {event.registerUrl && (
                             <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="hidden md:block">
-                              <button className="valorant-btn text-[11px] py-2 px-4">Register</button>
+                              <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[11px] py-2 px-4 font-semibold hover:bg-[#2d5a3d] transition-colors">Register</button>
                             </a>
                           )}
                         </div>
@@ -156,24 +154,24 @@ const EventsPage = () => {
             {completedEvents.length > 0 && (
               <div className="mb-10" id="past">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground font-heading">Completed</h2>
-                  <Link to="/xevents" className="text-xs text-primary hover:underline flex items-center gap-1">
+                  <h2 className="text-sm font-bold uppercase tracking-widest text-[#8a7a6a] font-heading">Completed</h2>
+                  <Link to="/xevents" className="text-xs text-[#2d5a3d] hover:underline flex items-center gap-1">
                     View all stories <ArrowRight size={12} />
                   </Link>
                 </div>
-                <div className="relative border-l-2 border-border/50 ml-3 space-y-0">
+                <div className="relative border-l-2 border-[#c4a97d]/30 ml-3 space-y-0">
                   {completedEvents.map((event) => (
                     <div key={event.id} className="group relative pl-8 pb-6 cursor-pointer" onClick={() => setSelectedEvent(event)}>
-                      <div className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-muted bg-muted" />
-                      <div className="flex items-center gap-4 rounded-xl p-3 opacity-60 transition-all hover:opacity-100 hover:bg-card/30 active:bg-card/50">
-                        <span className="font-mono text-xs text-muted-foreground min-w-[90px] hidden md:block">{event.date}</span>
+                      <div className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-[#c4a97d] bg-[#c4a97d]/30" />
+                      <div className="flex items-center gap-4 rounded-xl p-3 opacity-60 transition-all hover:opacity-100 hover:bg-[#ebe4d2]/40 active:bg-[#ebe4d2]/60">
+                        <span className="font-mono text-xs text-[#8a7a6a] min-w-[90px] hidden md:block">{event.date}</span>
                         <div className="flex-1">
-                          <h3 className="text-base font-medium text-foreground">{event.title}</h3>
-                          <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-2">
+                          <h3 className="text-base font-medium text-[#3a5a4a]">{event.title}</h3>
+                          <p className="text-xs text-[#8a7a6a] mt-0.5 flex items-center gap-2">
                             <span className="flex items-center gap-1"><Clock size={10} /> {event.time}</span>
                             <span className="flex items-center gap-1"><MapPin size={10} /> {event.location}</span>
                           </p>
-                          <span className="md:hidden font-mono text-[10px] text-muted-foreground">{event.date}</span>
+                          <span className="md:hidden font-mono text-[10px] text-[#8a7a6a]">{event.date}</span>
                         </div>
                       </div>
                     </div>
@@ -193,7 +191,7 @@ const EventsPage = () => {
 
         {/* Event Categories */}
         <div className="mt-8 mx-auto max-w-6xl">
-          <h2 className="mb-8 text-center font-heading text-3xl font-bold text-foreground md:text-4xl">
+          <h2 className="mb-8 text-center font-heading text-3xl font-bold text-[#1a3a2a] md:text-4xl">
             Explore by Category
           </h2>
           {eventTypes.map((type) => {
@@ -202,32 +200,31 @@ const EventsPage = () => {
             return (
               <div key={type.key} className="mb-10">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className={`text-lg font-bold ${type.color} font-heading`}>{type.label}</h3>
-                  <span className="text-xs text-muted-foreground">{typeEvents.length} events</span>
+                  <h3 className="text-lg font-bold text-[#2d5a3d] font-heading">{type.label}</h3>
+                  <span className="text-xs text-[#8a7a6a]">{typeEvents.length} events</span>
                 </div>
                 <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
                   {typeEvents.map((event) => (
                     <div
                       key={event.id}
                       onClick={() => setSelectedEvent(event)}
-                      className="group flex-shrink-0 w-[260px] md:w-[300px] cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-glow hover:-translate-y-1 active:scale-[0.98]"
+                      className="group flex-shrink-0 w-[260px] md:w-[300px] cursor-pointer overflow-hidden rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/60 transition-all hover:border-[#2d5a3d]/30 hover:shadow-lg hover:-translate-y-1 active:scale-[0.98]"
                     >
                       <div className="relative h-40 overflow-hidden">
                         <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform group-hover:scale-110" loading="lazy" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
-                        <span className="absolute top-3 left-3 rounded-full border border-primary/50 bg-background/60 px-3 py-1 text-[10px] font-bold uppercase text-primary backdrop-blur-sm">
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#ebe4d2] to-transparent" />
+                        <span className="absolute top-3 left-3 rounded-full border border-[#2d5a3d]/30 bg-[#f3ecdc]/80 px-3 py-1 text-[10px] font-bold uppercase text-[#2d5a3d] backdrop-blur-sm">
                           {type.label}
                         </span>
                       </div>
                       <div className="p-4">
-                        <h4 className="text-sm font-bold text-foreground">{event.title}</h4>
-                        <p className="mt-1 text-xs text-muted-foreground flex items-center gap-1">
+                        <h4 className="text-sm font-bold text-[#1a3a2a]">{event.title}</h4>
+                        <p className="mt-1 text-xs text-[#5a7d6a] flex items-center gap-1">
                           <Calendar size={12} /> {event.date}
                         </p>
                         {event.registerUrl && (
                           <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="mt-3 inline-block">
-                            <button className="hidden md:block valorant-btn-cyan text-[11px] py-1.5 px-3">Register ↗</button>
-                            <button className="btn-mobile-primary md:hidden text-[11px] py-1.5 px-3">Register ↗</button>
+                            <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[11px] py-1.5 px-3 font-semibold hover:bg-[#2d5a3d] transition-colors">Register ↗</button>
                           </a>
                         )}
                       </div>
@@ -242,33 +239,32 @@ const EventsPage = () => {
 
       {/* Event Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/90 backdrop-blur-md p-4" onClick={() => setSelectedEvent(null)}>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#1a3a2a]/80 backdrop-blur-md p-4" onClick={() => setSelectedEvent(null)}>
           <div
-            className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card shadow-card animate-[scaleIn_0.3s_ease-out]"
+            className="w-full max-w-lg overflow-hidden rounded-2xl border border-[#c4a97d]/30 bg-[#f3ecdc] shadow-2xl animate-[scaleIn_0.3s_ease-out]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative h-56">
               <img src={selectedEvent.coverImage} alt={selectedEvent.title} className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#f3ecdc] via-[#f3ecdc]/50 to-transparent" />
               <button
                 onClick={() => setSelectedEvent(null)}
-                className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/50 text-foreground backdrop-blur-sm transition-colors hover:bg-accent-red"
+                className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#f3ecdc]/70 text-[#1a3a2a] backdrop-blur-sm transition-colors hover:bg-[#c4a97d]"
               >
                 ✕
               </button>
             </div>
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-primary font-heading">{selectedEvent.title}</h2>
-              <div className="mt-3 flex gap-4 text-sm text-foreground">
+              <h2 className="text-2xl font-bold text-[#2d5a3d] font-heading">{selectedEvent.title}</h2>
+              <div className="mt-3 flex gap-4 text-sm text-[#1a3a2a]">
                 <span className="flex items-center gap-1"><Calendar size={14} /> {selectedEvent.date}</span>
                 <span className="flex items-center gap-1"><Clock size={14} /> {selectedEvent.time}</span>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground flex items-center gap-1"><MapPin size={14} /> {selectedEvent.location}</p>
-              <p className="mt-4 text-sm leading-relaxed text-secondary-foreground">{selectedEvent.description}</p>
+              <p className="mt-1 text-sm text-[#5a7d6a] flex items-center gap-1"><MapPin size={14} /> {selectedEvent.location}</p>
+              <p className="mt-4 text-sm leading-relaxed text-[#3a5a4a]">{selectedEvent.description}</p>
               {selectedEvent.registerUrl && (
                 <a href={selectedEvent.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-6 block">
-                  <button className="hidden md:block valorant-btn w-full text-center">Register Now</button>
-                  <button className="btn-mobile-primary md:hidden w-full">Register Now</button>
+                  <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] w-full py-3 font-semibold hover:bg-[#2d5a3d] transition-colors">Register Now</button>
                 </a>
               )}
             </div>
