@@ -12,20 +12,19 @@ const visionData = [
 
 const VisionSection = () => {
   return (
-    <section className="relative bg-background px-6 pt-12 pb-0 md:px-10 lg:px-16">
-      {/* Background pattern */}
+    <section className="relative bg-background px-4 pt-10 pb-0 sm:px-6 sm:pt-12 md:px-10 lg:px-16">
       <div className="absolute inset-0 bg-dot-pattern opacity-20 pointer-events-none" />
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="flex min-h-[50vh] flex-col items-center justify-center text-center md:min-h-[60vh]">
-          <span className="mb-8 rounded-full border border-border px-5 py-2 text-xs uppercase tracking-[3px] text-muted-foreground font-heading">
+        <div className="flex min-h-[35vh] sm:min-h-[45vh] md:min-h-[60vh] flex-col items-center justify-center text-center">
+          <span className="mb-4 sm:mb-8 rounded-full border border-border px-4 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[2px] sm:tracking-[3px] text-muted-foreground font-heading">
             The Future
           </span>
-          <h2 className="font-heading text-5xl font-bold md:text-7xl lg:text-8xl text-foreground">
+          <h2 className="font-heading text-3xl sm:text-5xl font-bold md:text-7xl lg:text-8xl text-foreground">
             OUR VISION
           </h2>
-          <p className="mt-4 text-muted-foreground">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">
             Building the future, one pixel at a time.
           </p>
         </div>
@@ -35,27 +34,28 @@ const VisionSection = () => {
           {visionData.map((item, index) => (
             <div
               key={item.id}
-              className="sticky mb-[6vh] overflow-hidden rounded-card border border-border bg-card shadow-card"
+              className="sticky mb-[4vh] sm:mb-[6vh] overflow-hidden rounded-2xl sm:rounded-card border border-border bg-card shadow-card"
               style={{
-                top: `calc(15vh + ${index * 32}px)`,
-                height: "70vh",
+                top: `calc(12vh + ${index * 24}px)`,
+                height: window.innerWidth < 640 ? "auto" : "70vh",
+                minHeight: window.innerWidth < 640 ? "auto" : undefined,
               }}
             >
-              <div className="grid h-full md:grid-cols-[45%_55%] grid-cols-1">
-                <div className="border-b border-border p-8 md:border-b-0 md:border-r md:p-12 lg:p-16">
-                  <span className="font-heading text-5xl lg:text-6xl text-primary font-bold">
+              <div className="grid h-full grid-cols-1 md:grid-cols-[45%_55%]">
+                <div className="border-b border-border p-5 sm:p-8 md:border-b-0 md:border-r md:p-12 lg:p-16">
+                  <span className="font-heading text-3xl sm:text-5xl lg:text-6xl text-primary font-bold">
                     {item.number}
                   </span>
-                  <h3 className="mt-4 font-heading text-3xl lg:text-4xl text-foreground font-bold">
+                  <h3 className="mt-2 sm:mt-4 font-heading text-xl sm:text-3xl lg:text-4xl text-foreground font-bold">
                     {item.title}
                   </h3>
-                  <p className="mt-4 leading-relaxed text-muted-foreground">
+                  <p className="mt-2 sm:mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="p-4 md:p-6">
-                  <div className="h-full w-full overflow-hidden rounded-2xl md:rounded-[40px]">
+                <div className="p-3 sm:p-4 md:p-6">
+                  <div className="h-48 sm:h-64 md:h-full w-full overflow-hidden rounded-xl sm:rounded-2xl md:rounded-[40px]">
                     <img
                       src={images[index]}
                       alt={item.title}
@@ -68,7 +68,7 @@ const VisionSection = () => {
             </div>
           ))}
 
-          <div className="h-[40vh] md:h-[60vh]" />
+          <div className="h-[20vh] sm:h-[40vh] md:h-[60vh]" />
         </div>
       </div>
     </section>
