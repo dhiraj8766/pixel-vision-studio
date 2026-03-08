@@ -35,39 +35,38 @@ const VisionSection = () => {
         {/* Sticky Cards */}
         <div className="relative mx-auto max-w-[1300px]">
           {visionData.map((item, index) => (
-            <ScrollReveal key={item.id} delay={index * 100}>
-              <div
-                className="sticky mb-[4vh] sm:mb-[6vh] overflow-hidden rounded-2xl sm:rounded-card border border-border bg-card shadow-card sm:[height:70vh]"
-                style={{
-                  top: `calc(12vh + ${index * 24}px)`,
-                }}
-              >
-                <div className="grid h-full grid-cols-1 md:grid-cols-[45%_55%]">
-                  <div className="border-b border-border p-5 sm:p-8 md:border-b-0 md:border-r md:p-12 lg:p-16">
-                    <span className="font-heading text-3xl sm:text-5xl lg:text-6xl text-primary font-bold">
-                      {item.number}
-                    </span>
-                    <h3 className="mt-2 sm:mt-4 font-heading text-xl sm:text-3xl lg:text-4xl text-foreground font-bold">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 sm:mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
-                      {item.description}
-                    </p>
-                  </div>
+            <div
+              key={item.id}
+              className="sticky mb-[4vh] sm:mb-[6vh] overflow-hidden rounded-2xl sm:rounded-card border border-border bg-card shadow-card sm:[height:70vh]"
+              style={{
+                top: `calc(12vh + ${index * 24}px)`,
+              }}
+            >
+              <div className="grid h-full grid-cols-1 md:grid-cols-[45%_55%]">
+                <div className="border-b border-border p-5 sm:p-8 md:border-b-0 md:border-r md:p-12 lg:p-16">
+                  <span className="font-heading text-3xl sm:text-5xl lg:text-6xl text-primary font-bold">
+                    {item.number}
+                  </span>
+                  <h3 className="mt-2 sm:mt-4 font-heading text-xl sm:text-3xl lg:text-4xl text-foreground font-bold">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 sm:mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                    {item.description}
+                  </p>
+                </div>
 
-                  <div className="p-3 sm:p-4 md:p-6">
-                    <div className="h-48 sm:h-64 md:h-full w-full overflow-hidden rounded-xl sm:rounded-2xl md:rounded-[40px]">
-                      <img
-                        src={images[index]}
-                        alt={item.title}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
+                <div className="p-3 sm:p-4 md:p-6">
+                  <div className="h-48 sm:h-64 md:h-full w-full overflow-hidden rounded-xl sm:rounded-2xl md:rounded-[40px]">
+                    <img
+                      src={images[index]}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
           ))}
 
           <div className="h-[20vh] sm:h-[40vh] md:h-[60vh]" />
