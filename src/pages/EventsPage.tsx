@@ -132,7 +132,7 @@ const EventsPage = () => {
         </div>
 
         {/* Layout: Timeline + Calendar */}
-        <div className="flex flex-col lg:flex-row gap-8 mb-16">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-8 mb-10 sm:mb-16">
           {/* Timeline */}
           <div className="flex-1 min-w-0">
             {/* Upcoming */}
