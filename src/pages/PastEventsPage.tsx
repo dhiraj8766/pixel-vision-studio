@@ -3,6 +3,8 @@ import { Calendar, MapPin, X, ChevronLeft, ChevronRight } from "lucide-react";
 import hero1 from "@/assets/heroimg/hero1.jpg";
 import hero2 from "@/assets/heroimg/hero2.jpg";
 import hero3 from "@/assets/heroimg/hero3.jpg";
+import AnimatedBackground from "@/components/AnimatedBackground";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const pastEvents = [
   {
@@ -37,70 +39,72 @@ const PastEventsPage = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-events-cosmic">
+    <div className="relative min-h-screen bg-background pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16 bg-geo-pattern">
+      <AnimatedBackground />
       <div className="absolute inset-0 bg-hex-pattern pointer-events-none" />
-      <div className="absolute inset-0 bg-abstract-lines pointer-events-none" />
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="mb-10 text-center">
-          <span className="block text-xs font-semibold uppercase tracking-[3px] text-accent-yellow mb-2 font-heading">Gallery</span>
-          <h1 className="font-heading text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
-            Successful Events
-          </h1>
-          <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-            Relive the moments that defined our journey. Browse photos and stories from our past events.
-          </p>
-        </div>
+        <ScrollReveal direction="up" scale>
+          <div className="mb-8 sm:mb-12 text-center">
+            <span className="block text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-primary mb-2 sm:mb-3 font-heading">Gallery</span>
+            <h1 className="font-heading text-3xl sm:text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
+              Successful Events
+            </h1>
+            <p className="mx-auto mt-2 sm:mt-3 max-w-lg text-sm sm:text-base text-muted-foreground">
+              Relive the moments that defined our journey. Browse photos and stories from our past events.
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Events Grid */}
-        <div className="mx-auto max-w-6xl grid gap-6 md:grid-cols-2">
-          {pastEvents.map((event) => (
-            <div
-              key={event.id}
-              onClick={() => openEvent(event)}
-              className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-glow active:scale-[0.99]"
-            >
-              {/* Cover image */}
-              <div className="relative h-56 overflow-hidden">
-                <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
-                <span className="absolute top-3 left-3 rounded-full border border-primary/50 bg-background/60 px-3 py-1 text-[10px] font-bold uppercase text-primary backdrop-blur-sm">
-                  {event.eventType}
-                </span>
-                {/* Gallery count */}
-                <span className="absolute top-3 right-3 rounded-full bg-background/60 px-3 py-1 text-[10px] font-bold text-foreground backdrop-blur-sm">
-                  📸 {event.gallery.length} photos
-                </span>
-              </div>
-
-              {/* Info */}
-              <div className="p-5">
-                <h3 className="text-lg font-bold text-foreground font-heading">{event.title}</h3>
-                <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1"><Calendar size={12} /> {event.date}</span>
-                  <span className="flex items-center gap-1"><MapPin size={12} /> {event.location}</span>
+        <div className="mx-auto max-w-6xl grid gap-4 sm:gap-6 md:grid-cols-2">
+          {pastEvents.map((event, i) => (
+            <ScrollReveal key={event.id} delay={i * 100} direction="up">
+              <div
+                onClick={() => openEvent(event)}
+                className="group cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/30 hover:shadow-glow active:scale-[0.99]"
+              >
+                {/* Cover image */}
+                <div className="relative h-40 sm:h-56 overflow-hidden">
+                  <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                  <span className="absolute top-2 left-2 sm:top-3 sm:left-3 rounded-full border border-primary/50 bg-background/60 px-2 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-bold uppercase text-primary backdrop-blur-sm">
+                    {event.eventType}
+                  </span>
+                  <span className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-background/60 px-2 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-bold text-foreground backdrop-blur-sm">
+                    📸 {event.gallery.length} photos
+                  </span>
                 </div>
-                <p className="mt-3 text-sm text-muted-foreground line-clamp-2">{event.description}</p>
-                <p className="mt-2 text-xs font-semibold text-primary">{event.highlights}</p>
+
+                {/* Info */}
+                <div className="p-4 sm:p-5">
+                  <h3 className="text-base sm:text-lg font-bold text-foreground font-heading">{event.title}</h3>
+                  <div className="mt-1.5 sm:mt-2 flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><Calendar size={11} /> {event.date}</span>
+                    <span className="flex items-center gap-1"><MapPin size={11} /> {event.location}</span>
+                  </div>
+                  <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground line-clamp-2">{event.description}</p>
+                  <p className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-semibold text-primary">{event.highlights}</p>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
 
       {/* Event Detail Modal with Gallery */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/90 backdrop-blur-md p-4" onClick={() => setSelectedEvent(null)}>
+        <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-background/90 backdrop-blur-md p-0 sm:p-4" onClick={() => setSelectedEvent(null)}>
           <div
-            className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-card shadow-card animate-[scaleIn_0.3s_ease-out] max-h-[90vh] overflow-y-auto"
+            className="w-full sm:max-w-2xl overflow-hidden rounded-t-2xl sm:rounded-2xl border-t sm:border border-border bg-card shadow-card animate-[scaleIn_0.3s_ease-out] max-h-[85vh] sm:max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Gallery */}
-            <div className="relative h-72">
+            <div className="relative h-48 sm:h-72">
               <img src={selectedEvent.gallery[galleryIndex]} alt={`${selectedEvent.title} photo`} className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-              <button onClick={() => setSelectedEvent(null)} className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/50 text-foreground backdrop-blur-sm hover:bg-accent-red">
+              <button onClick={() => setSelectedEvent(null)} className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/50 text-foreground backdrop-blur-sm hover:bg-destructive">
                 <X size={16} />
               </button>
               {selectedEvent.gallery.length > 1 && (
@@ -121,20 +125,20 @@ const PastEventsPage = () => {
               </div>
             </div>
 
-            <div className="p-6">
-              <span className="inline-block rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary mb-2">{selectedEvent.eventType}</span>
-              <h2 className="text-2xl font-bold text-foreground font-heading">{selectedEvent.title}</h2>
-              <div className="mt-2 flex gap-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1"><Calendar size={14} /> {selectedEvent.date}</span>
-                <span className="flex items-center gap-1"><MapPin size={14} /> {selectedEvent.location}</span>
+            <div className="p-4 sm:p-6">
+              <span className="inline-block rounded-full border border-primary/20 bg-primary/10 px-2.5 sm:px-3 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary mb-2">{selectedEvent.eventType}</span>
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground font-heading">{selectedEvent.title}</h2>
+              <div className="mt-1.5 sm:mt-2 flex gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                <span className="flex items-center gap-1"><Calendar size={12} /> {selectedEvent.date}</span>
+                <span className="flex items-center gap-1"><MapPin size={12} /> {selectedEvent.location}</span>
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-secondary-foreground">{selectedEvent.description}</p>
-              <p className="mt-3 text-sm font-semibold text-accent-yellow">{selectedEvent.highlights}</p>
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-secondary-foreground">{selectedEvent.description}</p>
+              <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-semibold text-accent-yellow">{selectedEvent.highlights}</p>
 
               {/* Thumbnail strip */}
-              <div className="mt-4 flex gap-2 overflow-x-auto scrollbar-hide">
+              <div className="mt-3 sm:mt-4 flex gap-2 overflow-x-auto scrollbar-hide">
                 {selectedEvent.gallery.map((img, i) => (
-                  <button key={i} onClick={() => setGalleryIndex(i)} className={`h-16 w-20 flex-shrink-0 overflow-hidden rounded-lg border transition-all ${i === galleryIndex ? "border-primary ring-2 ring-primary/20" : "border-border opacity-50"}`}>
+                  <button key={i} onClick={() => setGalleryIndex(i)} className={`h-12 w-16 sm:h-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl border transition-all ${i === galleryIndex ? "border-primary ring-2 ring-primary/20" : "border-border opacity-50"}`}>
                     <img src={img} alt="" className="h-full w-full object-cover" />
                   </button>
                 ))}
