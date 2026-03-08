@@ -117,7 +117,7 @@ const EventsPage = () => {
   const completedEvents = allEvents.filter((e) => e.status === "completed").sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="relative min-h-screen pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-events-cosmic">
+    <div className="relative min-h-screen pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16 bg-events-cosmic">
       {/* Subtle decorative shapes */}
       <div className="absolute top-[20%] right-[5%] w-[300px] h-[300px] rounded-full bg-[hsl(35,40%,75%,0.2)] pointer-events-none z-0 blur-[80px]" />
       <div className="absolute bottom-[15%] left-[8%] w-[250px] h-[250px] rounded-full bg-[hsl(30,35%,70%,0.15)] pointer-events-none z-0 blur-[70px]" />
