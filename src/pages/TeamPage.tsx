@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Instagram, Linkedin, Github, Twitter } from "lucide-react";
 import ProfileModal from "@/components/ProfileModal";
+import AnimatedBackground from "@/components/AnimatedBackground";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const socialIconMap: Record<string, any> = {
   instagram: Instagram,
@@ -68,72 +70,77 @@ const TeamPage = () => {
 
   return (
     <div className="relative min-h-screen bg-background pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16 bg-geo-pattern">
-      <div className="absolute inset-0 bg-hex-pattern pointer-events-none" />
-      <div className="absolute inset-0 bg-abstract-lines pointer-events-none" />
+      <AnimatedBackground />
+      <div className="absolute inset-0 bg-dot-pattern opacity-15 pointer-events-none" />
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="mb-8 sm:mb-12 text-center">
-          <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-primary font-heading">The Squad</span>
-          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-foreground md:text-6xl">Our Team</h1>
-          <p className="mx-auto mt-2 sm:mt-3 max-w-md text-sm sm:text-base text-muted-foreground">The passionate minds powering PICSEL Club.</p>
-        </div>
+        <ScrollReveal direction="up" scale>
+          <div className="mb-8 sm:mb-12 text-center">
+            <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-primary font-heading">The Squad</span>
+            <h1 className="font-heading text-3xl sm:text-4xl font-bold text-foreground md:text-6xl">Our Team</h1>
+            <p className="mx-auto mt-2 sm:mt-3 max-w-md text-sm sm:text-base text-muted-foreground">The passionate minds powering PICSEL Club.</p>
+          </div>
+        </ScrollReveal>
 
         {/* TIER 1: President */}
-        <div className="mx-auto mb-10 sm:mb-16 max-w-2xl">
-          <div
-            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-primary/20 bg-gradient-to-br from-card to-secondary p-5 sm:p-8 shadow-glow transition-all hover:shadow-card-hover md:p-12 cursor-pointer active:scale-[0.99]"
-            onClick={() => setSelectedProfile(president)}
-          >
-            <div className="absolute inset-0 bg-dot-pattern opacity-10" />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
-            <div className="relative flex flex-col items-center text-center md:flex-row md:text-left md:gap-8">
-              <div className="mb-4 sm:mb-6 h-24 w-24 sm:h-32 sm:w-32 overflow-hidden rounded-full border-4 border-primary/30 bg-muted md:mb-0 md:h-40 md:w-40 flex-shrink-0 shadow-glow">
-                {president.image ? (
-                  <img src={president.image} alt={president.name} className="h-full w-full object-cover" loading="lazy" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-3xl sm:text-4xl font-bold text-primary font-heading">
-                    {president.name.charAt(0)}
-                  </div>
-                )}
-              </div>
-              <div>
-                <span className="mb-2 inline-block rounded-full border border-primary/30 bg-primary/10 px-3 sm:px-4 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary">
-                  {president.role}
-                </span>
-                <h2 className="mt-2 font-heading text-2xl sm:text-3xl text-foreground md:text-4xl font-bold">{president.name}</h2>
-                <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">{president.description}</p>
-                <SocialRow social={president.social} />
-                <p className="mt-2 text-[10px] sm:text-xs text-primary">Click to view full profile →</p>
+        <ScrollReveal scale delay={100}>
+          <div className="mx-auto mb-10 sm:mb-16 max-w-2xl">
+            <div
+              className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-primary/20 bg-gradient-to-br from-card to-secondary p-5 sm:p-8 shadow-glow transition-all hover:shadow-card-hover md:p-12 cursor-pointer active:scale-[0.99]"
+              onClick={() => setSelectedProfile(president)}
+            >
+              <div className="absolute inset-0 bg-dot-pattern opacity-10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
+              <div className="relative flex flex-col items-center text-center md:flex-row md:text-left md:gap-8">
+                <div className="mb-4 sm:mb-6 h-24 w-24 sm:h-32 sm:w-32 overflow-hidden rounded-full border-4 border-primary/30 bg-muted md:mb-0 md:h-40 md:w-40 flex-shrink-0 shadow-glow">
+                  {president.image ? (
+                    <img src={president.image} alt={president.name} className="h-full w-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-3xl sm:text-4xl font-bold text-primary font-heading">
+                      {president.name.charAt(0)}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <span className="mb-2 inline-block rounded-full border border-primary/30 bg-primary/10 px-3 sm:px-4 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary">
+                    {president.role}
+                  </span>
+                  <h2 className="mt-2 font-heading text-2xl sm:text-3xl text-foreground md:text-4xl font-bold">{president.name}</h2>
+                  <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">{president.description}</p>
+                  <SocialRow social={president.social} />
+                  <p className="mt-2 text-[10px] sm:text-xs text-primary">Click to view full profile →</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* TIER 2: Core Team */}
         <div className="mx-auto mb-10 sm:mb-16 max-w-5xl">
           <h3 className="mb-4 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Core Team</h3>
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {vicePresidents.map((member, index) => (
-              <div
-                key={index}
-                onClick={() => setSelectedProfile(member)}
-                className="group overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card p-3 sm:p-5 transition-all hover:border-primary/20 hover:shadow-glow cursor-pointer active:scale-[0.98]"
-              >
-                <div className="mx-auto mb-3 sm:mb-4 h-14 w-14 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-muted">
-                  {member.image ? (
-                    <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-lg sm:text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
-                      {member.name.charAt(0)}
-                    </div>
-                  )}
+              <ScrollReveal key={index} delay={index * 80} direction="up">
+                <div
+                  onClick={() => setSelectedProfile(member)}
+                  className="group overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card p-3 sm:p-5 transition-all hover:border-primary/20 hover:shadow-glow cursor-pointer active:scale-[0.98]"
+                >
+                  <div className="mx-auto mb-3 sm:mb-4 h-14 w-14 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-muted">
+                    {member.image ? (
+                      <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-lg sm:text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
+                        {member.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="text-center text-xs sm:text-sm font-bold text-foreground">{member.name}</h3>
+                  <p className="text-center text-[10px] sm:text-xs font-medium text-primary mt-0.5 sm:mt-1">{member.role}</p>
+                  <p className="mt-1.5 sm:mt-2 text-center text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block">{member.description}</p>
+                  <SocialRow social={member.social} />
                 </div>
-                <h3 className="text-center text-xs sm:text-sm font-bold text-foreground">{member.name}</h3>
-                <p className="text-center text-[10px] sm:text-xs font-medium text-primary mt-0.5 sm:mt-1">{member.role}</p>
-                <p className="mt-1.5 sm:mt-2 text-center text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block">{member.description}</p>
-                <SocialRow social={member.social} />
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -143,26 +150,27 @@ const TeamPage = () => {
           <h3 className="mb-4 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Members</h3>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-6">
             {members.map((member, index) => (
-              <div
-                key={index}
-                onClick={() => setSelectedProfile(member)}
-                className="group flex flex-col items-center rounded-lg sm:rounded-xl border border-border/50 bg-card/50 p-2.5 sm:p-4 transition-all hover:border-primary/20 hover:bg-card cursor-pointer active:scale-[0.97]"
-              >
-                <div className="mb-2 sm:mb-3 h-10 w-10 sm:h-14 sm:w-14 overflow-hidden rounded-full border border-border bg-muted">
-                  {member.image ? (
-                    <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
-                      {member.name.charAt(0)}
-                    </div>
-                  )}
+              <ScrollReveal key={index} delay={index * 40} direction="up">
+                <div
+                  onClick={() => setSelectedProfile(member)}
+                  className="group flex flex-col items-center rounded-lg sm:rounded-xl border border-border/50 bg-card/50 p-2.5 sm:p-4 transition-all hover:border-primary/20 hover:bg-card cursor-pointer active:scale-[0.97]"
+                >
+                  <div className="mb-2 sm:mb-3 h-10 w-10 sm:h-14 sm:w-14 overflow-hidden rounded-full border border-border bg-muted">
+                    {member.image ? (
+                      <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
+                        {member.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <h4 className="text-center text-[10px] sm:text-xs font-semibold text-foreground leading-tight">{member.name}</h4>
+                  <p className="text-center text-[9px] sm:text-[10px] text-primary mt-0.5">{member.role}</p>
+                  <div className="hidden sm:block">
+                    <SocialRow social={member.social} />
+                  </div>
                 </div>
-                <h4 className="text-center text-[10px] sm:text-xs font-semibold text-foreground leading-tight">{member.name}</h4>
-                <p className="text-center text-[9px] sm:text-[10px] text-primary mt-0.5">{member.role}</p>
-                <div className="hidden sm:block">
-                  <SocialRow social={member.social} />
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
