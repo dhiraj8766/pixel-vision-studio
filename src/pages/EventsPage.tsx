@@ -211,7 +211,7 @@ const EventsPage = () => {
           {/* Calendar sidebar */}
           <div className="w-full lg:w-80 flex-shrink-0">
             <div className="lg:sticky lg:top-24">
-              <MiniCalendar events={allEvents} />
+              <MiniCalendar events={allEvents} onEventClick={setSelectedEvent} />
             </div>
           </div>
         </div>
