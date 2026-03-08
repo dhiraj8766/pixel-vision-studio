@@ -90,11 +90,10 @@ const EventsPage = () => {
   const completedEvents = allEvents.filter((e) => e.status === "completed").sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-events-cosmic">
-      {/* Decorative blobs */}
-      <div className="absolute top-[30%] left-[15%] w-[400px] h-[400px] rounded-[60%_40%_50%_50%/50%_60%_40%_50%] bg-gradient-to-br from-[hsl(350,80%,45%,0.25)] to-transparent pointer-events-none z-0 blur-[60px]" />
-      <div className="absolute top-[60%] right-[10%] w-[350px] h-[350px] rounded-[50%_50%_40%_60%/40%_60%_50%_50%] bg-gradient-to-tl from-[hsl(340,70%,40%,0.2)] to-transparent pointer-events-none z-0 blur-[50px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(hsl(0_0%_100%_/_0.04)_1px,transparent_1px)] bg-[length:28px_28px] pointer-events-none z-0" />
+    <div className="relative min-h-screen pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-events-cosmic">
+      {/* Subtle decorative shapes */}
+      <div className="absolute top-[20%] right-[5%] w-[300px] h-[300px] rounded-full bg-[hsl(35,40%,75%,0.2)] pointer-events-none z-0 blur-[80px]" />
+      <div className="absolute bottom-[15%] left-[8%] w-[250px] h-[250px] rounded-full bg-[hsl(30,35%,70%,0.15)] pointer-events-none z-0 blur-[70px]" />
       
       <div className="relative z-10">
         {/* Header */}
