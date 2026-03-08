@@ -42,7 +42,7 @@ const teamData = {
 };
 
 const SocialRow = ({ social }: { social: Record<string, string> }) => (
-  <div className="flex items-center justify-center gap-2 mt-2">
+  <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-2">
     {Object.entries(social).map(([key, url]) => {
       const Icon = socialIconMap[key.toLowerCase()];
       if (!Icon || !url) return null;
@@ -53,9 +53,9 @@ const SocialRow = ({ social }: { social: Record<string, string> }) => (
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary"
+          className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-md sm:rounded-lg border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary"
         >
-          <Icon size={13} />
+          <Icon size={11} />
         </a>
       );
     })}
@@ -67,71 +67,71 @@ const TeamPage = () => {
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
 
   return (
-    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-geo-pattern">
+    <div className="relative min-h-screen bg-background pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16 bg-geo-pattern">
       <div className="absolute inset-0 bg-hex-pattern pointer-events-none" />
       <div className="absolute inset-0 bg-abstract-lines pointer-events-none" />
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="mb-12 text-center">
-          <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[3px] text-primary font-heading">The Squad</span>
-          <h1 className="font-heading text-4xl font-bold text-foreground md:text-6xl">Our Team</h1>
-          <p className="mx-auto mt-3 max-w-md text-muted-foreground">The passionate minds powering PICSEL Club.</p>
+        <div className="mb-8 sm:mb-12 text-center">
+          <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-primary font-heading">The Squad</span>
+          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-foreground md:text-6xl">Our Team</h1>
+          <p className="mx-auto mt-2 sm:mt-3 max-w-md text-sm sm:text-base text-muted-foreground">The passionate minds powering PICSEL Club.</p>
         </div>
 
         {/* TIER 1: President */}
-        <div className="mx-auto mb-16 max-w-2xl">
+        <div className="mx-auto mb-10 sm:mb-16 max-w-2xl">
           <div
-            className="group relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-card to-secondary p-8 shadow-glow transition-all hover:shadow-card-hover md:p-12 cursor-pointer active:scale-[0.99]"
+            className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-primary/20 bg-gradient-to-br from-card to-secondary p-5 sm:p-8 shadow-glow transition-all hover:shadow-card-hover md:p-12 cursor-pointer active:scale-[0.99]"
             onClick={() => setSelectedProfile(president)}
           >
             <div className="absolute inset-0 bg-dot-pattern opacity-10" />
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
             <div className="relative flex flex-col items-center text-center md:flex-row md:text-left md:gap-8">
-              <div className="mb-6 h-32 w-32 overflow-hidden rounded-full border-4 border-primary/30 bg-muted md:mb-0 md:h-40 md:w-40 flex-shrink-0 shadow-glow">
+              <div className="mb-4 sm:mb-6 h-24 w-24 sm:h-32 sm:w-32 overflow-hidden rounded-full border-4 border-primary/30 bg-muted md:mb-0 md:h-40 md:w-40 flex-shrink-0 shadow-glow">
                 {president.image ? (
                   <img src={president.image} alt={president.name} className="h-full w-full object-cover" loading="lazy" />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-primary font-heading">
+                  <div className="flex h-full w-full items-center justify-center text-3xl sm:text-4xl font-bold text-primary font-heading">
                     {president.name.charAt(0)}
                   </div>
                 )}
               </div>
               <div>
-                <span className="mb-2 inline-block rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">
+                <span className="mb-2 inline-block rounded-full border border-primary/30 bg-primary/10 px-3 sm:px-4 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary">
                   {president.role}
                 </span>
-                <h2 className="mt-2 font-heading text-3xl text-foreground md:text-4xl font-bold">{president.name}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{president.description}</p>
+                <h2 className="mt-2 font-heading text-2xl sm:text-3xl text-foreground md:text-4xl font-bold">{president.name}</h2>
+                <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">{president.description}</p>
                 <SocialRow social={president.social} />
-                <p className="mt-2 text-xs text-primary">Click to view full profile →</p>
+                <p className="mt-2 text-[10px] sm:text-xs text-primary">Click to view full profile →</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* TIER 2: Core Team */}
-        <div className="mx-auto mb-16 max-w-5xl">
-          <h3 className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Core Team</h3>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="mx-auto mb-10 sm:mb-16 max-w-5xl">
+          <h3 className="mb-4 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Core Team</h3>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {vicePresidents.map((member, index) => (
               <div
                 key={index}
                 onClick={() => setSelectedProfile(member)}
-                className="group overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/20 hover:shadow-glow cursor-pointer active:scale-[0.98]"
+                className="group overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card p-3 sm:p-5 transition-all hover:border-primary/20 hover:shadow-glow cursor-pointer active:scale-[0.98]"
               >
-                <div className="mx-auto mb-4 h-20 w-20 overflow-hidden rounded-full border-2 border-border bg-muted">
+                <div className="mx-auto mb-3 sm:mb-4 h-14 w-14 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-muted">
                   {member.image ? (
                     <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
+                    <div className="flex h-full w-full items-center justify-center text-lg sm:text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
                       {member.name.charAt(0)}
                     </div>
                   )}
                 </div>
-                <h3 className="text-center text-sm font-bold text-foreground">{member.name}</h3>
-                <p className="text-center text-xs font-medium text-primary mt-1">{member.role}</p>
-                <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground line-clamp-2 hidden md:block">{member.description}</p>
+                <h3 className="text-center text-xs sm:text-sm font-bold text-foreground">{member.name}</h3>
+                <p className="text-center text-[10px] sm:text-xs font-medium text-primary mt-0.5 sm:mt-1">{member.role}</p>
+                <p className="mt-1.5 sm:mt-2 text-center text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block">{member.description}</p>
                 <SocialRow social={member.social} />
               </div>
             ))}
@@ -139,27 +139,29 @@ const TeamPage = () => {
         </div>
 
         {/* TIER 3: Members */}
-        <div className="mx-auto max-w-6xl mb-8">
-          <h3 className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Members</h3>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+        <div className="mx-auto max-w-6xl mb-6 sm:mb-8">
+          <h3 className="mb-4 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Members</h3>
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-6">
             {members.map((member, index) => (
               <div
                 key={index}
                 onClick={() => setSelectedProfile(member)}
-                className="group flex flex-col items-center rounded-xl border border-border/50 bg-card/50 p-4 transition-all hover:border-primary/20 hover:bg-card cursor-pointer active:scale-[0.97]"
+                className="group flex flex-col items-center rounded-lg sm:rounded-xl border border-border/50 bg-card/50 p-2.5 sm:p-4 transition-all hover:border-primary/20 hover:bg-card cursor-pointer active:scale-[0.97]"
               >
-                <div className="mb-3 h-14 w-14 overflow-hidden rounded-full border border-border bg-muted">
+                <div className="mb-2 sm:mb-3 h-10 w-10 sm:h-14 sm:w-14 overflow-hidden rounded-full border border-border bg-muted">
                   {member.image ? (
                     <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-sm font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
+                    <div className="flex h-full w-full items-center justify-center text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
                       {member.name.charAt(0)}
                     </div>
                   )}
                 </div>
-                <h4 className="text-center text-xs font-semibold text-foreground">{member.name}</h4>
-                <p className="text-center text-[10px] text-primary mt-0.5">{member.role}</p>
-                <SocialRow social={member.social} />
+                <h4 className="text-center text-[10px] sm:text-xs font-semibold text-foreground leading-tight">{member.name}</h4>
+                <p className="text-center text-[9px] sm:text-[10px] text-primary mt-0.5">{member.role}</p>
+                <div className="hidden sm:block">
+                  <SocialRow social={member.social} />
+                </div>
               </div>
             ))}
           </div>

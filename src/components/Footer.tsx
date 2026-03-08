@@ -4,24 +4,24 @@ import picselLogo from "@/assets/picsel-logo.png";
 
 const Footer = () => {
   return (
-    <footer className="relative border-t border-border bg-card/30 px-6 py-16 md:px-10 lg:px-16">
+    <footer className="relative border-t border-border bg-card/30 px-4 py-10 sm:px-6 sm:py-16 md:px-10 lg:px-16">
       <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
       
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div className="grid gap-10 md:grid-cols-4">
+        <div className="grid gap-8 sm:gap-10 grid-cols-2 md:grid-cols-4">
           {/* Brand */}
-          <div className="md:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <img src={picselLogo} alt="PICSEL" className="h-12 w-12 rounded-full border border-border" />
+          <div className="col-span-2 md:col-span-1">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <img src={picselLogo} alt="PICSEL" className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-border" />
               <div>
-                <span className="block text-lg font-extrabold tracking-tight text-foreground font-heading">PICSEL</span>
-                <span className="block text-[10px] uppercase tracking-[2px] text-muted-foreground">KDKCE</span>
+                <span className="block text-base sm:text-lg font-extrabold tracking-tight text-foreground font-heading">PICSEL</span>
+                <span className="block text-[9px] sm:text-[10px] uppercase tracking-[2px] text-muted-foreground">KDKCE</span>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground max-w-xs mb-4">
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-xs mb-3 sm:mb-4">
               Department of Computer Science & Engineering. Building the future, one pixel at a time.
             </p>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground">
               <MapPin size={12} />
               <span>Nagpur, Maharashtra, India</span>
             </div>
@@ -29,8 +29,8 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Navigate</h4>
-            <div className="flex flex-col gap-2">
+            <h4 className="mb-3 sm:mb-4 text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Navigate</h4>
+            <div className="flex flex-col gap-1.5 sm:gap-2">
               {[
                 { name: "Home", path: "/" },
                 { name: "About", path: "/about" },
@@ -38,9 +38,9 @@ const Footer = () => {
                 { name: "Past Events", path: "/xevents" },
                 { name: "Team", path: "/team" },
               ].map((link) => (
-                <Link key={link.name} to={link.path} className="text-sm text-muted-foreground transition-colors hover:text-primary flex items-center gap-1 group">
+                <Link key={link.name} to={link.path} className="text-xs sm:text-sm text-muted-foreground transition-colors hover:text-primary flex items-center gap-1 group">
                   {link.name}
-                  <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               ))}
             </div>
@@ -48,15 +48,15 @@ const Footer = () => {
 
           {/* Resources */}
           <div>
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Resources</h4>
-            <div className="flex flex-col gap-2">
+            <h4 className="mb-3 sm:mb-4 text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Resources</h4>
+            <div className="flex flex-col gap-1.5 sm:gap-2">
               {[
                 { name: "Faculty", path: "/faculty" },
                 { name: "Contact", path: "/contact" },
               ].map((link) => (
-                <Link key={link.name} to={link.path} className="text-sm text-muted-foreground transition-colors hover:text-primary flex items-center gap-1 group">
+                <Link key={link.name} to={link.path} className="text-xs sm:text-sm text-muted-foreground transition-colors hover:text-primary flex items-center gap-1 group">
                   {link.name}
-                  <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               ))}
             </div>
@@ -64,8 +64,8 @@ const Footer = () => {
 
           {/* Social */}
           <div>
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Connect</h4>
-            <div className="flex flex-wrap gap-3">
+            <h4 className="mb-3 sm:mb-4 text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Connect</h4>
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {[
                 { name: "Instagram", icon: Instagram, url: "#" },
                 { name: "LinkedIn", icon: Linkedin, url: "#" },
@@ -77,20 +77,20 @@ const Footer = () => {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary hover:shadow-glow"
+                  className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary hover:shadow-glow"
                   aria-label={social.name}
                 >
-                  <social.icon size={16} />
+                  <social.icon size={14} />
                 </a>
               ))}
             </div>
-            <a href="mailto:picsel@kdkce.edu" className="mt-4 flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors">
-              <Mail size={14} /> picsel@kdkce.edu
+            <a href="mailto:picsel@kdkce.edu" className="mt-3 sm:mt-4 flex items-center gap-2 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+              <Mail size={12} /> picsel@kdkce.edu
             </a>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground gap-2">
+        <div className="mt-8 sm:mt-12 border-t border-border pt-4 sm:pt-6 flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-xs text-muted-foreground gap-2">
           <span>© {new Date().getFullYear()} PICSEL Club — KDKCE. All rights reserved.</span>
           <span className="text-muted-foreground/50">Crafted with ❤️ by PICSEL Dev Team</span>
         </div>
