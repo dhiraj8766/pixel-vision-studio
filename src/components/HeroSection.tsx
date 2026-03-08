@@ -30,13 +30,28 @@ const HeroSection = () => {
   const activeEvent = events[activeEventIndex];
 
   return (
-    <section className="relative min-h-screen px-6 pt-24 pb-12 md:px-10 md:pt-28 lg:px-16 bg-noise">
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
+    <section className="relative min-h-screen px-6 pt-24 pb-12 md:px-10 md:pt-28 lg:px-16 overflow-hidden">
+      {/* Abstract background inspired by reference */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,20%,6%)] via-[hsl(260,25%,10%)] to-[hsl(240,20%,6%)]" />
       
-      {/* Gradient orbs */}
-      <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/5 blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-accent-purple/5 blur-[120px] pointer-events-none" />
+      {/* Large red/crimson abstract shape - top right */}
+      <div className="absolute -top-32 -right-32 w-[700px] h-[700px] rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-gradient-to-br from-[hsl(350,80%,45%)] via-[hsl(340,70%,35%)] to-[hsl(330,60%,25%)] opacity-70 pointer-events-none" />
+      <div className="absolute -top-48 right-20 w-[500px] h-[500px] rounded-[60%_40%_30%_70%/50%_60%_40%_50%] bg-gradient-to-br from-[hsl(350,85%,55%)] to-[hsl(340,70%,30%)] opacity-40 pointer-events-none blur-sm" />
+      
+      {/* Pink/rose accent - top left */}
+      <div className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-[50%_50%_40%_60%/40%_60%_50%_50%] bg-gradient-to-br from-[hsl(340,60%,55%)] to-[hsl(350,50%,30%)] opacity-30 pointer-events-none" />
+      
+      {/* Dot pattern overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: 'radial-gradient(hsl(0 0% 100% / 0.08) 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+      }} />
+      
+      {/* Subtle purple glow bottom left */}
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-[hsl(270,60%,40%)] opacity-[0.07] blur-[120px] pointer-events-none" />
+      
+      {/* Cyan glow accent */}
+      <div className="absolute bottom-40 right-20 w-72 h-72 rounded-full bg-[hsl(174,80%,40%)] opacity-[0.06] blur-[100px] pointer-events-none" />
 
       <div className="relative z-10">
         {/* Top: Title + Images */}
