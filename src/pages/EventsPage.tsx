@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Clock, MapPin, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Clock, MapPin, ArrowRight, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import hero1 from "@/assets/heroimg/hero1.jpg";
 import hero2 from "@/assets/heroimg/hero2.jpg";
 import hero3 from "@/assets/heroimg/hero3.jpg";
@@ -166,6 +166,7 @@ const CategorySlider = ({ type, typeEvents, onEventClick }: { type: typeof event
 
 const EventsPage = () => {
   const [selectedEvent, setSelectedEvent] = useState<typeof allEvents[0] | null>(null);
+  const [showFullPoster, setShowFullPoster] = useState(false);
 
   const upcomingEvents = allEvents.filter((e) => e.status === "upcoming").sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const completedEvents = allEvents.filter((e) => e.status === "completed").sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -303,12 +304,21 @@ const EventsPage = () => {
             <div className="relative h-40 sm:h-56">
               <img src={selectedEvent.coverImage} alt={selectedEvent.title} className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#f3ecdc] via-[#f3ecdc]/50 to-transparent" />
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#f3ecdc]/70 text-[#1a3a2a] backdrop-blur-sm transition-colors hover:bg-[#c4a97d]"
-              >
-                ✕
-              </button>
+              <div className="absolute top-3 right-3 flex items-center gap-2">
+                <button
+                  onClick={() => setShowFullPoster(true)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3ecdc]/70 text-[#1a3a2a] backdrop-blur-sm transition-colors hover:bg-[#c4a97d]"
+                  title="View full poster"
+                >
+                  <Maximize2 size={14} />
+                </button>
+                <button
+                  onClick={() => { setSelectedEvent(null); setShowFullPoster(false); }}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3ecdc]/70 text-[#1a3a2a] backdrop-blur-sm transition-colors hover:bg-[#c4a97d]"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
             <div className="p-4 sm:p-6">
               <h2 className="text-xl sm:text-2xl font-bold text-[#2d5a3d] font-heading">{selectedEvent.title}</h2>
@@ -325,6 +335,21 @@ const EventsPage = () => {
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Full Poster Modal */}
+      {showFullPoster && selectedEvent && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4" onClick={() => setShowFullPoster(false)}>
+          <button onClick={() => setShowFullPoster(false)} className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10">
+            ✕
+          </button>
+          <img
+            src={selectedEvent.coverImage}
+            alt={selectedEvent.title}
+            className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg animate-[scaleIn_0.3s_ease-out]"
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
     </div>
