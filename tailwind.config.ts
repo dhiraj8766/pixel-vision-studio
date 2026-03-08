@@ -64,6 +64,9 @@ export default {
         hero: {
           muted: "hsl(var(--hero-muted))",
         },
+        team: {
+          bg: "hsl(var(--team-bg))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
