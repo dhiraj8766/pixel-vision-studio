@@ -266,12 +266,12 @@ const EventsPage = () => {
 
       {/* Event Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#1a3a2a]/80 backdrop-blur-md p-4" onClick={() => setSelectedEvent(null)}>
+        <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-[#1a3a2a]/80 backdrop-blur-md p-0 sm:p-4" onClick={() => setSelectedEvent(null)}>
           <div
-            className="w-full max-w-lg overflow-hidden rounded-2xl border border-[#c4a97d]/30 bg-[#f3ecdc] shadow-2xl animate-[scaleIn_0.3s_ease-out]"
+            className="w-full sm:max-w-lg overflow-hidden rounded-t-2xl sm:rounded-2xl border-t sm:border border-[#c4a97d]/30 bg-[#f3ecdc] shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[85vh] sm:max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative h-56">
+            <div className="relative h-40 sm:h-56">
               <img src={selectedEvent.coverImage} alt={selectedEvent.title} className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#f3ecdc] via-[#f3ecdc]/50 to-transparent" />
               <button
@@ -281,17 +281,17 @@ const EventsPage = () => {
                 ✕
               </button>
             </div>
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-[#2d5a3d] font-heading">{selectedEvent.title}</h2>
-              <div className="mt-3 flex gap-4 text-sm text-[#1a3a2a]">
-                <span className="flex items-center gap-1"><Calendar size={14} /> {selectedEvent.date}</span>
-                <span className="flex items-center gap-1"><Clock size={14} /> {selectedEvent.time}</span>
+            <div className="p-4 sm:p-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#2d5a3d] font-heading">{selectedEvent.title}</h2>
+              <div className="mt-2 sm:mt-3 flex gap-3 sm:gap-4 text-xs sm:text-sm text-[#1a3a2a]">
+                <span className="flex items-center gap-1"><Calendar size={12} /> {selectedEvent.date}</span>
+                <span className="flex items-center gap-1"><Clock size={12} /> {selectedEvent.time}</span>
               </div>
-              <p className="mt-1 text-sm text-[#5a7d6a] flex items-center gap-1"><MapPin size={14} /> {selectedEvent.location}</p>
-              <p className="mt-4 text-sm leading-relaxed text-[#3a5a4a]">{selectedEvent.description}</p>
+              <p className="mt-1 text-xs sm:text-sm text-[#5a7d6a] flex items-center gap-1"><MapPin size={12} /> {selectedEvent.location}</p>
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-[#3a5a4a]">{selectedEvent.description}</p>
               {selectedEvent.registerUrl && (
-                <a href={selectedEvent.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-6 block">
-                  <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] w-full py-3 font-semibold hover:bg-[#2d5a3d] transition-colors">Register Now</button>
+                <a href={selectedEvent.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-4 sm:mt-6 block">
+                  <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] w-full py-2.5 sm:py-3 text-sm font-semibold hover:bg-[#2d5a3d] transition-colors">Register Now</button>
                 </a>
               )}
             </div>
