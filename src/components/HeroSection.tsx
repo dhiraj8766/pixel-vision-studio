@@ -289,6 +289,40 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Event Popup */}
+      {selectedEvent && (
+        <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-md p-0 sm:p-4" onClick={() => setSelectedEvent(null)}>
+          <div
+            className="w-full sm:max-w-lg overflow-hidden rounded-t-2xl sm:rounded-2xl border-t sm:border border-border/30 bg-background shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[85vh] sm:max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative h-40 sm:h-56">
+              <img src={selectedEvent.coverImage} alt={selectedEvent.title} className="h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+              <button
+                onClick={() => setSelectedEvent(null)}
+                className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur-sm transition-colors hover:bg-muted"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4 sm:p-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground font-heading">{selectedEvent.title}</h2>
+              <div className="mt-2 sm:mt-3 flex gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                <span className="flex items-center gap-1"><Calendar size={12} /> {selectedEvent.date}</span>
+                <span className="flex items-center gap-1"><Clock size={12} /> {selectedEvent.time}</span>
+              </div>
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-muted-foreground">{selectedEvent.description}</p>
+              {selectedEvent.registerUrl && (
+                <a href={selectedEvent.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-4 sm:mt-6 block">
+                  <button className="rounded-full bg-primary text-primary-foreground w-full py-2.5 sm:py-3 text-sm font-semibold hover:bg-primary/90 transition-colors">Register Now</button>
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
