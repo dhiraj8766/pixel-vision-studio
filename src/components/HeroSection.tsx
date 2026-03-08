@@ -236,8 +236,9 @@ const HeroSection = () => {
           </div>
 
           <div
-            className="relative h-48 sm:h-56 md:h-64 lg:h-72 overflow-hidden rounded-xl sm:rounded-2xl shadow-card border border-border/20"
+            className="relative h-48 sm:h-56 md:h-64 lg:h-72 overflow-hidden rounded-xl sm:rounded-2xl shadow-card border border-border/20 cursor-pointer"
             style={{ backgroundImage: `url(${activeEvent.coverImage})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            onClick={() => setSelectedEvent(activeEvent)}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/20" />
 
