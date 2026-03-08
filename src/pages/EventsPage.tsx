@@ -47,19 +47,19 @@ const MiniCalendar = ({ events: calEvents }: { events: typeof allEvents }) => {
   for (let i = 1; i <= daysInMonth; i++) days.push(i);
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5">
+    <div className="rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/70 p-5">
       <div className="flex items-center justify-between mb-4">
-        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-1 text-muted-foreground hover:text-foreground">
+        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))} className="p-1 text-[#8a7a6a] hover:text-[#1a3a2a]">
           <ChevronLeft size={18} />
         </button>
-        <h3 className="text-sm font-bold text-foreground font-heading">{monthName}</h3>
-        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} className="p-1 text-muted-foreground hover:text-foreground">
+        <h3 className="text-sm font-bold text-[#1a3a2a] font-heading">{monthName}</h3>
+        <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} className="p-1 text-[#8a7a6a] hover:text-[#1a3a2a]">
           <ChevronRight size={18} />
         </button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center">
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
-          <div key={d} className="text-[10px] font-bold text-muted-foreground py-1">{d}</div>
+          <div key={d} className="text-[10px] font-bold text-[#8a7a6a] py-1">{d}</div>
         ))}
         {days.map((day, i) => (
           <div
@@ -67,16 +67,16 @@ const MiniCalendar = ({ events: calEvents }: { events: typeof allEvents }) => {
             className={`h-8 w-8 mx-auto flex items-center justify-center rounded-lg text-xs transition-colors ${
               day === null ? "" :
               eventDates.has(day)
-                ? "bg-primary/20 text-primary font-bold border border-primary/30"
-                : "text-muted-foreground hover:bg-muted/50"
+                ? "bg-[#2d5a3d]/15 text-[#2d5a3d] font-bold border border-[#2d5a3d]/30"
+                : "text-[#5a7d6a] hover:bg-[#c4a97d]/20"
             }`}
           >
             {day}
           </div>
         ))}
       </div>
-      <div className="mt-3 flex items-center gap-2 text-[10px] text-muted-foreground">
-        <div className="h-2 w-2 rounded-full bg-primary/40" />
+      <div className="mt-3 flex items-center gap-2 text-[10px] text-[#8a7a6a]">
+        <div className="h-2 w-2 rounded-full bg-[#2d5a3d]/40" />
         <span>Event scheduled</span>
       </div>
     </div>
