@@ -30,7 +30,7 @@ const TeamHighlights = () => {
           {teamHighlights.map((member, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card p-4 sm:p-6 transition-all hover:border-primary/30 hover:shadow-glow"
+              className="group relative overflow-hidden rounded-xl sm:rounded-2xl border border-background/10 bg-background/80 p-4 sm:p-6 transition-all hover:border-primary/30 hover:shadow-glow"
             >
               <div className="mx-auto mb-3 sm:mb-4 h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-muted md:h-24 md:w-24">
                 {member.image ? (
