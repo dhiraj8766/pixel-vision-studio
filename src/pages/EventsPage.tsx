@@ -337,6 +337,21 @@ const EventsPage = () => {
           </div>
         </div>
       )}
+
+      {/* Full Poster Modal */}
+      {showFullPoster && selectedEvent && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4" onClick={() => setShowFullPoster(false)}>
+          <button onClick={() => setShowFullPoster(false)} className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10">
+            ✕
+          </button>
+          <img
+            src={selectedEvent.coverImage}
+            alt={selectedEvent.title}
+            className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg animate-[scaleIn_0.3s_ease-out]"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 };
