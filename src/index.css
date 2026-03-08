@@ -6,44 +6,46 @@
 
 @layer base {
   :root {
-    --background: 220 15% 5%;
+    --background: 240 20% 6%;
     --foreground: 0 0% 95%;
 
-    --card: 220 12% 8%;
+    --card: 250 18% 10%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 220 12% 10%;
+    --popover: 250 18% 12%;
     --popover-foreground: 0 0% 95%;
 
     --primary: 174 72% 40%;
-    --primary-foreground: 220 15% 5%;
+    --primary-foreground: 240 20% 6%;
 
-    --secondary: 220 12% 12%;
+    --secondary: 260 20% 14%;
     --secondary-foreground: 0 0% 85%;
 
-    --muted: 220 10% 15%;
-    --muted-foreground: 220 8% 50%;
+    --muted: 255 15% 16%;
+    --muted-foreground: 230 15% 55%;
 
     --accent: 174 72% 40%;
-    --accent-foreground: 220 15% 5%;
+    --accent-foreground: 240 20% 6%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 10% 16%;
-    --input: 220 10% 16%;
+    --border: 260 15% 18%;
+    --input: 260 15% 18%;
     --ring: 174 72% 40%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
     --accent-yellow: 43 96% 56%;
-    --accent-red: 0 84% 60%;
+    --accent-red: 350 84% 60%;
     --accent-cyan: 174 80% 55%;
     --accent-green: 142 70% 55%;
     --accent-purple: 270 70% 60%;
-    --surface-elevated: 220 12% 10%;
-    --hero-muted: 220 8% 46%;
+    --accent-pink: 330 80% 60%;
+    --accent-orange: 25 95% 55%;
+    --surface-elevated: 250 18% 12%;
+    --hero-muted: 230 15% 50%;
 
     --font-heading: 'Syne', sans-serif;
     --font-sans: 'Space Grotesk', sans-serif;
@@ -51,8 +53,8 @@
     --font-mono: 'JetBrains Mono', monospace;
 
     --shadow-glow: 0 0 60px -10px hsl(174 72% 40% / 0.3);
-    --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.6);
-    --shadow-card-hover: 0 30px 80px rgba(0, 0, 0, 0.8);
+    --shadow-card: 0 20px 60px rgba(10, 5, 30, 0.7);
+    --shadow-card-hover: 0 30px 80px rgba(10, 5, 30, 0.9);
     --radius-xl: 32px;
     --radius-card: 24px;
   }
@@ -90,66 +92,86 @@
 /* ============ BACKGROUND PATTERNS ============ */
 .bg-grid-pattern {
   background-image: 
-    linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    linear-gradient(hsl(var(--accent-purple) / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--accent-cyan) / 0.08) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
 .bg-dot-pattern {
-  background-image: radial-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px);
+  background-image: radial-gradient(hsl(var(--accent-purple) / 0.25) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-/* Geometric circles + floating shapes */
+/* Geometric circles + colorful floating shapes */
 .bg-geo-pattern {
   position: relative;
+  background:
+    radial-gradient(ellipse at 80% 10%, hsl(var(--accent-purple) / 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 80%, hsl(var(--accent-cyan) / 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, hsl(var(--accent-pink) / 0.04) 0%, transparent 60%),
+    hsl(var(--background));
 }
 .bg-geo-pattern::before {
   content: '';
   position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 600px;
-  height: 600px;
+  top: -10%;
+  right: -5%;
+  width: 700px;
+  height: 700px;
   border-radius: 50%;
-  background: radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, hsl(var(--accent-purple) / 0.15) 0%, hsl(var(--accent-pink) / 0.05) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  animation: float 25s ease-in-out infinite;
 }
 .bg-geo-pattern::after {
   content: '';
   position: absolute;
-  bottom: -15%;
-  left: -8%;
-  width: 500px;
-  height: 500px;
+  bottom: -10%;
+  left: -5%;
+  width: 600px;
+  height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, hsl(var(--accent-purple) / 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, hsl(var(--accent-cyan) / 0.12) 0%, hsl(var(--accent-green) / 0.05) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  animation: float 20s ease-in-out infinite reverse;
 }
 
-/* Abstract diagonal stripes */
+/* Abstract diagonal stripes with color */
 .bg-abstract-lines {
   background-image:
     repeating-linear-gradient(
       -45deg,
       transparent,
       transparent 80px,
-      hsl(var(--border) / 0.08) 80px,
-      hsl(var(--border) / 0.08) 81px
+      hsl(var(--accent-purple) / 0.04) 80px,
+      hsl(var(--accent-purple) / 0.04) 81px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 120px,
+      hsl(var(--accent-cyan) / 0.03) 120px,
+      hsl(var(--accent-cyan) / 0.03) 121px
     );
 }
 
 /* Hexagonal / honeycomb pattern */
 .bg-hex-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50V16l28-16 28 16v34L28 66zm0-2l26-15V18L28 4 2 18v31l26 15z' fill='%23ffffff' fill-opacity='0.02'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50V16l28-16 28 16v34L28 66zm0-2l26-15V18L28 4 2 18v31l26 15z' fill='%238b5cf6' fill-opacity='0.04'/%3E%3C/svg%3E");
 }
 
-/* Events-specific cosmic/nebula background */
+/* Events-specific vibrant cosmic background */
 .bg-events-cosmic {
   position: relative;
   overflow: hidden;
+  background:
+    radial-gradient(ellipse at 30% 20%, hsl(var(--accent-purple) / 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, hsl(var(--accent-cyan) / 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 30%, hsl(var(--accent-pink) / 0.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 20% 90%, hsl(var(--accent-orange) / 0.06) 0%, transparent 40%),
+    hsl(var(--background));
 }
 .bg-events-cosmic::before {
   content: '';
@@ -157,13 +179,14 @@
   top: 5%;
   left: 50%;
   transform: translateX(-50%);
-  width: 800px;
-  height: 800px;
+  width: 900px;
+  height: 900px;
   border-radius: 50%;
   background: radial-gradient(
     ellipse at center,
-    hsl(var(--primary) / 0.08) 0%,
-    hsl(var(--accent-purple) / 0.04) 40%,
+    hsl(var(--accent-purple) / 0.18) 0%,
+    hsl(var(--accent-cyan) / 0.08) 30%,
+    hsl(var(--accent-pink) / 0.04) 50%,
     transparent 70%
   );
   pointer-events: none;
@@ -175,21 +198,21 @@
   position: absolute;
   bottom: 10%;
   right: -5%;
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, hsl(var(--accent-cyan) / 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, hsl(var(--accent-orange) / 0.12) 0%, hsl(var(--accent-yellow) / 0.06) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
   animation: float 15s ease-in-out infinite reverse;
 }
 
-/* Cross/plus pattern */
+/* Cross/plus pattern with color */
 .bg-cross-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18h-2v-2h2v2zm0 6h-2v-2h2v2z' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18h-2v-2h2v2zm0 6h-2v-2h2v2z' fill='%2322d3ee' fill-opacity='0.05'/%3E%3C/svg%3E");
 }
 
-/* Decorative floating orbs for specific sections */
+/* Decorative floating orbs */
 .bg-orbs {
   position: relative;
 }
@@ -204,7 +227,7 @@
   right: 5%;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, hsl(var(--accent-yellow) / 0.04), transparent 70%);
+  background: radial-gradient(circle, hsl(var(--accent-yellow) / 0.1), hsl(var(--accent-orange) / 0.04), transparent 70%);
   animation: float 18s ease-in-out infinite;
 }
 .bg-orbs .orb-2 {
