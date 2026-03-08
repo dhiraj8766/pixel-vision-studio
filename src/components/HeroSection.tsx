@@ -90,12 +90,12 @@ const HeroSection = () => {
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center mb-10 sm:mb-16">
           <div className="animate-[fadeIn_0.8s_ease-out]">
             <h1 className="font-heading text-3xl font-bold leading-[1.1] tracking-tight text-hero-muted sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-              Learn teamwork
+              Learn teamwork{" "}
               <br className="hidden sm:block" />
               essentials for
               <br />
               <span className="text-foreground block mt-1">
-                effective
+                effective{" "}
                 <br className="hidden md:block" />
                 collaboration.
               </span>
