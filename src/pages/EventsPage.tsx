@@ -179,26 +179,26 @@ const EventsPage = () => {
 
             {/* Completed */}
             {completedEvents.length > 0 && (
-              <div className="mb-10" id="past">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-sm font-bold uppercase tracking-widest text-[#8a7a6a] font-heading">Completed</h2>
-                  <Link to="/xevents" className="text-xs text-[#2d5a3d] hover:underline flex items-center gap-1">
-                    View all stories <ArrowRight size={12} />
+              <div className="mb-8 sm:mb-10" id="past">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h2 className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#8a7a6a] font-heading">Completed</h2>
+                  <Link to="/xevents" className="text-[10px] sm:text-xs text-[#2d5a3d] hover:underline flex items-center gap-1">
+                    View all stories <ArrowRight size={10} />
                   </Link>
                 </div>
-                <div className="relative border-l-2 border-[#c4a97d]/30 ml-3 space-y-0">
+                <div className="relative border-l-2 border-[#c4a97d]/30 ml-2 sm:ml-3 space-y-0">
                   {completedEvents.map((event) => (
-                    <div key={event.id} className="group relative pl-8 pb-6 cursor-pointer" onClick={() => setSelectedEvent(event)}>
+                    <div key={event.id} className="group relative pl-5 sm:pl-8 pb-4 sm:pb-6 cursor-pointer" onClick={() => setSelectedEvent(event)}>
                       <div className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-[#c4a97d] bg-[#c4a97d]/30" />
-                      <div className="flex items-center gap-4 rounded-xl p-3 opacity-60 transition-all hover:opacity-100 hover:bg-[#ebe4d2]/40 active:bg-[#ebe4d2]/60">
+                      <div className="flex items-center gap-3 sm:gap-4 rounded-lg sm:rounded-xl p-2 sm:p-3 opacity-60 transition-all hover:opacity-100 hover:bg-[#ebe4d2]/40 active:bg-[#ebe4d2]/60">
                         <span className="font-mono text-xs text-[#8a7a6a] min-w-[90px] hidden md:block">{event.date}</span>
-                        <div className="flex-1">
-                          <h3 className="text-base font-medium text-[#3a5a4a]">{event.title}</h3>
-                          <p className="text-xs text-[#8a7a6a] mt-0.5 flex items-center gap-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-sm sm:text-base font-medium text-[#3a5a4a]">{event.title}</h3>
+                          <p className="text-[10px] sm:text-xs text-[#8a7a6a] mt-0.5 flex items-center gap-1.5 sm:gap-2 flex-wrap">
                             <span className="flex items-center gap-1"><Clock size={10} /> {event.time}</span>
                             <span className="flex items-center gap-1"><MapPin size={10} /> {event.location}</span>
                           </p>
-                          <span className="md:hidden font-mono text-[10px] text-[#8a7a6a]">{event.date}</span>
+                          <span className="md:hidden font-mono text-[9px] sm:text-[10px] text-[#8a7a6a]">{event.date}</span>
                         </div>
                       </div>
                     </div>
