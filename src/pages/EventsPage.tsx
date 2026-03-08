@@ -304,12 +304,21 @@ const EventsPage = () => {
             <div className="relative h-40 sm:h-56">
               <img src={selectedEvent.coverImage} alt={selectedEvent.title} className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#f3ecdc] via-[#f3ecdc]/50 to-transparent" />
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#f3ecdc]/70 text-[#1a3a2a] backdrop-blur-sm transition-colors hover:bg-[#c4a97d]"
-              >
-                ✕
-              </button>
+              <div className="absolute top-3 right-3 flex items-center gap-2">
+                <button
+                  onClick={() => setShowFullPoster(true)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3ecdc]/70 text-[#1a3a2a] backdrop-blur-sm transition-colors hover:bg-[#c4a97d]"
+                  title="View full poster"
+                >
+                  <Maximize2 size={14} />
+                </button>
+                <button
+                  onClick={() => { setSelectedEvent(null); setShowFullPoster(false); }}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3ecdc]/70 text-[#1a3a2a] backdrop-blur-sm transition-colors hover:bg-[#c4a97d]"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
             <div className="p-4 sm:p-6">
               <h2 className="text-xl sm:text-2xl font-bold text-[#2d5a3d] font-heading">{selectedEvent.title}</h2>
