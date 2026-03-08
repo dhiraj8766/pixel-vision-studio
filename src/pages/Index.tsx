@@ -7,7 +7,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 const Index = () => {
   return (
-    <div className="relative min-h-screen bg-background text-foreground pb-mobile-nav bg-geo-pattern">
+    <div className="relative min-h-screen bg-background text-foreground pb-mobile-nav bg-geo-pattern overflow-x-hidden">
       <AnimatedBackground />
       <HeroSection />
       <ScrollReveal>
