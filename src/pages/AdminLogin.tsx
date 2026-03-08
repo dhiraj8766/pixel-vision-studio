@@ -10,30 +10,43 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Temporary hardcoded credentials (replace with Spring Boot backend later)
+  const TEMP_USERNAME = "admin";
+  const TEMP_PASSWORD = "admin";
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    try {
-      const res = await fetch(API.LOGIN, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await res.json();
+    // // --- Spring Boot backend login ---
+    // try {
+    //   const res = await fetch(API.LOGIN, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ username, password }),
+    //   });
+    //   const data = await res.json();
+    //   if (res.ok && data.status === "success") {
+    //     sessionStorage.setItem("admin_auth", "true");
+    //     navigate("/admin/dashboard");
+    //   } else {
+    //     setError(data.message || "Invalid credentials");
+    //   }
+    // } catch {
+    //   setError("Cannot connect to server.");
+    // }
 
-      if (res.ok && data.status === "success") {
+    // Temporary local auth
+    setTimeout(() => {
+      if (username === TEMP_USERNAME && password === TEMP_PASSWORD) {
         sessionStorage.setItem("admin_auth", "true");
         navigate("/admin/dashboard");
       } else {
-        setError(data.message || "Invalid credentials");
+        setError("Invalid credentials");
       }
-    } catch {
-      setError("Cannot connect to server. Make sure your Spring Boot backend is running.");
-    } finally {
       setLoading(false);
-    }
+    }, 500);
   };
 
   return (
