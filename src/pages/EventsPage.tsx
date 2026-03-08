@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, Clock, MapPin, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import hero1 from "@/assets/heroimg/hero1.jpg";
@@ -104,6 +104,61 @@ const MiniCalendar = ({ events: calEvents, onEventClick }: { events: typeof allE
       <div className="mt-2 sm:mt-3 flex items-center gap-2 text-[9px] sm:text-[10px] text-[#8a7a6a]">
         <div className="h-2 w-2 rounded-full bg-[#2d5a3d]/40" />
         <span>Click event date for details</span>
+      </div>
+    </div>
+  );
+};
+
+const CategorySlider = ({ type, typeEvents, onEventClick }: { type: typeof eventTypes[0]; typeEvents: typeof allEvents; onEventClick: (e: typeof allEvents[0]) => void }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = useCallback((direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const scrollAmount = 320;
+    scrollRef.current.scrollBy({ left: direction === "left" ? -scrollAmount : scrollAmount, behavior: "smooth" });
+  }, []);
+
+  return (
+    <div className="mb-6 sm:mb-10">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h3 className="text-sm sm:text-lg font-bold text-[#2d5a3d] font-heading">{type.label}</h3>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] sm:text-xs text-[#8a7a6a] mr-1">{typeEvents.length} events</span>
+          <button onClick={() => scroll("left")} className="hidden md:flex h-8 w-8 items-center justify-center rounded-full border border-[#c4a97d]/40 bg-[#f3ecdc] text-[#2d5a3d] hover:bg-[#2d5a3d] hover:text-[#f3ecdc] transition-colors">
+            <ChevronLeft size={16} />
+          </button>
+          <button onClick={() => scroll("right")} className="hidden md:flex h-8 w-8 items-center justify-center rounded-full border border-[#c4a97d]/40 bg-[#f3ecdc] text-[#2d5a3d] hover:bg-[#2d5a3d] hover:text-[#f3ecdc] transition-colors">
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+      <div ref={scrollRef} className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 sm:pb-4 scrollbar-hide snap-x snap-mandatory -mx-4 px-4">
+        {typeEvents.map((event) => (
+          <div
+            key={event.id}
+            onClick={() => onEventClick(event)}
+            className="group flex-shrink-0 w-[72vw] sm:w-[280px] md:w-[300px] lg:w-[320px] snap-start cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/60 transition-all hover:border-[#2d5a3d]/30 hover:shadow-lg hover:-translate-y-1 active:scale-[0.98]"
+          >
+            <div className="relative h-36 sm:h-40 overflow-hidden">
+              <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform group-hover:scale-110" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#ebe4d2] to-transparent" />
+              <span className="absolute top-2 left-2 sm:top-3 sm:left-3 rounded-full border border-[#2d5a3d]/30 bg-[#f3ecdc]/80 px-2 sm:px-3 py-0.5 sm:py-1 text-[8px] sm:text-[10px] font-bold uppercase text-[#2d5a3d] backdrop-blur-sm">
+                {type.label}
+              </span>
+            </div>
+            <div className="p-3 sm:p-4">
+              <h4 className="text-xs sm:text-sm font-bold text-[#1a3a2a] font-heading">{event.title}</h4>
+              <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-[#5a7d6a] flex items-center gap-1">
+                <Calendar size={10} /> {event.date}
+              </p>
+              {event.registerUrl && (
+                <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="mt-2 sm:mt-3 inline-block">
+                  <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[10px] sm:text-[11px] py-1 sm:py-1.5 px-2.5 sm:px-3 font-semibold hover:bg-[#2d5a3d] transition-colors">Register ↗</button>
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -231,43 +286,7 @@ const EventsPage = () => {
               const typeEvents = allEvents.filter((e) => e.eventType === type.key);
               if (typeEvents.length === 0) return null;
               return (
-                <div key={type.key} className="mb-6 sm:mb-10">
-                  <div className="flex items-center justify-between mb-3 sm:mb-4">
-                    <h3 className="text-sm sm:text-lg font-bold text-[#2d5a3d] font-heading">{type.label}</h3>
-                    <span className="text-[10px] sm:text-xs text-[#8a7a6a]">{typeEvents.length} events</span>
-                  </div>
-                  {/* Horizontal swipe slider for all devices */}
-                  <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-3 sm:pb-4 scrollbar-hide snap-x snap-mandatory -mx-4 px-4">
-                    {typeEvents.map((event) => (
-                      <div
-                        key={event.id}
-                        onClick={() => setSelectedEvent(event)}
-                        className="group flex-shrink-0 w-[72vw] sm:w-[280px] md:w-[300px] lg:w-[320px] snap-start cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/60 transition-all hover:border-[#2d5a3d]/30 hover:shadow-lg hover:-translate-y-1 active:scale-[0.98]"
-                      >
-                        <div className="relative h-36 sm:h-40 overflow-hidden">
-                          <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform group-hover:scale-110" loading="lazy" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#ebe4d2] to-transparent" />
-                          <span className="absolute top-2 left-2 sm:top-3 sm:left-3 rounded-full border border-[#2d5a3d]/30 bg-[#f3ecdc]/80 px-2 sm:px-3 py-0.5 sm:py-1 text-[8px] sm:text-[10px] font-bold uppercase text-[#2d5a3d] backdrop-blur-sm">
-                            {type.label}
-                          </span>
-                        </div>
-                        <div className="p-3 sm:p-4">
-                          <h4 className="text-xs sm:text-sm font-bold text-[#1a3a2a] font-heading">{event.title}</h4>
-                          <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-[#5a7d6a] flex items-center gap-1">
-                            <Calendar size={10} /> {event.date}
-                          </p>
-                          {event.registerUrl && (
-                            <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="mt-2 sm:mt-3 inline-block">
-                              <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[10px] sm:text-[11px] py-1 sm:py-1.5 px-2.5 sm:px-3 font-semibold hover:bg-[#2d5a3d] transition-colors">Register ↗</button>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  {/* Scroll hint */}
-                  <p className="text-center text-[9px] sm:text-[10px] text-[#8a7a6a] mt-1">← Swipe to see more →</p>
-                </div>
+                <CategorySlider key={type.key} type={type} typeEvents={typeEvents} onEventClick={setSelectedEvent} />
               );
             })}
           </div>
