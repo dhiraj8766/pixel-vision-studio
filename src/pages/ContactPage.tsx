@@ -1,5 +1,6 @@
 import { Mail, MapPin, Phone, Instagram, Linkedin, Github, Twitter, Send } from "lucide-react";
 import { useState } from "react";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
