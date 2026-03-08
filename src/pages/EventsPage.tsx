@@ -166,6 +166,7 @@ const CategorySlider = ({ type, typeEvents, onEventClick }: { type: typeof event
 
 const EventsPage = () => {
   const [selectedEvent, setSelectedEvent] = useState<typeof allEvents[0] | null>(null);
+  const [showFullPoster, setShowFullPoster] = useState(false);
 
   const upcomingEvents = allEvents.filter((e) => e.status === "upcoming").sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const completedEvents = allEvents.filter((e) => e.status === "completed").sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
