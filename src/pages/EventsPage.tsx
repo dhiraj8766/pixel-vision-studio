@@ -142,27 +142,27 @@ const EventsPage = () => {
                   <div className="h-2 w-2 rounded-full bg-[#2d5a3d] animate-pulse" />
                   Upcoming
                 </h2>
-                <div className="relative border-l-2 border-[#2d5a3d]/30 ml-3 space-y-0">
+                <div className="relative border-l-2 border-[#2d5a3d]/30 ml-2 sm:ml-3 space-y-0">
                   {upcomingEvents.map((event, i) => {
                     const total = upcomingEvents.length;
                     const progress = ((i + 1) / total) * 100;
                     return (
-                      <div key={event.id} className="group relative pl-8 pb-6 cursor-pointer" onClick={() => setSelectedEvent(event)}>
+                      <div key={event.id} className="group relative pl-5 sm:pl-8 pb-4 sm:pb-6 cursor-pointer" onClick={() => setSelectedEvent(event)}>
                         <div className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full border-2 border-[#2d5a3d] bg-[#f3ecdc] group-hover:bg-[#2d5a3d] transition-colors" />
-                        <div className="flex items-center gap-4 rounded-xl border border-transparent p-3 transition-all hover:border-[#c4a97d]/40 hover:bg-[#ebe4d2]/60 active:bg-[#ebe4d2]/80">
+                        <div className="flex items-center gap-3 sm:gap-4 rounded-lg sm:rounded-xl border border-transparent p-2 sm:p-3 transition-all hover:border-[#c4a97d]/40 hover:bg-[#ebe4d2]/60 active:bg-[#ebe4d2]/80">
                           <div className="hidden md:block min-w-[90px]">
                             <span className="font-mono text-xs text-[#2d5a3d]">{event.date}</span>
                             <div className="mt-1 h-1 w-full rounded-full bg-[#c4a97d]/30 overflow-hidden">
                               <div className="h-full rounded-full bg-gradient-to-r from-[#2d5a3d] to-[#4a8c6a]" style={{ width: `${progress}%` }} />
                             </div>
                           </div>
-                          <div className="flex-1">
-                            <h3 className="text-base font-semibold text-[#1a3a2a] font-heading">{event.title}</h3>
-                            <p className="text-xs text-[#5a7d6a] mt-0.5 flex items-center gap-2">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-sm sm:text-base font-semibold text-[#1a3a2a] font-heading">{event.title}</h3>
+                            <p className="text-[10px] sm:text-xs text-[#5a7d6a] mt-0.5 flex items-center gap-1.5 sm:gap-2 flex-wrap">
                               <span className="flex items-center gap-1"><Clock size={10} /> {event.time}</span>
                               <span className="flex items-center gap-1"><MapPin size={10} /> {event.location}</span>
                             </p>
-                            <span className="md:hidden font-mono text-[10px] text-[#2d5a3d]">{event.date}</span>
+                            <span className="md:hidden font-mono text-[9px] sm:text-[10px] text-[#2d5a3d]">{event.date}</span>
                           </div>
                           {event.registerUrl && (
                             <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="hidden md:block">
