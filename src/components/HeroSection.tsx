@@ -61,7 +61,7 @@ const HeroSection = () => {
       }} />
 
       {/* Logo - top left */}
-      <div className="absolute top-5 left-4 sm:left-6 md:left-10 lg:left-16 z-20 flex items-center gap-2.5 md:hidden">
+      <div className="absolute top-5 left-4 sm:left-6 md:left-10 lg:left-16 z-20 flex items-center gap-2.5">
         <img src={picselLogo} alt="PICSEL" className="h-9 w-9 rounded-full border border-border/30 shadow-lg" />
         <div className="leading-none">
           <span className="block text-sm font-extrabold tracking-tight text-foreground font-heading">PICSEL</span>
