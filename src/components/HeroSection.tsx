@@ -22,6 +22,7 @@ const HeroSection = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeEventIndex, setActiveEventIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<typeof events[0] | null>(null);
 
   const nextImage = useCallback(() => {
     setIsTransitioning(true);
