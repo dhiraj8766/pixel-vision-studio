@@ -45,20 +45,35 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen px-4 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-12 md:px-10 md:pt-28 lg:px-16 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,20%,6%)] via-[hsl(260,25%,10%)] to-[hsl(240,20%,6%)]" />
-      
-      {/* Animated gradient orbs */}
-      <div className="absolute -top-20 -right-20 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] lg:w-[700px] lg:h-[700px] rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-gradient-to-br from-[hsl(350,80%,45%)] via-[hsl(340,70%,35%)] to-[hsl(330,60%,25%)] opacity-70 pointer-events-none animate-[float_20s_ease-in-out_infinite]" />
-      <div className="absolute -top-32 right-10 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[500px] lg:h-[500px] rounded-[60%_40%_30%_70%/50%_60%_40%_50%] bg-gradient-to-br from-[hsl(350,85%,55%)] to-[hsl(340,70%,30%)] opacity-40 pointer-events-none blur-sm animate-[float_15s_ease-in-out_infinite_reverse]" />
-      <div className="absolute -top-10 -left-10 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] rounded-[50%_50%_40%_60%/40%_60%_50%_50%] bg-gradient-to-br from-[hsl(270,60%,50%)] to-[hsl(290,50%,30%)] opacity-25 pointer-events-none animate-[float_18s_ease-in-out_infinite]" />
-      <div className="absolute bottom-[20%] left-[30%] w-[200px] h-[200px] lg:w-[400px] lg:h-[400px] rounded-full bg-[hsl(174,80%,40%)] opacity-[0.06] blur-[100px] pointer-events-none animate-[float_22s_ease-in-out_infinite_reverse]" />
-
-      {/* Dot pattern */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'radial-gradient(hsl(0 0% 100% / 0.06) 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
+      {/* Background — deep mesh gradient */}
+      <div className="absolute inset-0 bg-background" />
+      <div className="absolute inset-0 opacity-90" style={{
+        background: `
+          radial-gradient(ellipse 80% 60% at 10% 0%, hsl(var(--accent-cyan) / 0.12) 0%, transparent 60%),
+          radial-gradient(ellipse 70% 50% at 90% 10%, hsl(var(--accent-purple) / 0.15) 0%, transparent 55%),
+          radial-gradient(ellipse 50% 70% at 50% 100%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
+          radial-gradient(ellipse 60% 40% at 80% 80%, hsl(var(--accent-red) / 0.06) 0%, transparent 50%)
+        `
       }} />
+
+      {/* Floating aurora ribbons */}
+      <div className="absolute top-0 left-0 w-full h-[60%] overflow-hidden pointer-events-none">
+        <div className="absolute -top-[30%] left-[5%] w-[90%] h-[400px] sm:h-[500px] lg:h-[600px] rounded-full bg-gradient-to-r from-primary/10 via-accent-cyan/8 to-accent-purple/10 blur-[80px] sm:blur-[120px] animate-[float_25s_ease-in-out_infinite]" />
+        <div className="absolute top-[10%] -right-[10%] w-[60%] h-[300px] sm:h-[400px] rounded-full bg-gradient-to-l from-accent-purple/8 via-primary/6 to-transparent blur-[100px] animate-[float_18s_ease-in-out_infinite_reverse]" />
+      </div>
+
+      {/* Subtle grid overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{
+        backgroundImage: `
+          linear-gradient(hsl(var(--foreground)) 1px, transparent 1px),
+          linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)
+        `,
+        backgroundSize: '60px 60px',
+      }} />
+
+      {/* Corner glow accents */}
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-gradient-to-bl from-accent-cyan/8 to-transparent rounded-full blur-[60px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] bg-gradient-to-tr from-primary/6 to-transparent rounded-full blur-[80px] pointer-events-none" />
 
       {/* Logo - top left */}
       <div className="absolute top-5 left-4 sm:left-6 md:left-10 lg:left-16 z-20 flex items-center gap-2.5">

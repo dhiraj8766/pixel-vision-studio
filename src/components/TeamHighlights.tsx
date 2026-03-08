@@ -10,18 +10,18 @@ const teamHighlights = [
 
 const TeamHighlights = () => {
   return (
-    <section className="relative bg-background px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16 overflow-hidden">
-      <div className="absolute top-0 right-0 w-60 h-60 sm:w-96 sm:h-96 rounded-full bg-primary/3 blur-[150px] pointer-events-none" />
+    <section className="relative px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16 overflow-hidden" style={{ backgroundColor: 'hsl(var(--team-bg))' }}>
+      <div className="absolute top-0 right-0 w-60 h-60 sm:w-96 sm:h-96 rounded-full bg-primary/5 blur-[150px] pointer-events-none" />
       
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mb-8 sm:mb-12 text-center">
-          <span className="mb-3 sm:mb-4 inline-block rounded-full border border-border px-4 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[2px] sm:tracking-[3px] text-muted-foreground font-heading">
+          <span className="mb-3 sm:mb-4 inline-block rounded-full border border-background/20 px-4 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[2px] sm:tracking-[3px] text-background/50 font-heading">
             Our People
           </span>
-          <h2 className="font-heading text-2xl sm:text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
+          <h2 className="font-heading text-2xl sm:text-4xl font-bold text-background md:text-5xl lg:text-6xl">
             Meet the Team
           </h2>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-md text-sm sm:text-base text-muted-foreground">
+          <p className="mx-auto mt-3 sm:mt-4 max-w-md text-sm sm:text-base text-background/60">
             The passionate minds behind PICSEL Club.
           </p>
         </div>
@@ -30,9 +30,9 @@ const TeamHighlights = () => {
           {teamHighlights.map((member, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card p-4 sm:p-6 transition-all hover:border-primary/30 hover:shadow-glow"
+              className="group relative overflow-hidden rounded-xl sm:rounded-2xl border border-background/10 bg-background/80 p-4 sm:p-6 transition-all hover:border-primary/30 hover:shadow-glow"
             >
-              <div className="mx-auto mb-3 sm:mb-4 h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-muted md:h-24 md:w-24">
+              <div className="mx-auto mb-3 sm:mb-4 h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-background/20 bg-background md:h-24 md:w-24">
                 {member.image ? (
                   <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
                 ) : (
