@@ -1,5 +1,13 @@
 import { useState } from "react";
+import { Instagram, Linkedin, Github, Twitter } from "lucide-react";
 import ProfileModal from "@/components/ProfileModal";
+
+const socialIconMap: Record<string, any> = {
+  instagram: Instagram,
+  linkedin: Linkedin,
+  github: Github,
+  twitter: Twitter,
+};
 
 const teamData = {
   president: {
@@ -9,37 +17,59 @@ const teamData = {
     image: "",
     email: "alex.johnson@kdkce.edu",
     mobile: "+91 9876543210",
-    social: { instagram: "#", linkedin: "#", github: "#", twitter: "#" },
+    social: { instagram: "https://instagram.com/alexj", linkedin: "https://linkedin.com/in/alexj", github: "https://github.com/alexj", twitter: "https://twitter.com/alexj" },
   },
   vicePresidents: [
-    { name: "Priya Sharma", role: "Vice President", description: "Driving technical excellence and mentoring the next generation of developers.", image: "", email: "priya@kdkce.edu", social: { instagram: "#", linkedin: "#", github: "#" } },
-    { name: "Rahul Patel", role: "Technical Lead", description: "Full-stack developer and competitive programmer. Building tools that matter.", image: "", email: "rahul@kdkce.edu", social: { instagram: "#", linkedin: "#", github: "#" } },
-    { name: "Sneha Kulkarni", role: "Creative Head", description: "Designing experiences that inspire. UI/UX enthusiast and brand strategist.", image: "", email: "sneha@kdkce.edu", social: { instagram: "#", linkedin: "#" } },
-    { name: "Arjun Deshmukh", role: "Event Coordinator", description: "Orchestrating memorable events that bring the tech community together.", image: "", email: "arjun@kdkce.edu", social: { instagram: "#", linkedin: "#" } },
+    { name: "Priya Sharma", role: "Vice President", description: "Driving technical excellence and mentoring the next generation of developers.", image: "", email: "priya@kdkce.edu", social: { instagram: "https://instagram.com/priya", linkedin: "https://linkedin.com/in/priya", github: "https://github.com/priya" } },
+    { name: "Rahul Patel", role: "Technical Lead", description: "Full-stack developer and competitive programmer. Building tools that matter.", image: "", email: "rahul@kdkce.edu", social: { instagram: "https://instagram.com/rahul", linkedin: "https://linkedin.com/in/rahul", github: "https://github.com/rahul" } },
+    { name: "Sneha Kulkarni", role: "Creative Head", description: "Designing experiences that inspire. UI/UX enthusiast and brand strategist.", image: "", email: "sneha@kdkce.edu", social: { instagram: "https://instagram.com/sneha", linkedin: "https://linkedin.com/in/sneha", twitter: "https://twitter.com/sneha" } },
+    { name: "Arjun Deshmukh", role: "Event Coordinator", description: "Orchestrating memorable events that bring the tech community together.", image: "", email: "arjun@kdkce.edu", social: { instagram: "https://instagram.com/arjun", linkedin: "https://linkedin.com/in/arjun" } },
   ],
   members: [
-    { name: "Amit Singh", role: "Web Developer", description: "Frontend specialist building beautiful web experiences.", image: "", social: { github: "#", linkedin: "#" } },
-    { name: "Kavya Reddy", role: "Content Writer", description: "Crafting compelling stories for the PICSEL community.", image: "", social: { linkedin: "#", instagram: "#" } },
-    { name: "Rohan Joshi", role: "App Developer", description: "Mobile app developer with a passion for Flutter.", image: "", social: { github: "#" } },
-    { name: "Meera Nair", role: "Social Media", description: "Managing the club's digital presence across platforms.", image: "", social: { instagram: "#" } },
-    { name: "Vikram Iyer", role: "UI Designer", description: "Creating pixel-perfect designs and brand identity.", image: "", social: { linkedin: "#" } },
-    { name: "Ananya Gupta", role: "ML Engineer", description: "Exploring AI/ML and building intelligent solutions.", image: "", social: { github: "#" } },
-    { name: "Dev Patil", role: "Backend Dev", description: "Building scalable backend systems and APIs.", image: "", social: { github: "#" } },
-    { name: "Riya Desai", role: "Video Editor", description: "Creating engaging video content for events.", image: "", social: { instagram: "#" } },
-    { name: "Karthik Menon", role: "Photographer", description: "Capturing moments that tell our story.", image: "", social: { instagram: "#" } },
-    { name: "Neha Verma", role: "PR Head", description: "Building relationships and partnerships.", image: "", social: { linkedin: "#" } },
-    { name: "Siddharth Rao", role: "Cloud Dev", description: "AWS & cloud infrastructure specialist.", image: "", social: { github: "#" } },
-    { name: "Pooja Bhatt", role: "Data Analyst", description: "Turning data into actionable insights.", image: "", social: { linkedin: "#" } },
+    { name: "Amit Singh", role: "Web Developer", description: "Frontend specialist building beautiful web experiences.", image: "", social: { github: "https://github.com/amit", linkedin: "https://linkedin.com/in/amit", instagram: "https://instagram.com/amit" } },
+    { name: "Kavya Reddy", role: "Content Writer", description: "Crafting compelling stories for the PICSEL community.", image: "", social: { linkedin: "https://linkedin.com/in/kavya", instagram: "https://instagram.com/kavya", twitter: "https://twitter.com/kavya" } },
+    { name: "Rohan Joshi", role: "App Developer", description: "Mobile app developer with a passion for Flutter.", image: "", social: { github: "https://github.com/rohan", linkedin: "https://linkedin.com/in/rohan", instagram: "https://instagram.com/rohan" } },
+    { name: "Meera Nair", role: "Social Media", description: "Managing the club's digital presence across platforms.", image: "", social: { instagram: "https://instagram.com/meera", linkedin: "https://linkedin.com/in/meera", twitter: "https://twitter.com/meera" } },
+    { name: "Vikram Iyer", role: "UI Designer", description: "Creating pixel-perfect designs and brand identity.", image: "", social: { linkedin: "https://linkedin.com/in/vikram", instagram: "https://instagram.com/vikram", github: "https://github.com/vikram" } },
+    { name: "Ananya Gupta", role: "ML Engineer", description: "Exploring AI/ML and building intelligent solutions.", image: "", social: { github: "https://github.com/ananya", linkedin: "https://linkedin.com/in/ananya", instagram: "https://instagram.com/ananya" } },
+    { name: "Dev Patil", role: "Backend Dev", description: "Building scalable backend systems and APIs.", image: "", social: { github: "https://github.com/dev", linkedin: "https://linkedin.com/in/dev", instagram: "https://instagram.com/dev" } },
+    { name: "Riya Desai", role: "Video Editor", description: "Creating engaging video content for events.", image: "", social: { instagram: "https://instagram.com/riya", linkedin: "https://linkedin.com/in/riya" } },
+    { name: "Karthik Menon", role: "Photographer", description: "Capturing moments that tell our story.", image: "", social: { instagram: "https://instagram.com/karthik", linkedin: "https://linkedin.com/in/karthik" } },
+    { name: "Neha Verma", role: "PR Head", description: "Building relationships and partnerships.", image: "", social: { linkedin: "https://linkedin.com/in/neha", instagram: "https://instagram.com/neha", twitter: "https://twitter.com/neha" } },
+    { name: "Siddharth Rao", role: "Cloud Dev", description: "AWS & cloud infrastructure specialist.", image: "", social: { github: "https://github.com/siddharth", linkedin: "https://linkedin.com/in/siddharth", instagram: "https://instagram.com/siddharth" } },
+    { name: "Pooja Bhatt", role: "Data Analyst", description: "Turning data into actionable insights.", image: "", social: { linkedin: "https://linkedin.com/in/pooja", github: "https://github.com/pooja", instagram: "https://instagram.com/pooja" } },
   ],
 };
+
+const SocialRow = ({ social }: { social: Record<string, string> }) => (
+  <div className="flex items-center justify-center gap-2 mt-2">
+    {Object.entries(social).map(([key, url]) => {
+      const Icon = socialIconMap[key.toLowerCase()];
+      if (!Icon || !url) return null;
+      return (
+        <a
+          key={key}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary"
+        >
+          <Icon size={13} />
+        </a>
+      );
+    })}
+  </div>
+);
 
 const TeamPage = () => {
   const { president, vicePresidents, members } = teamData;
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
 
   return (
-    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16">
-      <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
+    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-geo-pattern">
+      <div className="absolute inset-0 bg-hex-pattern pointer-events-none" />
+      <div className="absolute inset-0 bg-abstract-lines pointer-events-none" />
       
       <div className="relative z-10">
         {/* Header */}
@@ -73,6 +103,7 @@ const TeamPage = () => {
                 </span>
                 <h2 className="mt-2 font-heading text-3xl text-foreground md:text-4xl font-bold">{president.name}</h2>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{president.description}</p>
+                <SocialRow social={president.social} />
                 <p className="mt-2 text-xs text-primary">Click to view full profile →</p>
               </div>
             </div>
@@ -101,6 +132,7 @@ const TeamPage = () => {
                 <h3 className="text-center text-sm font-bold text-foreground">{member.name}</h3>
                 <p className="text-center text-xs font-medium text-primary mt-1">{member.role}</p>
                 <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground line-clamp-2 hidden md:block">{member.description}</p>
+                <SocialRow social={member.social} />
               </div>
             ))}
           </div>
@@ -127,13 +159,13 @@ const TeamPage = () => {
                 </div>
                 <h4 className="text-center text-xs font-semibold text-foreground">{member.name}</h4>
                 <p className="text-center text-[10px] text-primary mt-0.5">{member.role}</p>
+                <SocialRow social={member.social} />
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Profile Modal */}
       <ProfileModal profile={selectedProfile} onClose={() => setSelectedProfile(null)} />
     </div>
   );

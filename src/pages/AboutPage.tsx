@@ -25,8 +25,9 @@ const values = [
 
 const AboutPage = () => {
   return (
-    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16">
-      <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
+    <div className="relative min-h-screen bg-background pb-mobile-nav pt-20 md:pt-24 px-4 md:px-8 lg:px-16 bg-geo-pattern">
+      <div className="absolute inset-0 bg-cross-pattern pointer-events-none" />
+      <div className="absolute inset-0 bg-abstract-lines pointer-events-none" />
       
       <div className="relative z-10">
         {/* Hero */}
