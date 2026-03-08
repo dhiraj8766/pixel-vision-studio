@@ -124,9 +124,9 @@ const EventsPage = () => {
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="mb-8 border-b border-[#c4a97d]/30 pb-6">
-          <span className="block text-xs font-semibold uppercase tracking-[3px] text-[#2d5a3d] mb-2 font-heading">Schedule</span>
-          <h1 className="font-heading text-4xl font-bold text-[#1a3a2a] md:text-5xl">
+        <div className="mb-6 sm:mb-8 border-b border-[#c4a97d]/30 pb-4 sm:pb-6">
+          <span className="block text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-[#2d5a3d] mb-1.5 sm:mb-2 font-heading">Schedule</span>
+          <h1 className="font-heading text-2xl sm:text-4xl font-bold text-[#1a3a2a] md:text-5xl">
             Upcoming & Past Events
           </h1>
         </div>
