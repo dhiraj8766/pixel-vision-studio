@@ -123,8 +123,8 @@ const HeroSection = () => {
           </div>
 
           {/* Right: Creative Stacked Image Gallery */}
-          <div className="relative animate-[slideInRight_0.8s_ease-out]">
-            <div className="relative h-[300px] sm:h-[400px] lg:h-[480px] w-full">
+          <div className="relative animate-[slideInRight_0.8s_ease-out] overflow-hidden">
+            <div className="relative h-[300px] sm:h-[400px] lg:h-[480px] w-full mx-1 sm:mx-0">
               {/* Background card stack effect */}
               {heroImages.map((img, index) => {
                 const isActive = index === activeImageIndex;
