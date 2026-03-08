@@ -34,11 +34,9 @@ const VisionSection = () => {
           {visionData.map((item, index) => (
             <div
               key={item.id}
-              className="sticky mb-[4vh] sm:mb-[6vh] overflow-hidden rounded-2xl sm:rounded-card border border-border bg-card shadow-card"
+              className="sticky mb-[4vh] sm:mb-[6vh] overflow-hidden rounded-2xl sm:rounded-card border border-border bg-card shadow-card sm:[height:70vh]"
               style={{
                 top: `calc(12vh + ${index * 24}px)`,
-                height: window.innerWidth < 640 ? "auto" : "70vh",
-                minHeight: window.innerWidth < 640 ? "auto" : undefined,
               }}
             >
               <div className="grid h-full grid-cols-1 md:grid-cols-[45%_55%]">
