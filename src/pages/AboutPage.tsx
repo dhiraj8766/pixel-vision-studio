@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Users, Calendar, Award, Code2 } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 const stats = [
   { value: "500+", label: "Members", icon: Users },
