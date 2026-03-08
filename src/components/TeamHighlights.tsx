@@ -10,7 +10,7 @@ const teamHighlights = [
 
 const TeamHighlights = () => {
   return (
-    <section className="relative bg-background px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16 overflow-hidden">
+    <section className="relative px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16 overflow-hidden" style={{ backgroundColor: 'hsl(var(--team-bg))' }}>
       <div className="absolute top-0 right-0 w-60 h-60 sm:w-96 sm:h-96 rounded-full bg-primary/3 blur-[150px] pointer-events-none" />
       
       <div className="relative z-10 mx-auto max-w-6xl">
