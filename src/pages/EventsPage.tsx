@@ -24,27 +24,32 @@ const eventTypes = [
 ];
 
 // Simple calendar component
-const MiniCalendar = ({ events: calEvents }: { events: typeof allEvents }) => {
+const MiniCalendar = ({ events: calEvents, onEventClick }: { events: typeof allEvents; onEventClick: (event: typeof allEvents[0]) => void }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 2)); // March 2026
+  const [hoveredDay, setHoveredDay] = useState<number | null>(null);
 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
   const monthName = currentMonth.toLocaleString("default", { month: "long", year: "numeric" });
 
-  const eventDates = useMemo(() => {
-    const dates = new Set<number>();
+  const eventsByDate = useMemo(() => {
+    const map = new Map<number, typeof allEvents>();
     calEvents.forEach(e => {
       const d = new Date(e.date);
       if (d.getMonth() === currentMonth.getMonth() && d.getFullYear() === currentMonth.getFullYear()) {
-        dates.add(d.getDate());
+        const day = d.getDate();
+        if (!map.has(day)) map.set(day, []);
+        map.get(day)!.push(e);
       }
     });
-    return dates;
+    return map;
   }, [calEvents, currentMonth]);
 
-  const days = [];
+  const days: (number | null)[] = [];
   for (let i = 0; i < firstDay; i++) days.push(null);
   for (let i = 1; i <= daysInMonth; i++) days.push(i);
+
+  const hoveredEvents = hoveredDay !== null ? eventsByDate.get(hoveredDay) : null;
 
   return (
     <div className="rounded-2xl border border-[#c4a97d]/30 bg-[#ebe4d2]/70 p-5">
@@ -61,23 +66,45 @@ const MiniCalendar = ({ events: calEvents }: { events: typeof allEvents }) => {
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
           <div key={d} className="text-[10px] font-bold text-[#8a7a6a] py-1">{d}</div>
         ))}
-        {days.map((day, i) => (
-          <div
-            key={i}
-            className={`h-8 w-8 mx-auto flex items-center justify-center rounded-lg text-xs transition-colors ${
-              day === null ? "" :
-              eventDates.has(day)
-                ? "bg-[#2d5a3d]/15 text-[#2d5a3d] font-bold border border-[#2d5a3d]/30"
-                : "text-[#5a7d6a] hover:bg-[#c4a97d]/20"
-            }`}
-          >
-            {day}
-          </div>
-        ))}
+        {days.map((day, i) => {
+          const hasEvent = day !== null && eventsByDate.has(day);
+          return (
+            <div
+              key={i}
+              className={`relative h-8 w-8 mx-auto flex items-center justify-center rounded-lg text-xs transition-colors ${
+                day === null ? "" :
+                hasEvent
+                  ? "bg-[#2d5a3d]/15 text-[#2d5a3d] font-bold border border-[#2d5a3d]/30 cursor-pointer hover:bg-[#2d5a3d]/30"
+                  : "text-[#5a7d6a] hover:bg-[#c4a97d]/20"
+              }`}
+              onMouseEnter={() => hasEvent && setHoveredDay(day)}
+              onMouseLeave={() => setHoveredDay(null)}
+              onClick={() => {
+                if (hasEvent && day !== null) {
+                  onEventClick(eventsByDate.get(day)![0]);
+                }
+              }}
+            >
+              {day}
+              {/* Hover tooltip */}
+              {hasEvent && hoveredDay === day && (
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 w-44 rounded-lg bg-[#1a3a2a] text-[#f3ecdc] p-2.5 shadow-lg pointer-events-none animate-[fadeIn_0.15s_ease-out]">
+                  {eventsByDate.get(day)!.map(ev => (
+                    <div key={ev.id} className="mb-1 last:mb-0">
+                      <p className="text-[11px] font-semibold truncate">{ev.title}</p>
+                      <p className="text-[9px] opacity-70">{ev.time} · {ev.location}</p>
+                    </div>
+                  ))}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[#1a3a2a]" />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="mt-3 flex items-center gap-2 text-[10px] text-[#8a7a6a]">
         <div className="h-2 w-2 rounded-full bg-[#2d5a3d]/40" />
-        <span>Event scheduled</span>
+        <span>Click event date for details</span>
       </div>
     </div>
   );
