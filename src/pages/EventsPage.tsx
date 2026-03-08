@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Clock, MapPin, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Clock, MapPin, ArrowRight, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import hero1 from "@/assets/heroimg/hero1.jpg";
 import hero2 from "@/assets/heroimg/hero2.jpg";
 import hero3 from "@/assets/heroimg/hero3.jpg";
