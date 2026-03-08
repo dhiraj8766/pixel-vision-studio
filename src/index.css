@@ -87,7 +87,7 @@
   }
 }
 
-/* ============ BACKGROUND PATTERN ============ */
+/* ============ BACKGROUND PATTERNS ============ */
 .bg-grid-pattern {
   background-image: 
     linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
@@ -98,6 +98,123 @@
 .bg-dot-pattern {
   background-image: radial-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+/* Geometric circles + floating shapes */
+.bg-geo-pattern {
+  position: relative;
+  overflow: hidden;
+}
+.bg-geo-pattern::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-geo-pattern::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  left: -8%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--accent-purple) / 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Abstract diagonal stripes */
+.bg-abstract-lines {
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 80px,
+      hsl(var(--border) / 0.08) 80px,
+      hsl(var(--border) / 0.08) 81px
+    );
+}
+
+/* Hexagonal / honeycomb pattern */
+.bg-hex-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50V16l28-16 28 16v34L28 66zm0-2l26-15V18L28 4 2 18v31l26 15z' fill='%23ffffff' fill-opacity='0.02'/%3E%3C/svg%3E");
+}
+
+/* Events-specific cosmic/nebula background */
+.bg-events-cosmic {
+  position: relative;
+  overflow: hidden;
+}
+.bg-events-cosmic::before {
+  content: '';
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    hsl(var(--primary) / 0.08) 0%,
+    hsl(var(--accent-purple) / 0.04) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  animation: float 20s ease-in-out infinite;
+}
+.bg-events-cosmic::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  right: -5%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--accent-cyan) / 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: float 15s ease-in-out infinite reverse;
+}
+
+/* Cross/plus pattern */
+.bg-cross-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 18h-2v-2h2v2zm0 6h-2v-2h2v2z' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* Decorative floating orbs for specific sections */
+.bg-orbs {
+  position: relative;
+}
+.bg-orbs .orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-orbs .orb-1 {
+  top: 10%;
+  right: 5%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, hsl(var(--accent-yellow) / 0.04), transparent 70%);
+  animation: float 18s ease-in-out infinite;
+}
+.bg-orbs .orb-2 {
+  bottom: 20%;
+  left: 3%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.06), transparent 70%);
+  animation: float 22s ease-in-out infinite reverse;
 }
 
 .bg-noise {

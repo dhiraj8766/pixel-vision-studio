@@ -5,7 +5,7 @@ import SponsorsSection from "@/components/SponsorsSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground pb-mobile-nav">
+    <div className="min-h-screen bg-background text-foreground pb-mobile-nav bg-geo-pattern">
       <HeroSection />
       <VisionSection />
       <TeamHighlights />
