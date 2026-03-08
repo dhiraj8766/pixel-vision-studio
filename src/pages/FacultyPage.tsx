@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { GraduationCap, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import ProfileModal from "@/components/ProfileModal";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const facultyData = [
@@ -30,96 +31,75 @@ const facultyData = [
   },
 ];
 
-const cardAccents = [
-  { gradient: "from-[hsl(43,96%,56%)] to-[hsl(25,95%,55%)]", glow: "hsl(43,96%,56%,0.15)", text: "text-[hsl(43,96%,56%)]", border: "border-[hsl(43,96%,56%,0.25)]" },
-  { gradient: "from-[hsl(174,72%,40%)] to-[hsl(142,70%,55%)]", glow: "hsl(174,72%,40%,0.15)", text: "text-[hsl(174,72%,50%)]", border: "border-[hsl(174,72%,40%,0.25)]" },
-  { gradient: "from-[hsl(270,70%,60%)] to-[hsl(330,80%,60%)]", glow: "hsl(270,70%,60%,0.15)", text: "text-[hsl(270,70%,65%)]", border: "border-[hsl(270,70%,60%,0.25)]" },
-  { gradient: "from-[hsl(350,84%,60%)] to-[hsl(25,95%,55%)]", glow: "hsl(350,84%,60%,0.15)", text: "text-[hsl(350,84%,65%)]", border: "border-[hsl(350,84%,60%,0.25)]" },
-];
-
 const FacultyPage = () => {
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
 
   return (
-    <div className="relative min-h-screen pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16 overflow-hidden"
-      style={{ background: "linear-gradient(160deg, hsl(220, 25%, 6%) 0%, hsl(230, 22%, 10%) 50%, hsl(240, 20%, 8%) 100%)" }}
-    >
-      {/* Decorative orbs */}
-      <div className="absolute top-[8%] left-[15%] w-[350px] h-[350px] rounded-full pointer-events-none z-0 blur-[120px]" style={{ background: "radial-gradient(circle, hsl(43, 96%, 56%, 0.1), transparent 70%)" }} />
-      <div className="absolute bottom-[15%] right-[10%] w-[300px] h-[300px] rounded-full pointer-events-none z-0 blur-[100px]" style={{ background: "radial-gradient(circle, hsl(174, 72%, 40%, 0.08), transparent 70%)" }} />
+    <div className="relative min-h-screen bg-background pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16">
+      <AnimatedBackground />
+      <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
 
       <div className="relative z-10">
         {/* Header */}
         <ScrollReveal direction="up" scale>
-          <div className="mb-10 sm:mb-14 text-center">
-            <div className="inline-flex items-center gap-2 mb-3 sm:mb-4 rounded-full border border-[hsl(43,96%,56%,0.3)] bg-[hsl(43,96%,56%,0.08)] px-4 sm:px-5 py-1.5 sm:py-2">
-              <GraduationCap size={14} className="text-[hsl(43,96%,56%)]" />
-              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-[hsl(43,96%,56%)] font-heading">Mentors</span>
-            </div>
-            <h1 className="font-heading text-3xl sm:text-5xl font-bold text-[hsl(0,0%,95%)] md:text-6xl lg:text-7xl">
-              Our <span className="bg-gradient-to-r from-[hsl(43,96%,56%)] via-[hsl(25,95%,55%)] to-[hsl(350,84%,60%)] bg-clip-text text-transparent">Faculty</span>
-            </h1>
-            <p className="mx-auto mt-3 sm:mt-4 max-w-lg text-sm sm:text-base text-[hsl(230,15%,50%)]">Guiding and inspiring the next generation of engineers.</p>
+          <div className="mb-8 sm:mb-12 text-center">
+            <span className="mb-3 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[3px] text-primary font-heading">Mentors</span>
+            <h1 className="font-heading text-3xl sm:text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">Our Faculty</h1>
+            <p className="mx-auto mt-2 sm:mt-3 max-w-md text-sm sm:text-base text-muted-foreground">Guiding and inspiring the next generation of engineers.</p>
           </div>
         </ScrollReveal>
 
-        {/* Faculty Cards */}
-        <div className="mx-auto max-w-5xl grid gap-4 sm:gap-6 md:grid-cols-2">
-          {facultyData.map((faculty, index) => {
-            const accent = cardAccents[index % cardAccents.length];
-            return (
-              <ScrollReveal key={index} delay={index * 100} direction="up">
-                <div
-                  onClick={() => setSelectedProfile(faculty)}
-                  className={`group overflow-hidden rounded-xl sm:rounded-2xl border ${accent.border} bg-[hsl(230,20%,10%)] transition-all hover:shadow-[0_0_50px_var(--glow)] cursor-pointer active:scale-[0.99]`}
-                  style={{ "--glow": accent.glow } as React.CSSProperties}
-                >
-                  {/* Top accent bar */}
-                  <div className={`h-1 w-full bg-gradient-to-r ${accent.gradient}`} />
-                  
-                  <div className="flex flex-col sm:flex-row">
-                    {/* Avatar */}
-                    <div className="flex items-center justify-center p-5 sm:p-8 sm:w-44 sm:flex-shrink-0">
-                      <div className={`h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-2xl border-2 ${accent.border} bg-[hsl(230,20%,14%)] shadow-[0_0_30px_var(--glow)] transition-transform group-hover:scale-105`} style={{ "--glow": accent.glow } as React.CSSProperties}>
-                        {faculty.image ? (
-                          <img src={faculty.image} alt={faculty.name} className="h-full w-full object-cover" loading="lazy" />
-                        ) : (
-                          <div className={`flex h-full w-full items-center justify-center text-xl sm:text-2xl font-bold font-heading ${accent.text}`}>
-                            {faculty.name.split(" ").map(n => n.charAt(0)).join("")}
-                          </div>
-                        )}
-                      </div>
+        {/* Faculty Grid */}
+        <div className="mx-auto max-w-5xl grid gap-4 sm:gap-5 md:grid-cols-2">
+          {facultyData.map((faculty, index) => (
+            <ScrollReveal key={index} delay={index * 100} direction="up">
+              <div
+                onClick={() => setSelectedProfile(faculty)}
+                className="group overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/25 hover:shadow-glow cursor-pointer active:scale-[0.99]"
+              >
+                <div className="h-1 w-full bg-gradient-to-r from-primary to-accent-cyan" />
+                <div className="flex flex-col sm:flex-row">
+                  {/* Avatar */}
+                  <div className="flex items-center justify-center p-5 sm:p-6 sm:w-40 sm:flex-shrink-0">
+                    <div className="h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-full border-2 border-primary/20 bg-muted">
+                      {faculty.image ? (
+                        <img src={faculty.image} alt={faculty.name} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xl sm:text-2xl font-bold text-primary font-heading bg-primary/5">
+                          {faculty.name.split(" ").map(n => n.charAt(0)).join("")}
+                        </div>
+                      )}
                     </div>
+                  </div>
 
-                    {/* Info */}
-                    <div className="flex-1 p-4 sm:p-6 pt-0 sm:pt-6">
-                      <span className={`inline-block rounded-full bg-gradient-to-r ${accent.gradient} px-2.5 sm:px-3 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[hsl(0,0%,5%)] mb-1.5 sm:mb-2`}>
-                        {faculty.role}
-                      </span>
-                      <h3 className="text-base sm:text-xl font-bold text-[hsl(0,0%,93%)] font-heading">{faculty.name}</h3>
-                      <p className="text-[10px] sm:text-xs text-[hsl(230,15%,50%)] mt-0.5 sm:mt-1">{faculty.department}</p>
-                      <p className={`text-[10px] sm:text-xs mt-0.5 ${accent.text}`}>{faculty.specialization}</p>
-                      <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-[hsl(230,15%,50%)] line-clamp-2">{faculty.description}</p>
-                      
-                      {/* Quick contact */}
-                      <div className="mt-3 flex items-center gap-3 flex-wrap">
-                        {faculty.email && (
-                          <a href={`mailto:${faculty.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-[hsl(230,15%,45%)] hover:text-[hsl(174,72%,50%)] transition-colors">
-                            <Mail size={11} /> Email
-                          </a>
-                        )}
-                        {faculty.mobile && (
-                          <a href={`tel:${faculty.mobile}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-[hsl(230,15%,45%)] hover:text-[hsl(174,72%,50%)] transition-colors">
-                            <Phone size={11} /> Call
-                          </a>
-                        )}
-                      </div>
+                  {/* Info */}
+                  <div className="flex-1 p-4 sm:p-5 pt-0 sm:pt-5">
+                    <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">
+                      {faculty.role}
+                    </span>
+                    <h3 className="text-base sm:text-lg font-bold text-foreground font-heading">{faculty.name}</h3>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{faculty.department}</p>
+                    <p className="text-[10px] sm:text-xs text-accent-yellow mt-0.5">{faculty.specialization}</p>
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-2">{faculty.description}</p>
+
+                    {/* Contact */}
+                    <div className="mt-3 flex items-center gap-3 flex-wrap">
+                      {faculty.email && (
+                        <a href={`mailto:${faculty.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+                          <Mail size={11} /> Email
+                        </a>
+                      )}
+                      {faculty.mobile && (
+                        <a href={`tel:${faculty.mobile}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+                          <Phone size={11} /> Call
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
-              </ScrollReveal>
-            );
-          })}
+              </div>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
 
