@@ -15,7 +15,7 @@ const TeamHighlights = () => {
       
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mb-8 sm:mb-12 text-center">
-          <span className="mb-3 sm:mb-4 inline-block rounded-full border border-border px-4 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[2px] sm:tracking-[3px] text-muted-foreground font-heading">
+          <span className="mb-3 sm:mb-4 inline-block rounded-full border border-background/20 px-4 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[2px] sm:tracking-[3px] text-background/50 font-heading">
             Our People
           </span>
           <h2 className="font-heading text-2xl sm:text-4xl font-bold text-background md:text-5xl lg:text-6xl">
