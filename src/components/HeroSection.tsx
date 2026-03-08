@@ -1,11 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
+import picselLogo from "@/assets/picsel-logo.png";
 import hero1 from "@/assets/heroimg/hero1.jpg";
 import hero2 from "@/assets/heroimg/hero2.jpg";
 import hero3 from "@/assets/heroimg/hero3.jpg";
 
-const heroImages = [hero1, hero2, hero3];
+const heroImages = [
+  { src: hero1, label: "Gaming" },
+  { src: hero2, label: "Hackathon" },
+  { src: hero3, label: "Tech Talks" },
+];
 
 const events = [
   { id: 1, title: "FNDS", description: "A competitive gaming tournament bringing together the best players.", date: "2026-03-22", time: "14:00", coverImage: hero1, registerUrl: "#" },
@@ -16,11 +21,20 @@ const events = [
 const HeroSection = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeEventIndex, setActiveEventIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const nextImage = useCallback(() => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActiveImageIndex((prev) => (prev + 1) % heroImages.length);
+      setIsTransitioning(false);
+    }, 400);
+  }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => setActiveImageIndex((prev) => (prev + 1) % heroImages.length), 4000);
+    const interval = setInterval(nextImage, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [nextImage]);
 
   useEffect(() => {
     const interval = setInterval(() => setActiveEventIndex((prev) => (prev + 1) % events.length), 5000);
@@ -31,29 +45,33 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen px-4 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-12 md:px-10 md:pt-28 lg:px-16 overflow-hidden">
-      {/* Abstract background */}
+      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[hsl(240,20%,6%)] via-[hsl(260,25%,10%)] to-[hsl(240,20%,6%)]" />
       
-      {/* Large red/crimson abstract shape - scaled down on mobile */}
-      <div className="absolute -top-20 -right-20 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] lg:w-[700px] lg:h-[700px] rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-gradient-to-br from-[hsl(350,80%,45%)] via-[hsl(340,70%,35%)] to-[hsl(330,60%,25%)] opacity-70 pointer-events-none" />
-      <div className="absolute -top-32 right-10 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[500px] lg:h-[500px] rounded-[60%_40%_30%_70%/50%_60%_40%_50%] bg-gradient-to-br from-[hsl(350,85%,55%)] to-[hsl(340,70%,30%)] opacity-40 pointer-events-none blur-sm" />
-      
-      {/* Pink/rose accent */}
-      <div className="absolute -top-10 -left-10 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] rounded-[50%_50%_40%_60%/40%_60%_50%_50%] bg-gradient-to-br from-[hsl(340,60%,55%)] to-[hsl(350,50%,30%)] opacity-30 pointer-events-none" />
-      
-      {/* Dot pattern overlay */}
+      {/* Animated gradient orbs */}
+      <div className="absolute -top-20 -right-20 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] lg:w-[700px] lg:h-[700px] rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-gradient-to-br from-[hsl(350,80%,45%)] via-[hsl(340,70%,35%)] to-[hsl(330,60%,25%)] opacity-70 pointer-events-none animate-[float_20s_ease-in-out_infinite]" />
+      <div className="absolute -top-32 right-10 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[500px] lg:h-[500px] rounded-[60%_40%_30%_70%/50%_60%_40%_50%] bg-gradient-to-br from-[hsl(350,85%,55%)] to-[hsl(340,70%,30%)] opacity-40 pointer-events-none blur-sm animate-[float_15s_ease-in-out_infinite_reverse]" />
+      <div className="absolute -top-10 -left-10 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] rounded-[50%_50%_40%_60%/40%_60%_50%_50%] bg-gradient-to-br from-[hsl(270,60%,50%)] to-[hsl(290,50%,30%)] opacity-25 pointer-events-none animate-[float_18s_ease-in-out_infinite]" />
+      <div className="absolute bottom-[20%] left-[30%] w-[200px] h-[200px] lg:w-[400px] lg:h-[400px] rounded-full bg-[hsl(174,80%,40%)] opacity-[0.06] blur-[100px] pointer-events-none animate-[float_22s_ease-in-out_infinite_reverse]" />
+
+      {/* Dot pattern */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'radial-gradient(hsl(0 0% 100% / 0.08) 1px, transparent 1px)',
-        backgroundSize: '20px 20px',
+        backgroundImage: 'radial-gradient(hsl(0 0% 100% / 0.06) 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
       }} />
-      
-      {/* Subtle glows */}
-      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] rounded-full bg-[hsl(270,60%,40%)] opacity-[0.07] blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-40 right-20 w-48 h-48 lg:w-72 lg:h-72 rounded-full bg-[hsl(174,80%,40%)] opacity-[0.06] blur-[100px] pointer-events-none" />
+
+      {/* Logo - top left */}
+      <div className="absolute top-5 left-4 sm:left-6 md:left-10 lg:left-16 z-20 flex items-center gap-2.5 md:hidden">
+        <img src={picselLogo} alt="PICSEL" className="h-9 w-9 rounded-full border border-border/30 shadow-lg" />
+        <div className="leading-none">
+          <span className="block text-sm font-extrabold tracking-tight text-foreground font-heading">PICSEL</span>
+          <span className="block text-[8px] font-medium uppercase tracking-[2px] text-muted-foreground">KDKCE</span>
+        </div>
+      </div>
 
       <div className="relative z-10">
-        {/* Top: Title + Images */}
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center mb-10 sm:mb-16">
+        {/* Top: Title + Creative Image Gallery */}
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center mb-10 sm:mb-16">
           <div className="animate-[fadeIn_0.8s_ease-out]">
             <h1 className="font-heading text-3xl font-bold leading-[1.1] tracking-tight text-hero-muted sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               Learn teamwork
@@ -88,33 +106,100 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right: Swapping Images */}
+          {/* Right: Creative Stacked Image Gallery */}
           <div className="relative animate-[slideInRight_0.8s_ease-out]">
-            <div className="relative aspect-[4/3] sm:aspect-square max-h-[350px] sm:max-h-[450px] lg:max-h-[500px] w-full overflow-hidden rounded-xl sm:rounded-2xl shadow-glow border border-border/30">
-              {heroImages.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`PICSEL activity ${index + 1}`}
-                  className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
-                  style={{ opacity: index === activeImageIndex ? 1 : 0 }}
-                  loading={index === 0 ? "eager" : "lazy"}
-                />
-              ))}
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            <div className="relative h-[300px] sm:h-[400px] lg:h-[480px] w-full">
+              {/* Background card stack effect */}
+              {heroImages.map((img, index) => {
+                const isActive = index === activeImageIndex;
+                const isPrev = index === (activeImageIndex - 1 + heroImages.length) % heroImages.length;
+                const isNext = index === (activeImageIndex + 1) % heroImages.length;
+                
+                let transform = "scale(0.85) translateY(20px)";
+                let opacity = 0;
+                let zIndex = 0;
+
+                if (isActive) {
+                  transform = isTransitioning ? "scale(0.95) translateY(10px)" : "scale(1) translateY(0px)";
+                  opacity = isTransitioning ? 0.5 : 1;
+                  zIndex = 3;
+                } else if (isNext) {
+                  transform = "scale(0.92) translateX(20px) translateY(10px) rotate(3deg)";
+                  opacity = 0.4;
+                  zIndex = 2;
+                } else if (isPrev) {
+                  transform = "scale(0.92) translateX(-20px) translateY(10px) rotate(-3deg)";
+                  opacity = 0.3;
+                  zIndex = 1;
+                }
+
+                return (
+                  <div
+                    key={index}
+                    className="absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/20 cursor-pointer"
+                    style={{
+                      transform,
+                      opacity,
+                      zIndex,
+                      transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+                      boxShadow: isActive ? "0 25px 60px -15px rgba(0,0,0,0.5), 0 0 40px -10px hsla(350, 80%, 50%, 0.15)" : "none",
+                    }}
+                    onClick={() => {
+                      setIsTransitioning(true);
+                      setTimeout(() => {
+                        setActiveImageIndex(index);
+                        setIsTransitioning(false);
+                      }, 300);
+                    }}
+                  >
+                    <img
+                      src={img.src}
+                      alt={img.label}
+                      className="h-full w-full object-cover"
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    
+                    {/* Label overlay on active */}
+                    {isActive && !isTransitioning && (
+                      <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 animate-[fadeIn_0.5s_ease-out]">
+                        <span className="inline-block rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 px-3 py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-primary">
+                          {img.label}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Decorative frame accent */}
+              <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-24 h-24 sm:w-32 sm:h-32 border-t-2 border-r-2 border-primary/30 rounded-tr-3xl pointer-events-none z-10" />
+              <div className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 w-24 h-24 sm:w-32 sm:h-32 border-b-2 border-l-2 border-accent-cyan/30 rounded-bl-3xl pointer-events-none z-10" />
             </div>
 
-            {/* Dots */}
-            <div className="mt-3 sm:mt-4 flex justify-center gap-2">
-              {heroImages.map((_, index) => (
+            {/* Image selector pills */}
+            <div className="mt-4 sm:mt-6 flex justify-center gap-2 sm:gap-3">
+              {heroImages.map((img, index) => (
                 <button
                   key={index}
-                  onClick={() => setActiveImageIndex(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === activeImageIndex ? "w-8 bg-primary" : "w-2 bg-muted-foreground/30"
+                  onClick={() => {
+                    setIsTransitioning(true);
+                    setTimeout(() => {
+                      setActiveImageIndex(index);
+                      setIsTransitioning(false);
+                    }, 300);
+                  }}
+                  className={`relative overflow-hidden rounded-lg sm:rounded-xl border-2 transition-all duration-300 ${
+                    index === activeImageIndex
+                      ? "border-primary w-16 sm:w-20 h-10 sm:h-12 shadow-glow"
+                      : "border-border/30 w-10 sm:w-12 h-10 sm:h-12 opacity-40 hover:opacity-70"
                   }`}
-                  aria-label={`View image ${index + 1}`}
-                />
+                >
+                  <img src={img.src} alt={img.label} className="h-full w-full object-cover" loading="lazy" />
+                  {index === activeImageIndex && (
+                    <div className="absolute bottom-0 left-0 h-0.5 bg-primary animate-[progressFill_4s_linear]" style={{ width: "100%" }} />
+                  )}
+                </button>
               ))}
             </div>
           </div>
