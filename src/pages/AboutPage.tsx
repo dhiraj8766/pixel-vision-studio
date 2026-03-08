@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Users, Calendar, Award, Code2 } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 const stats = [
   { value: "500+", label: "Members", icon: Users },
@@ -26,6 +27,7 @@ const values = [
 const AboutPage = () => {
   return (
     <div className="relative min-h-screen bg-background pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16 bg-geo-pattern">
+      <AnimatedBackground />
       <div className="absolute inset-0 bg-cross-pattern pointer-events-none" />
       <div className="absolute inset-0 bg-abstract-lines pointer-events-none" />
       
