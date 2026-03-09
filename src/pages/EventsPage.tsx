@@ -151,10 +151,10 @@ const CategorySlider = ({ type, typeEvents, onEventClick }: { type: typeof event
               <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-[#5a7d6a] flex items-center gap-1">
                 <Calendar size={10} /> {event.date}
               </p>
-              {event.registerUrl && (
-                <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="mt-2 sm:mt-3 inline-block">
+              {event.registerUrl && event.status === "upcoming" && (
+                <Link to={`/register?event=${encodeURIComponent(event.title)}&eventId=${event.id}`} onClick={(e) => e.stopPropagation()} className="mt-2 sm:mt-3 inline-block">
                   <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[10px] sm:text-[11px] py-1 sm:py-1.5 px-2.5 sm:px-3 font-semibold hover:bg-[#2d5a3d] transition-colors">Register ↗</button>
-                </a>
+                </Link>
               )}
             </div>
           </div>
