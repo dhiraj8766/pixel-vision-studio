@@ -222,10 +222,10 @@ const EventsPage = () => {
                               </p>
                               <span className="md:hidden font-mono text-[9px] sm:text-[10px] text-[#2d5a3d]">{event.date}</span>
                             </div>
-                            {event.registerUrl && (
-                              <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="hidden md:block">
+                            {event.registerUrl && event.status === "upcoming" && (
+                              <Link to={`/register?event=${encodeURIComponent(event.title)}&eventId=${event.id}`} onClick={(e) => e.stopPropagation()} className="hidden md:block">
                                 <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[11px] py-2 px-4 font-semibold hover:bg-[#2d5a3d] transition-colors">Register</button>
-                              </a>
+                              </Link>
                             )}
                           </div>
                         </div>
