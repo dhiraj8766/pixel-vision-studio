@@ -182,6 +182,86 @@ const AdminDashboard = () => {
           ))}
         </div>
 
+        {/* Registrations Tab Content */}
+        {activeTab === "registrations" ? (
+          <div>
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+                <select
+                  value={regFilterEvent}
+                  onChange={(e) => setRegFilterEvent(e.target.value)}
+                  className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+                >
+                  <option value="all">All Events</option>
+                  {uniqueEventTitles.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+                <div className="relative w-full sm:w-64">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    className="w-full rounded-xl border border-border bg-card pl-9 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                    placeholder="Search by name, email, college..."
+                    value={regSearch}
+                    onChange={(e) => setRegSearch(e.target.value)}
+                  />
+                </div>
+              </div>
+              <button
+                onClick={downloadCSV}
+                disabled={filteredRegistrations.length === 0}
+                className="flex items-center gap-2 rounded-xl bg-accent-green/15 border border-accent-green/30 px-4 py-2.5 text-sm font-bold text-accent-green transition-all hover:bg-accent-green/25 disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                <Download size={14} /> Download CSV ({filteredRegistrations.length})
+              </button>
+            </div>
+
+            {/* Registrations table */}
+            <div className="rounded-2xl border border-border bg-card overflow-hidden">
+              {loading ? (
+                <div className="p-8 text-center text-muted-foreground">Loading...</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/30">
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">#</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Phone</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">College</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Dept / Year</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredRegistrations.map((reg, i) => (
+                        <tr key={reg.id || i} className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                          <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{i + 1}</td>
+                          <td className="px-4 py-3 font-medium text-foreground">{reg.name}</td>
+                          <td className="px-4 py-3 text-muted-foreground">{reg.email}</td>
+                          <td className="px-4 py-3 text-muted-foreground">{reg.phone}</td>
+                          <td className="px-4 py-3 text-muted-foreground max-w-[150px] truncate">{reg.college}</td>
+                          <td className="px-4 py-3 text-muted-foreground text-xs">{reg.department}<br/><span className="text-[10px] text-primary">{reg.year}</span></td>
+                          <td className="px-4 py-3">
+                            <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{reg.eventTitle}</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {filteredRegistrations.length === 0 && !loading && (
+                    <div className="p-8 text-center text-muted-foreground">
+                      {registrations.length === 0
+                        ? <>No registrations yet. Make sure your backend is running at <code className="text-primary">{API.BASE}</code></>
+                        : "No registrations match your filter."}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+        <>
         {/* Action bar */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground font-heading">
