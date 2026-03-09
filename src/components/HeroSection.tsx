@@ -250,10 +250,10 @@ const HeroSection = () => {
                   </h3>
                   <p className="max-w-sm text-xs sm:text-sm text-secondary-foreground line-clamp-2">{activeEvent.description}</p>
                   {activeEvent.registerUrl && (
-                    <a href={activeEvent.registerUrl} className="inline-block w-fit">
+                    <Link to={`/register?event=${encodeURIComponent(activeEvent.title)}&eventId=${activeEvent.id}`} className="inline-block w-fit">
                       <button className="hidden md:block valorant-btn text-xs py-2 px-5">Register Now</button>
                       <button className="btn-mobile-primary md:hidden text-xs py-1.5 px-4">Register Now</button>
-                    </a>
+                    </Link>
                   )}
                 </div>
 
