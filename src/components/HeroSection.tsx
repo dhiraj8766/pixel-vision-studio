@@ -315,9 +315,9 @@ const HeroSection = () => {
               </div>
               <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-muted-foreground">{selectedEvent.description}</p>
               {selectedEvent.registerUrl && (
-                <a href={selectedEvent.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-4 sm:mt-6 block">
+                <Link to={`/register?event=${encodeURIComponent(selectedEvent.title)}&eventId=${selectedEvent.id}`} className="mt-4 sm:mt-6 block">
                   <button className="rounded-full bg-primary text-primary-foreground w-full py-2.5 sm:py-3 text-sm font-semibold hover:bg-primary/90 transition-colors">Register Now</button>
-                </a>
+                </Link>
               )}
             </div>
           </div>

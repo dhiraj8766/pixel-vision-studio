@@ -328,10 +328,10 @@ const EventsPage = () => {
               </div>
               <p className="mt-1 text-xs sm:text-sm text-[#5a7d6a] flex items-center gap-1"><MapPin size={12} /> {selectedEvent.location}</p>
               <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-[#3a5a4a]">{selectedEvent.description}</p>
-              {selectedEvent.registerUrl && (
-                <a href={selectedEvent.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-4 sm:mt-6 block">
+              {selectedEvent.registerUrl && selectedEvent.status === "upcoming" && (
+                <Link to={`/register?event=${encodeURIComponent(selectedEvent.title)}&eventId=${selectedEvent.id}`} className="mt-4 sm:mt-6 block">
                   <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] w-full py-2.5 sm:py-3 text-sm font-semibold hover:bg-[#2d5a3d] transition-colors">Register Now</button>
-                </a>
+                </Link>
               )}
             </div>
           </div>
