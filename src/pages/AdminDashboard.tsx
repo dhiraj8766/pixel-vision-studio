@@ -352,6 +352,8 @@ const AdminDashboard = () => {
             </div>
           )}
         </div>
+        </>
+        )}
 
         {/* Add/Edit Form Modal */}
         {showForm && (
