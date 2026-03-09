@@ -106,6 +106,7 @@
 /* Geometric circles + colorful floating shapes */
 .bg-geo-pattern {
   position: relative;
+  overflow-x: hidden;
   background:
     radial-gradient(ellipse at 80% 10%, hsl(var(--accent-purple) / 0.12) 0%, transparent 50%),
     radial-gradient(ellipse at 10% 80%, hsl(var(--accent-cyan) / 0.08) 0%, transparent 50%),
