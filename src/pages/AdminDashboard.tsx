@@ -40,15 +40,31 @@ interface Faculty {
   message: string;
 }
 
+interface Registration {
+  id?: number;
+  name: string;
+  email: string;
+  phone: string;
+  college: string;
+  department: string;
+  year: string;
+  eventId: number;
+  eventTitle: string;
+  registeredAt?: string;
+}
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>("events");
   const [events, setEvents] = useState<Event[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [faculty, setFaculty] = useState<Faculty[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editItem, setEditItem] = useState<any>(null);
+  const [regFilterEvent, setRegFilterEvent] = useState<string>("all");
+  const [regSearch, setRegSearch] = useState("");
 
   // Auth check
   useEffect(() => {
