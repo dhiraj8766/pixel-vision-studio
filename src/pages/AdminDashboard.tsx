@@ -84,14 +84,16 @@ const AdminDashboard = () => {
       let url = "";
       if (activeTab === "events") url = API.EVENTS;
       else if (activeTab === "team") url = API.TEAM;
-      else url = API.FACULTY;
+      else if (activeTab === "faculty") url = API.FACULTY;
+      else if (activeTab === "registrations") url = API.REGISTRATIONS;
       
       const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
         if (activeTab === "events") setEvents(data);
         else if (activeTab === "team") setTeam(data);
-        else setFaculty(data);
+        else if (activeTab === "faculty") setFaculty(data);
+        else if (activeTab === "registrations") setRegistrations(data);
       }
     } catch (err) {
       console.error("Failed to fetch:", err);
