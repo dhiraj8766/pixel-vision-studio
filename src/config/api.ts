@@ -8,4 +8,5 @@ export const API = {
   EVENTS_NEAREST: `${API_BASE_URL}/events/nearest`,
   TEAM: `${API_BASE_URL}/team`,
   FACULTY: `${API_BASE_URL}/faculty`,
+  REGISTRATIONS: `${API_BASE_URL}/registrations`,
 };

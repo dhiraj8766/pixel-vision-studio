@@ -151,10 +151,10 @@ const CategorySlider = ({ type, typeEvents, onEventClick }: { type: typeof event
               <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-[#5a7d6a] flex items-center gap-1">
                 <Calendar size={10} /> {event.date}
               </p>
-              {event.registerUrl && (
-                <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="mt-2 sm:mt-3 inline-block">
+              {event.registerUrl && event.status === "upcoming" && (
+                <Link to={`/register?event=${encodeURIComponent(event.title)}&eventId=${event.id}`} onClick={(e) => e.stopPropagation()} className="mt-2 sm:mt-3 inline-block">
                   <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[10px] sm:text-[11px] py-1 sm:py-1.5 px-2.5 sm:px-3 font-semibold hover:bg-[#2d5a3d] transition-colors">Register ↗</button>
-                </a>
+                </Link>
               )}
             </div>
           </div>
@@ -222,10 +222,10 @@ const EventsPage = () => {
                               </p>
                               <span className="md:hidden font-mono text-[9px] sm:text-[10px] text-[#2d5a3d]">{event.date}</span>
                             </div>
-                            {event.registerUrl && (
-                              <a href={event.registerUrl} onClick={(e) => e.stopPropagation()} className="hidden md:block">
+                            {event.registerUrl && event.status === "upcoming" && (
+                              <Link to={`/register?event=${encodeURIComponent(event.title)}&eventId=${event.id}`} onClick={(e) => e.stopPropagation()} className="hidden md:block">
                                 <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] text-[11px] py-2 px-4 font-semibold hover:bg-[#2d5a3d] transition-colors">Register</button>
-                              </a>
+                              </Link>
                             )}
                           </div>
                         </div>
@@ -328,10 +328,10 @@ const EventsPage = () => {
               </div>
               <p className="mt-1 text-xs sm:text-sm text-[#5a7d6a] flex items-center gap-1"><MapPin size={12} /> {selectedEvent.location}</p>
               <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-[#3a5a4a]">{selectedEvent.description}</p>
-              {selectedEvent.registerUrl && (
-                <a href={selectedEvent.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-4 sm:mt-6 block">
+              {selectedEvent.registerUrl && selectedEvent.status === "upcoming" && (
+                <Link to={`/register?event=${encodeURIComponent(selectedEvent.title)}&eventId=${selectedEvent.id}`} className="mt-4 sm:mt-6 block">
                   <button className="rounded-full bg-[#1a3a2a] text-[#f3ecdc] w-full py-2.5 sm:py-3 text-sm font-semibold hover:bg-[#2d5a3d] transition-colors">Register Now</button>
-                </a>
+                </Link>
               )}
             </div>
           </div>
