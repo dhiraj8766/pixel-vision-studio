@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Users, GraduationCap, LogOut, Plus, Trash2, Edit2, X, Trophy } from "lucide-react";
+import { CalendarDays, Users, GraduationCap, LogOut, Plus, Trash2, Edit2, X, Trophy, ClipboardList, Download, Search } from "lucide-react";
 import { API } from "@/config/api";
 
-type Tab = "events" | "team" | "faculty";
+type Tab = "events" | "team" | "faculty" | "registrations";
 
 interface Event {
   id?: number;
