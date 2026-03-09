@@ -122,7 +122,32 @@ const AdminDashboard = () => {
     { key: "events" as Tab, label: "Events", icon: CalendarDays, count: events.length },
     { key: "team" as Tab, label: "Team", icon: Users, count: team.length },
     { key: "faculty" as Tab, label: "Faculty", icon: GraduationCap, count: faculty.length },
+    { key: "registrations" as Tab, label: "Registrations", icon: ClipboardList, count: registrations.length },
   ];
+
+  // Filtered registrations
+  const uniqueEventTitles = [...new Set(registrations.map(r => r.eventTitle))];
+  const filteredRegistrations = registrations.filter(r => {
+    const matchesEvent = regFilterEvent === "all" || r.eventTitle === regFilterEvent;
+    const matchesSearch = regSearch === "" || 
+      r.name.toLowerCase().includes(regSearch.toLowerCase()) ||
+      r.email.toLowerCase().includes(regSearch.toLowerCase()) ||
+      r.college.toLowerCase().includes(regSearch.toLowerCase());
+    return matchesEvent && matchesSearch;
+  });
+
+  const downloadCSV = () => {
+    const headers = ["Name", "Email", "Phone", "College", "Department", "Year", "Event"];
+    const rows = filteredRegistrations.map(r => [r.name, r.email, r.phone, r.college, r.department, r.year, r.eventTitle]);
+    const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `registrations${regFilterEvent !== "all" ? `-${regFilterEvent}` : ""}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="min-h-screen bg-background pt-4 px-4 md:px-8 pb-20">
