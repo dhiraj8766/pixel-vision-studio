@@ -1,46 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Mail, Phone } from "lucide-react";
 import ProfileModal from "@/components/ProfileModal";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import ScrollReveal from "@/components/ScrollReveal";
+import { API } from "@/config/api";
 
-const facultyData = [
-  {
-    name: "Dr. Rajesh Kumar", role: "Faculty Advisor", department: "Computer Science & Engineering",
-    description: "20+ years of experience in software engineering and AI research. Guiding PICSEL Club since its inception.",
-    image: "", email: "rajesh.kumar@kdkce.edu", mobile: "+91 9876543210", specialization: "Artificial Intelligence",
-    socials: { linkedin: "#", twitter: "#" },
-  },
-  {
-    name: "Prof. Sunita Deshmukh", role: "Co-Advisor", department: "Computer Science & Engineering",
-    description: "Expert in data science and machine learning. Passionate about nurturing student innovation.",
-    image: "", email: "sunita.deshmukh@kdkce.edu", mobile: "+91 9876543211", specialization: "Data Science",
-    socials: { linkedin: "#" },
-  },
-  {
-    name: "Dr. Manoj Patil", role: "Technical Mentor", department: "Information Technology",
-    description: "Specialist in cloud computing and DevOps. Helps students bridge the gap between academia and industry.",
-    image: "", email: "manoj.patil@kdkce.edu", mobile: "+91 9876543212", specialization: "Cloud Computing",
-    socials: { linkedin: "#", twitter: "#" },
-  },
-  {
-    name: "Prof. Anjali Verma", role: "Event Advisor", department: "Computer Science & Engineering",
-    description: "Coordinates academic and extracurricular activities. Ensures events align with educational goals.",
-    image: "", email: "anjali.verma@kdkce.edu", mobile: "+91 9876543213", specialization: "Software Engineering",
-    socials: { linkedin: "#" },
-  },
-];
+interface FacultyMember {
+  id: number; name: string; role: string; mobile: string; email: string;
+  imageUrl: string; message: string;
+}
 
 const FacultyPage = () => {
+  const [faculty, setFaculty] = useState<FacultyMember[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchFaculty = async () => {
+      try {
+        const res = await fetch(API.FACULTY);
+        if (res.ok) setFaculty(await res.json());
+      } catch (err) { console.error("Failed to fetch faculty:", err); }
+      finally { setLoading(false); }
+    };
+    fetchFaculty();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground text-sm animate-pulse">Loading faculty...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-background pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16">
       <AnimatedBackground />
       <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
-
       <div className="relative z-10">
-        {/* Header */}
         <ScrollReveal direction="up" scale>
           <div className="mb-8 sm:mb-12 text-center">
             <span className="mb-3 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[3px] text-primary font-heading">Mentors</span>
@@ -49,48 +47,36 @@ const FacultyPage = () => {
           </div>
         </ScrollReveal>
 
-        {/* Faculty Grid */}
         <div className="mx-auto max-w-5xl grid gap-4 sm:gap-5 md:grid-cols-2">
-          {facultyData.map((faculty, index) => (
-            <ScrollReveal key={index} delay={index * 100} direction="up">
-              <div
-                onClick={() => setSelectedProfile(faculty)}
-                className="group overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/25 hover:shadow-glow cursor-pointer active:scale-[0.99]"
-              >
+          {faculty.map((f, index) => (
+            <ScrollReveal key={f.id} delay={index * 100} direction="up">
+              <div onClick={() => setSelectedProfile(f)}
+                className="group overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/25 hover:shadow-glow cursor-pointer active:scale-[0.99]">
                 <div className="h-1 w-full bg-gradient-to-r from-primary to-accent-cyan" />
                 <div className="flex flex-col sm:flex-row">
-                  {/* Avatar */}
                   <div className="flex items-center justify-center p-5 sm:p-6 sm:w-40 sm:flex-shrink-0">
                     <div className="h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-full border-2 border-primary/20 bg-muted">
-                      {faculty.image ? (
-                        <img src={faculty.image} alt={faculty.name} className="h-full w-full object-cover" loading="lazy" />
+                      {f.imageUrl ? (
+                        <img src={f.imageUrl} alt={f.name} className="h-full w-full object-cover" loading="lazy" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-xl sm:text-2xl font-bold text-primary font-heading bg-primary/5">
-                          {faculty.name.split(" ").map(n => n.charAt(0)).join("")}
+                          {f.name.split(" ").map(n => n.charAt(0)).join("")}
                         </div>
                       )}
                     </div>
                   </div>
-
-                  {/* Info */}
                   <div className="flex-1 p-4 sm:p-5 pt-0 sm:pt-5">
-                    <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">
-                      {faculty.role}
-                    </span>
-                    <h3 className="text-base sm:text-lg font-bold text-foreground font-heading">{faculty.name}</h3>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{faculty.department}</p>
-                    <p className="text-[10px] sm:text-xs text-accent-yellow mt-0.5">{faculty.specialization}</p>
-                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-2">{faculty.description}</p>
-
-                    {/* Contact */}
+                    <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">{f.role}</span>
+                    <h3 className="text-base sm:text-lg font-bold text-foreground font-heading">{f.name}</h3>
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-2">{f.message}</p>
                     <div className="mt-3 flex items-center gap-3 flex-wrap">
-                      {faculty.email && (
-                        <a href={`mailto:${faculty.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+                      {f.email && (
+                        <a href={`mailto:${f.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                           <Mail size={11} /> Email
                         </a>
                       )}
-                      {faculty.mobile && (
-                        <a href={`tel:${faculty.mobile}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
+                      {f.mobile && (
+                        <a href={`tel:${f.mobile}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
                           <Phone size={11} /> Call
                         </a>
                       )}
@@ -101,9 +87,14 @@ const FacultyPage = () => {
             </ScrollReveal>
           ))}
         </div>
-      </div>
 
-      <ProfileModal profile={selectedProfile} onClose={() => setSelectedProfile(null)} />
+        {faculty.length === 0 && (
+          <div className="text-center py-16 text-muted-foreground">
+            <p className="text-lg font-heading font-bold">No faculty members found</p>
+          </div>
+        )}
+      </div>
+      <ProfileModal profile={selectedProfile ? { ...selectedProfile, image: selectedProfile.imageUrl, description: selectedProfile.message } : null} onClose={() => setSelectedProfile(null)} />
     </div>
   );
 };
