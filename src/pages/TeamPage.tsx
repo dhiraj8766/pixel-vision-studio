@@ -1,62 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Instagram, Linkedin, Github, Twitter } from "lucide-react";
 import ProfileModal from "@/components/ProfileModal";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import ScrollReveal from "@/components/ScrollReveal";
+import { API } from "@/config/api";
 
 const socialIconMap: Record<string, any> = {
-  instagram: Instagram,
-  linkedin: Linkedin,
-  github: Github,
-  twitter: Twitter,
+  instagram: Instagram, linkedin: Linkedin, github: Github, twitter: Twitter,
 };
 
-const teamData = {
-  president: {
-    name: "Alex Johnson",
-    role: "President",
-    description: "Leading PICSEL Club with a vision to empower every student in technology and innovation. Passionate about building communities and driving change.",
-    image: "",
-    email: "alex.johnson@kdkce.edu",
-    mobile: "+91 9876543210",
-    social: { instagram: "https://instagram.com/alexj", linkedin: "https://linkedin.com/in/alexj", github: "https://github.com/alexj", twitter: "https://twitter.com/alexj" },
-  },
-  vicePresidents: [
-    { name: "Priya Sharma", role: "Vice President", description: "Driving technical excellence and mentoring the next generation of developers.", image: "", email: "priya@kdkce.edu", social: { instagram: "https://instagram.com/priya", linkedin: "https://linkedin.com/in/priya", github: "https://github.com/priya" } },
-    { name: "Rahul Patel", role: "Technical Lead", description: "Full-stack developer and competitive programmer. Building tools that matter.", image: "", email: "rahul@kdkce.edu", social: { instagram: "https://instagram.com/rahul", linkedin: "https://linkedin.com/in/rahul", github: "https://github.com/rahul" } },
-    { name: "Sneha Kulkarni", role: "Creative Head", description: "Designing experiences that inspire. UI/UX enthusiast and brand strategist.", image: "", email: "sneha@kdkce.edu", social: { instagram: "https://instagram.com/sneha", linkedin: "https://linkedin.com/in/sneha", twitter: "https://twitter.com/sneha" } },
-    { name: "Arjun Deshmukh", role: "Event Coordinator", description: "Orchestrating memorable events that bring the tech community together.", image: "", email: "arjun@kdkce.edu", social: { instagram: "https://instagram.com/arjun", linkedin: "https://linkedin.com/in/arjun" } },
-  ],
-  members: [
-    { name: "Amit Singh", role: "Web Developer", description: "Frontend specialist building beautiful web experiences.", image: "", social: { github: "https://github.com/amit", linkedin: "https://linkedin.com/in/amit", instagram: "https://instagram.com/amit" } },
-    { name: "Kavya Reddy", role: "Content Writer", description: "Crafting compelling stories for the PICSEL community.", image: "", social: { linkedin: "https://linkedin.com/in/kavya", instagram: "https://instagram.com/kavya", twitter: "https://twitter.com/kavya" } },
-    { name: "Rohan Joshi", role: "App Developer", description: "Mobile app developer with a passion for Flutter.", image: "", social: { github: "https://github.com/rohan", linkedin: "https://linkedin.com/in/rohan", instagram: "https://instagram.com/rohan" } },
-    { name: "Meera Nair", role: "Social Media", description: "Managing the club's digital presence across platforms.", image: "", social: { instagram: "https://instagram.com/meera", linkedin: "https://linkedin.com/in/meera", twitter: "https://twitter.com/meera" } },
-    { name: "Vikram Iyer", role: "UI Designer", description: "Creating pixel-perfect designs and brand identity.", image: "", social: { linkedin: "https://linkedin.com/in/vikram", instagram: "https://instagram.com/vikram", github: "https://github.com/vikram" } },
-    { name: "Ananya Gupta", role: "ML Engineer", description: "Exploring AI/ML and building intelligent solutions.", image: "", social: { github: "https://github.com/ananya", linkedin: "https://linkedin.com/in/ananya", instagram: "https://instagram.com/ananya" } },
-    { name: "Dev Patil", role: "Backend Dev", description: "Building scalable backend systems and APIs.", image: "", social: { github: "https://github.com/dev", linkedin: "https://linkedin.com/in/dev", instagram: "https://instagram.com/dev" } },
-    { name: "Riya Desai", role: "Video Editor", description: "Creating engaging video content for events.", image: "", social: { instagram: "https://instagram.com/riya", linkedin: "https://linkedin.com/in/riya" } },
-    { name: "Karthik Menon", role: "Photographer", description: "Capturing moments that tell our story.", image: "", social: { instagram: "https://instagram.com/karthik", linkedin: "https://linkedin.com/in/karthik" } },
-    { name: "Neha Verma", role: "PR Head", description: "Building relationships and partnerships.", image: "", social: { linkedin: "https://linkedin.com/in/neha", instagram: "https://instagram.com/neha", twitter: "https://twitter.com/neha" } },
-    { name: "Siddharth Rao", role: "Cloud Dev", description: "AWS & cloud infrastructure specialist.", image: "", social: { github: "https://github.com/siddharth", linkedin: "https://linkedin.com/in/siddharth", instagram: "https://instagram.com/siddharth" } },
-    { name: "Pooja Bhatt", role: "Data Analyst", description: "Turning data into actionable insights.", image: "", social: { linkedin: "https://linkedin.com/in/pooja", github: "https://github.com/pooja", instagram: "https://instagram.com/pooja" } },
-  ],
-};
+interface TeamMember {
+  id: number; name: string; role: string; description: string; mobile: string;
+  email: string; tokenNo: number; imageUrl: string;
+  socials: { linkedin: string; instagram: string; twitter: string };
+}
 
 const SocialRow = ({ social }: { social: Record<string, string> }) => (
   <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-2">
-    {Object.entries(social).map(([key, url]) => {
+    {Object.entries(social || {}).map(([key, url]) => {
       const Icon = socialIconMap[key.toLowerCase()];
       if (!Icon || !url) return null;
       return (
-        <a
-          key={key}
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-all hover:border-primary hover:text-primary"
-        >
+        <a key={key} href={url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
+          className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-all hover:border-primary hover:text-primary">
           <Icon size={11} />
         </a>
       );
@@ -65,16 +31,38 @@ const SocialRow = ({ social }: { social: Record<string, string> }) => (
 );
 
 const TeamPage = () => {
-  const { president, vicePresidents, members } = teamData;
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const res = await fetch(API.TEAM);
+        if (res.ok) setTeam(await res.json());
+      } catch (err) { console.error("Failed to fetch team:", err); }
+      finally { setLoading(false); }
+    };
+    fetchTeam();
+  }, []);
+
+  const president = team.filter(m => m.tokenNo === 1);
+  const coreTeam = team.filter(m => m.tokenNo === 2);
+  const members = team.filter(m => m.tokenNo === 3);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground text-sm animate-pulse">Loading team...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-background pb-mobile-nav pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8 lg:px-16">
       <AnimatedBackground />
       <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
-
       <div className="relative z-10">
-        {/* Header */}
         <ScrollReveal direction="up" scale>
           <div className="mb-8 sm:mb-12 text-center">
             <span className="mb-3 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[3px] text-primary font-heading">The Squad</span>
@@ -83,99 +71,95 @@ const TeamPage = () => {
           </div>
         </ScrollReveal>
 
-        {/* President */}
-        <ScrollReveal scale delay={100}>
-          <div className="mx-auto mb-10 sm:mb-14 max-w-2xl">
-            <div
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-8 md:p-10 transition-all hover:border-primary/30 hover:shadow-glow cursor-pointer active:scale-[0.99]"
-              onClick={() => setSelectedProfile(president)}
-            >
-              <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-primary via-accent-purple to-accent-red" />
-              <div className="flex flex-col items-center text-center md:flex-row md:text-left md:gap-8">
-                <div className="mb-4 sm:mb-6 h-24 w-24 sm:h-28 sm:w-28 overflow-hidden rounded-full border-2 border-primary/30 bg-muted md:mb-0 md:h-32 md:w-32 flex-shrink-0">
-                  {president.image ? (
-                    <img src={president.image} alt={president.name} className="h-full w-full object-cover" loading="lazy" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-3xl sm:text-4xl font-bold text-primary font-heading bg-primary/5">
-                      {president.name.charAt(0)}
+        {/* President(s) */}
+        {president.length > 0 && (
+          <ScrollReveal scale delay={100}>
+            <div className="mx-auto mb-10 sm:mb-14 max-w-2xl">
+              {president.map((p) => (
+                <div key={p.id} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-8 md:p-10 transition-all hover:border-primary/30 hover:shadow-glow cursor-pointer active:scale-[0.99] mb-4"
+                  onClick={() => setSelectedProfile(p)}>
+                  <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-primary via-accent-purple to-accent-red" />
+                  <div className="flex flex-col items-center text-center md:flex-row md:text-left md:gap-8">
+                    <div className="mb-4 sm:mb-6 h-24 w-24 sm:h-28 sm:w-28 overflow-hidden rounded-full border-2 border-primary/30 bg-muted md:mb-0 md:h-32 md:w-32 flex-shrink-0">
+                      {p.imageUrl ? (
+                        <img src={p.imageUrl} alt={p.name} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-3xl sm:text-4xl font-bold text-primary font-heading bg-primary/5">{p.name.charAt(0)}</div>
+                      )}
                     </div>
-                  )}
+                    <div>
+                      <span className="mb-2 inline-block rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary">{p.role}</span>
+                      <h2 className="mt-2 font-heading text-xl sm:text-2xl text-foreground md:text-3xl font-bold">{p.name}</h2>
+                      <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground">{p.description}</p>
+                      <SocialRow social={p.socials || {}} />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="mb-2 inline-block rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary">
-                    {president.role}
-                  </span>
-                  <h2 className="mt-2 font-heading text-xl sm:text-2xl text-foreground md:text-3xl font-bold">{president.name}</h2>
-                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground">{president.description}</p>
-                  <SocialRow social={president.social} />
-                  <p className="mt-2 text-[10px] sm:text-xs text-primary/60">Tap to view full profile →</p>
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
-        </ScrollReveal>
+          </ScrollReveal>
+        )}
 
         {/* Core Team */}
-        <div className="mx-auto mb-10 sm:mb-14 max-w-5xl">
-          <h3 className="mb-5 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Core Team</h3>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            {vicePresidents.map((member, index) => (
-              <ScrollReveal key={index} delay={index * 80} direction="up">
-                <div
-                  onClick={() => setSelectedProfile(member)}
-                  className="group overflow-hidden rounded-xl border border-border bg-card p-4 sm:p-5 transition-all hover:border-primary/25 hover:shadow-glow cursor-pointer active:scale-[0.98]"
-                >
-                  <div className="mx-auto mb-3 h-14 w-14 sm:h-18 sm:w-18 overflow-hidden rounded-full border border-border bg-muted">
-                    {member.image ? (
-                      <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-lg sm:text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
-                        {member.name.charAt(0)}
-                      </div>
-                    )}
+        {coreTeam.length > 0 && (
+          <div className="mx-auto mb-10 sm:mb-14 max-w-5xl">
+            <h3 className="mb-5 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Core Team</h3>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+              {coreTeam.map((member, index) => (
+                <ScrollReveal key={member.id} delay={index * 80} direction="up">
+                  <div onClick={() => setSelectedProfile(member)}
+                    className="group overflow-hidden rounded-xl border border-border bg-card p-4 sm:p-5 transition-all hover:border-primary/25 hover:shadow-glow cursor-pointer active:scale-[0.98]">
+                    <div className="mx-auto mb-3 h-14 w-14 sm:h-18 sm:w-18 overflow-hidden rounded-full border border-border bg-muted">
+                      {member.imageUrl ? (
+                        <img src={member.imageUrl} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-lg sm:text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">{member.name.charAt(0)}</div>
+                      )}
+                    </div>
+                    <h3 className="text-center text-xs sm:text-sm font-bold text-foreground">{member.name}</h3>
+                    <p className="text-center text-[10px] sm:text-xs font-medium text-primary mt-0.5">{member.role}</p>
+                    <p className="mt-1.5 text-center text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block">{member.description}</p>
+                    <SocialRow social={member.socials || {}} />
                   </div>
-                  <h3 className="text-center text-xs sm:text-sm font-bold text-foreground">{member.name}</h3>
-                  <p className="text-center text-[10px] sm:text-xs font-medium text-primary mt-0.5">{member.role}</p>
-                  <p className="mt-1.5 text-center text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-2 hidden sm:block">{member.description}</p>
-                  <SocialRow social={member.social} />
-                </div>
-              </ScrollReveal>
-            ))}
+                </ScrollReveal>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Members */}
-        <div className="mx-auto max-w-6xl mb-6 sm:mb-8">
-          <h3 className="mb-4 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Members</h3>
-          <div className="grid grid-cols-3 gap-2 sm:gap-3 md:grid-cols-4 lg:grid-cols-6">
-            {members.map((member, index) => (
-              <ScrollReveal key={index} delay={index * 40} direction="up">
-                <div
-                  onClick={() => setSelectedProfile(member)}
-                  className="group flex flex-col items-center rounded-lg border border-border/50 bg-card/60 p-2.5 sm:p-4 transition-all hover:border-primary/20 hover:bg-card cursor-pointer active:scale-[0.97]"
-                >
-                  <div className="mb-2 sm:mb-3 h-10 w-10 sm:h-14 sm:w-14 overflow-hidden rounded-full border border-border bg-muted">
-                    {member.image ? (
-                      <img src={member.image} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">
-                        {member.name.charAt(0)}
-                      </div>
-                    )}
+        {members.length > 0 && (
+          <div className="mx-auto max-w-6xl mb-6 sm:mb-8">
+            <h3 className="mb-4 sm:mb-6 text-center text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-muted-foreground font-heading">Members</h3>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 md:grid-cols-4 lg:grid-cols-6">
+              {members.map((member, index) => (
+                <ScrollReveal key={member.id} delay={index * 40} direction="up">
+                  <div onClick={() => setSelectedProfile(member)}
+                    className="group flex flex-col items-center rounded-lg border border-border/50 bg-card/60 p-2.5 sm:p-4 transition-all hover:border-primary/20 hover:bg-card cursor-pointer active:scale-[0.97]">
+                    <div className="mb-2 sm:mb-3 h-10 w-10 sm:h-14 sm:w-14 overflow-hidden rounded-full border border-border bg-muted">
+                      {member.imageUrl ? (
+                        <img src={member.imageUrl} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-primary transition-colors font-heading">{member.name.charAt(0)}</div>
+                      )}
+                    </div>
+                    <h4 className="text-center text-[10px] sm:text-xs font-semibold text-foreground leading-tight">{member.name}</h4>
+                    <p className="text-center text-[9px] sm:text-[10px] text-primary mt-0.5">{member.role}</p>
+                    <div className="hidden sm:block"><SocialRow social={member.socials || {}} /></div>
                   </div>
-                  <h4 className="text-center text-[10px] sm:text-xs font-semibold text-foreground leading-tight">{member.name}</h4>
-                  <p className="text-center text-[9px] sm:text-[10px] text-primary mt-0.5">{member.role}</p>
-                  <div className="hidden sm:block">
-                    <SocialRow social={member.social} />
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
+                </ScrollReveal>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
+        )}
 
-      <ProfileModal profile={selectedProfile} onClose={() => setSelectedProfile(null)} />
+        {team.length === 0 && (
+          <div className="text-center py-16 text-muted-foreground">
+            <p className="text-lg font-heading font-bold">No team members found</p>
+          </div>
+        )}
+      </div>
+      <ProfileModal profile={selectedProfile ? { ...selectedProfile, image: selectedProfile.imageUrl, social: selectedProfile.socials } : null} onClose={() => setSelectedProfile(null)} />
     </div>
   );
 };
