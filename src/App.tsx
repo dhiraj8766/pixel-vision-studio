@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import ScrollToTop from "@/components/ScrollToTop";
+import SmoothScroll from "@/components/SmoothScroll";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
 import EventsPage from "./pages/EventsPage";
@@ -23,29 +25,32 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Navbar />
-        <MobileBottomNav />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/xevents" element={<PastEventsPage />} />
-          <Route path="/team" element={<TeamPage />} />
-          <Route path="/faculty" element={<FacultyPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <SmoothScroll />
+          <ScrollToTop />
+          <Navbar />
+          <MobileBottomNav />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/xevents" element={<PastEventsPage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/faculty" element={<FacultyPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

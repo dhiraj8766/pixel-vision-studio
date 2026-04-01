@@ -6,58 +6,100 @@
 
 @layer base {
   :root {
-    --background: 240 20% 6%;
-    --foreground: 0 0% 95%;
+    --background: 216 32% 8%;
+    --foreground: 190 33% 96%;
 
-    --card: 250 18% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 218 28% 12%;
+    --card-foreground: 190 33% 96%;
 
-    --popover: 250 18% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 218 28% 12%;
+    --popover-foreground: 190 33% 96%;
 
-    --primary: 174 72% 40%;
-    --primary-foreground: 240 20% 6%;
+    --primary: 175 74% 46%;
+    --primary-foreground: 210 35% 8%;
 
-    --secondary: 260 20% 14%;
-    --secondary-foreground: 0 0% 85%;
+    --secondary: 214 24% 16%;
+    --secondary-foreground: 190 18% 86%;
 
-    --muted: 255 15% 16%;
-    --muted-foreground: 230 15% 55%;
+    --muted: 217 20% 17%;
+    --muted-foreground: 210 14% 63%;
 
-    --accent: 174 72% 40%;
-    --accent-foreground: 240 20% 6%;
+    --accent: 44 96% 61%;
+    --accent-foreground: 215 32% 10%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 260 15% 18%;
-    --input: 260 15% 18%;
-    --ring: 174 72% 40%;
+    --border: 215 20% 22%;
+    --input: 215 20% 22%;
+    --ring: 175 74% 46%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --accent-yellow: 43 96% 56%;
-    --accent-red: 350 84% 60%;
-    --accent-cyan: 174 80% 55%;
-    --accent-green: 142 70% 55%;
-    --accent-purple: 270 70% 60%;
-    --accent-pink: 330 80% 60%;
-    --accent-orange: 25 95% 55%;
-    --team-bg: 0 0% 93%;
-    --surface-elevated: 250 18% 12%;
-    --hero-muted: 230 15% 50%;
+    --accent-yellow: 44 96% 61%;
+    --accent-red: 5 86% 63%;
+    --accent-cyan: 186 86% 56%;
+    --accent-green: 146 62% 49%;
+    --accent-purple: 258 74% 67%;
+    --accent-pink: 335 81% 67%;
+    --accent-orange: 24 92% 58%;
+    --team-bg: 215 23% 12%;
+    --surface-elevated: 218 28% 14%;
+    --hero-muted: 188 16% 72%;
 
     --font-heading: 'Syne', sans-serif;
     --font-sans: 'Space Grotesk', sans-serif;
     --font-button: 'Ropa Sans', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    --shadow-glow: 0 0 60px -10px hsl(174 72% 40% / 0.3);
-    --shadow-card: 0 20px 60px rgba(10, 5, 30, 0.7);
-    --shadow-card-hover: 0 30px 80px rgba(10, 5, 30, 0.9);
+    --shadow-glow: 0 0 60px -10px hsl(175 74% 46% / 0.32);
+    --shadow-card: 0 20px 60px hsl(220 45% 4% / 0.55);
+    --shadow-card-hover: 0 30px 80px hsl(220 45% 4% / 0.72);
     --radius-xl: 32px;
     --radius-card: 24px;
+  }
+
+  .light {
+    --background: 42 33% 97%;
+    --foreground: 222 33% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 33% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 33% 13%;
+
+    --primary: 175 76% 33%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 42 28% 91%;
+    --secondary-foreground: 222 33% 18%;
+
+    --muted: 40 22% 90%;
+    --muted-foreground: 220 12% 40%;
+
+    --accent: 43 96% 55%;
+    --accent-foreground: 222 33% 13%;
+
+    --border: 40 17% 82%;
+    --input: 40 17% 82%;
+    --ring: 175 76% 33%;
+
+    --accent-yellow: 43 92% 52%;
+    --accent-red: 5 76% 56%;
+    --accent-cyan: 188 72% 44%;
+    --accent-green: 148 54% 38%;
+    --accent-purple: 258 55% 58%;
+    --accent-pink: 337 71% 56%;
+    --accent-orange: 25 84% 54%;
+    --team-bg: 42 20% 92%;
+    --surface-elevated: 0 0% 100%;
+    --hero-muted: 220 17% 32%;
+
+    --shadow-glow: 0 0 60px -10px hsl(175 76% 33% / 0.18);
+    --shadow-card: 0 18px 48px hsl(220 20% 25% / 0.12);
+    --shadow-card-hover: 0 24px 64px hsl(220 20% 25% / 0.16);
   }
 }
 
@@ -71,10 +113,11 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -84,6 +127,7 @@
 
   body {
     overscroll-behavior-y: contain;
+    text-rendering: optimizeLegibility;
   }
 
   /* Custom scrollbar */
@@ -96,6 +140,37 @@
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--border));
     border-radius: 3px;
+  }
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

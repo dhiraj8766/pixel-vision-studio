@@ -16,12 +16,8 @@ const TeamHighlights = () => {
         const res = await fetch(API.TEAM);
         if (res.ok) {
           const data: TeamMember[] = await res.json();
-          // Show president and core team (tokenNo 1 & 2), limit to 4
-          const highlights = data
-            .filter(m => m.tokenNo === 1 || m.tokenNo === 2)
-            .sort((a, b) => a.tokenNo - b.tokenNo)
-            .slice(0, 4);
-          setTeam(highlights.length > 0 ? highlights : data.slice(0, 4));
+          const sortedTeam = [...data].sort((a, b) => a.tokenNo - b.tokenNo || a.name.localeCompare(b.name));
+          setTeam(sortedTeam);
         }
       } catch (err) { console.error("Failed to fetch team:", err); }
     };
@@ -30,35 +26,71 @@ const TeamHighlights = () => {
 
   if (team.length === 0) return null;
 
+  const tokenLabel = (tokenNo: number) => {
+    if (tokenNo === 1) return "President";
+    if (tokenNo === 2) return "Core Team";
+    return "Members";
+  };
+
   return (
-    <section className="relative px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16 overflow-hidden" style={{ backgroundColor: 'hsl(var(--team-bg))' }}>
-      <div className="absolute top-0 right-0 w-60 h-60 sm:w-96 sm:h-96 rounded-full opacity-30 blur-[150px] pointer-events-none" style={{ backgroundColor: 'hsl(var(--primary) / 0.15)' }} />
+    <section className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16">
+      <div className="absolute inset-0 bg-gradient-to-b from-card/40 via-background to-card/20" />
+      <div className="absolute left-[8%] top-10 h-40 w-40 rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
+      <div className="absolute right-[5%] bottom-0 h-48 w-48 rounded-full bg-accent-yellow/10 blur-[120px] pointer-events-none" />
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div className="mb-8 sm:mb-12 text-center">
-          <span className="mb-3 sm:mb-4 inline-block rounded-full border px-4 sm:px-5 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[2px] sm:tracking-[3px] font-heading" style={{ borderColor: 'hsl(var(--primary) / 0.25)', color: 'hsl(var(--primary))' }}>Our People</span>
-          <h2 className="font-heading text-2xl sm:text-4xl font-bold md:text-5xl lg:text-6xl" style={{ color: 'hsl(240, 20%, 10%)' }}>Meet the Team</h2>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-md text-sm sm:text-base" style={{ color: 'hsl(240, 10%, 40%)' }}>The passionate minds behind PICSEL Club.</p>
+        <div className="mb-8 flex flex-col gap-5 text-center sm:mb-12 md:flex-row md:items-end md:justify-between md:text-left">
+          <div>
+            <span className="mb-3 inline-flex rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-[10px] uppercase tracking-[0.28em] text-primary font-heading sm:text-xs">
+              Club Crew
+            </span>
+            <h2 className="font-heading text-2xl font-bold text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
+              Meet everyone building PICSEL.
+            </h2>
+          </div>
+          <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground md:mx-0 md:text-base">
+            From leadership to members, the full team now rolls across the homepage so every contributor gets visible space.
+          </p>
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-6">
-          {team.map((member) => (
-            <div key={member.id} className="group relative overflow-hidden rounded-xl sm:rounded-2xl p-4 sm:p-6 transition-all hover:shadow-lg"
-              style={{ backgroundColor: 'hsl(0, 0%, 100%)', border: '1px solid hsl(0, 0%, 85%)' }}>
-              <div className="mx-auto mb-3 sm:mb-4 h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 md:h-24 md:w-24" style={{ borderColor: 'hsl(var(--primary) / 0.3)', backgroundColor: 'hsl(var(--primary) / 0.08)' }}>
-                {member.imageUrl ? (
-                  <img src={member.imageUrl} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-lg sm:text-2xl font-bold font-heading" style={{ color: 'hsl(var(--primary))' }}>{member.name.charAt(0)}</div>
-                )}
-              </div>
-              <h3 className="text-center text-xs sm:text-sm font-bold md:text-base" style={{ color: 'hsl(240, 20%, 12%)' }}>{member.name}</h3>
-              <p className="text-center text-[10px] sm:text-xs font-medium" style={{ color: 'hsl(var(--primary))' }}>{member.role}</p>
-              <p className="mt-2 text-center text-[10px] sm:text-xs line-clamp-2 hidden sm:block" style={{ color: 'hsl(240, 10%, 45%)' }}>
-                {member.description || ""}
-              </p>
-            </div>
-          ))}
+
+        <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card/60 p-4 shadow-card sm:p-6">
+          <div className="absolute left-0 top-0 bottom-0 z-10 w-10 bg-gradient-to-r from-card via-card/70 to-transparent sm:w-20" />
+          <div className="absolute right-0 top-0 bottom-0 z-10 w-10 bg-gradient-to-l from-card via-card/70 to-transparent sm:w-20" />
+
+          <div className="flex animate-[marquee_28s_linear_infinite] gap-4 hover:[animation-play-state:paused] sm:gap-6">
+            {[...team, ...team].map((member, index) => (
+              <article
+                key={`${member.id}-${index}`}
+                className="group w-[240px] shrink-0 overflow-hidden rounded-[1.75rem] border border-border bg-background/80 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow sm:w-[280px]"
+              >
+                <div className="relative h-56 overflow-hidden border-b border-border bg-muted sm:h-64">
+                  {member.imageUrl ? (
+                    <img src={member.imageUrl} alt={member.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-5xl font-bold text-primary font-heading">
+                      {member.name.charAt(0)}
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+                  <span className="absolute left-4 top-4 rounded-full border border-primary/25 bg-background/75 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-primary backdrop-blur-sm">
+                    {tokenLabel(member.tokenNo)}
+                  </span>
+                </div>
+
+                <div className="space-y-3 p-4 sm:p-5">
+                  <div>
+                    <h3 className="font-heading text-lg font-bold text-foreground">{member.name}</h3>
+                    <p className="text-sm font-medium text-primary">{member.role}</p>
+                  </div>
+                  <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                    {member.description || "PICSEL team member contributing to events, learning, and community building."}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
-        <div className="mt-8 sm:mt-10 text-center">
+
+        <div className="mt-8 text-center sm:mt-10">
           <Link to="/team">
             <div className="hidden md:inline-block valorant-btn-wrapper"><button className="valorant-btn flex items-center gap-2">View Full Team <ArrowRight size={16} /></button></div>
             <button className="btn-mobile-primary md:hidden flex items-center gap-2 mx-auto text-sm">View Full Team <ArrowRight size={14} /></button>

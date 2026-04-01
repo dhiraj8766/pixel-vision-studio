@@ -92,7 +92,12 @@ const Footer = () => {
 
         <div className="mt-8 sm:mt-12 border-t border-border pt-4 sm:pt-6 flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-xs text-muted-foreground gap-2">
           <span>© {new Date().getFullYear()} PICSEL Club — KDKCE. All rights reserved.</span>
-          <span className="text-muted-foreground/50">Crafted with ❤️ by PICSEL Dev Team</span>
+          <div className="flex items-center gap-3">
+            <span className="text-muted-foreground/50">Crafted with ❤️ by PICSEL Dev Team</span>
+            <Link to="/admin" className="opacity-30 transition-opacity hover:opacity-100 text-[9px] uppercase tracking-[0.28em] text-primary">
+              Portal
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
