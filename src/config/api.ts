@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://deploy-f-latest.onrender.com/api";
+const API_BASE_URL = import.meta.env.DEV
+  ? "/api"
+  : import.meta.env.VITE_API_BASE_URL || "https://deploy-f-latest.onrender.com/api";
 
 export const API = {
   BASE: API_BASE_URL,

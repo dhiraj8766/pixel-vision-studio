@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, User, Mail, Phone, Building2, BookOpen, GraduationCap, CheckCircle } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { API } from "@/config/api";
 
 const departments = [
   "Computer Science & Engineering",
@@ -40,6 +41,10 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!eventId) {
+      setError("Please open this form from an event card.");
+      return;
+    }
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim() || !form.college.trim()) {
       setError("Please fill all required fields.");
       return;
@@ -56,14 +61,11 @@ const RegisterPage = () => {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api"}/registrations`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...form, eventId: Number(eventId), eventTitle }),
-        }
-      );
+      const res = await fetch(API.REGISTRATIONS, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, eventId: Number(eventId), eventTitle }),
+      });
       if (!res.ok) throw new Error("Registration failed");
       setSubmitted(true);
     } catch {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, CalendarDays, Users, Menu, X, Info, GraduationCap, Phone, Trophy } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const mainTabs = [
   { name: "Home", path: "/", icon: Home },
@@ -47,6 +48,7 @@ const MobileBottomNav = () => {
                 <X size={20} />
               </button>
             </div>
+            <ThemeToggle showLabel className="mb-3 w-full justify-center" />
             {moreLinks.map((link) => (
               <Link
                 key={link.name}
