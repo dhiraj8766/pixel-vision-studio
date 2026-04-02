@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import picselLogo from "@/assets/picsel-logo.png";
 import { Instagram, Linkedin, Github } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
+
 
 const menuItems = [
   { name: "Home", path: "/" },
