@@ -48,7 +48,7 @@ const MobileBottomNav = () => {
                 <X size={20} />
               </button>
             </div>
-            <ThemeToggle showLabel className="mb-3 w-full justify-center" />
+            
             {moreLinks.map((link) => (
               <Link
                 key={link.name}

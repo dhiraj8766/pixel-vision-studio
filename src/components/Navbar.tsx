@@ -96,7 +96,6 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <ThemeToggle />
             {/* Social icons in nav */}
             <div className="flex items-center gap-1 ml-2 border-l border-border pl-3">
               {[
