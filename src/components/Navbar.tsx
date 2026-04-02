@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import picselLogo from "@/assets/picsel-logo.png";
 import { Instagram, Linkedin, Github } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
+
 
 const menuItems = [
   { name: "Home", path: "/" },
@@ -96,7 +96,6 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <ThemeToggle />
             {/* Social icons in nav */}
             <div className="flex items-center gap-1 ml-2 border-l border-border pl-3">
               {[
