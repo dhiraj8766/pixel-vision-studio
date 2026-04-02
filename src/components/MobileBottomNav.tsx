@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, CalendarDays, Users, Menu, X, Info, GraduationCap, Phone, Trophy } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
-import ThemeToggle from "@/components/ThemeToggle";
+
 
 const mainTabs = [
   { name: "Home", path: "/", icon: Home },
