@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarDays, Users, GraduationCap, LogOut, Plus, Trash2, Edit2, X, ClipboardList, Download, Search, ImageIcon } from "lucide-react";
+import { CalendarDays, Users, GraduationCap, LogOut, Plus, Trash2, Edit2, X, ClipboardList, Download, Search, ImageIcon, MessageSquare, Handshake } from "lucide-react";
 import { API } from "@/config/api";
 
-type Tab = "events" | "team" | "faculty" | "registrations";
+type Tab = "events" | "team" | "faculty" | "registrations" | "contacts" | "sponsors";
 
 interface Event {
   id?: number; title: string; date: string; time: string; location: string;
@@ -27,6 +27,15 @@ interface Registration {
   department: string; year: string; eventId: number; eventTitle: string;
 }
 
+interface Contact {
+  id?: number; name: string; email: string; subject: string; message: string;
+  createdAt?: string;
+}
+
+interface Sponsor {
+  id?: number; name: string; logoUrl: string; website: string; tier: string;
+}
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>("events");
@@ -34,6 +43,8 @@ const AdminDashboard = () => {
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [faculty, setFaculty] = useState<Faculty[]>([]);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editItem, setEditItem] = useState<any>(null);
@@ -56,6 +67,8 @@ const AdminDashboard = () => {
       else if (activeTab === "team") url = API.TEAM;
       else if (activeTab === "faculty") url = API.FACULTY;
       else if (activeTab === "registrations") url = API.REGISTRATIONS;
+      else if (activeTab === "contacts") url = API.CONTACTS;
+      else if (activeTab === "sponsors") url = API.SPONSORS;
       const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
@@ -63,6 +76,8 @@ const AdminDashboard = () => {
         else if (activeTab === "team") setTeam(data);
         else if (activeTab === "faculty") setFaculty(data);
         else if (activeTab === "registrations") setRegistrations(data);
+        else if (activeTab === "contacts") setContacts(data);
+        else if (activeTab === "sponsors") setSponsors(data);
       }
     } catch (err) { console.error("Failed to fetch:", err); }
     finally { setLoading(false); }
@@ -70,7 +85,13 @@ const AdminDashboard = () => {
 
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure?")) return;
-    const url = activeTab === "events" ? API.EVENTS : activeTab === "team" ? API.TEAM : API.FACULTY;
+    let url = "";
+    if (activeTab === "events") url = API.EVENTS;
+    else if (activeTab === "team") url = API.TEAM;
+    else if (activeTab === "faculty") url = API.FACULTY;
+    else if (activeTab === "sponsors") url = API.SPONSORS;
+    else if (activeTab === "contacts") url = API.CONTACTS;
+    else return;
     try { await fetch(`${url}/${id}`, { method: "DELETE" }); fetchData(); }
     catch (err) { console.error("Delete failed:", err); }
   };
@@ -85,6 +106,8 @@ const AdminDashboard = () => {
     { key: "team" as Tab, label: "Team", icon: Users, count: team.length },
     { key: "faculty" as Tab, label: "Faculty", icon: GraduationCap, count: faculty.length },
     { key: "registrations" as Tab, label: "Registrations", icon: ClipboardList, count: registrations.length },
+    { key: "contacts" as Tab, label: "Messages", icon: MessageSquare, count: contacts.length },
+    { key: "sponsors" as Tab, label: "Sponsors", icon: Handshake, count: sponsors.length },
   ];
 
   const uniqueEventTitles = [...new Set(registrations.map(r => r.eventTitle))];
@@ -112,7 +135,6 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-background pt-20 px-4 md:px-8 pb-20">
       <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
       <div className="relative z-10 mx-auto max-w-6xl">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8 pt-4">
           <div>
             <h1 className="font-heading text-2xl font-bold text-foreground">Admin Dashboard</h1>
@@ -123,22 +145,21 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-8 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-2 mb-8 overflow-x-auto scrollbar-hide pb-1">
           {tabs.map((tab) => (
             <button key={tab.key}
               onClick={() => { setActiveTab(tab.key); setShowForm(false); setEditItem(null); }}
-              className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-medium transition-all whitespace-nowrap ${
                 activeTab === tab.key ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground hover:text-foreground"
               }`}>
-              <tab.icon size={16} /> {tab.label}
-              <span className="rounded-full bg-background/20 px-2 py-0.5 text-xs">{tab.count}</span>
+              <tab.icon size={14} /> {tab.label}
+              <span className="rounded-full bg-background/20 px-1.5 py-0.5 text-[10px]">{tab.count}</span>
             </button>
           ))}
         </div>
 
         {/* Registrations Tab */}
-        {activeTab === "registrations" ? (
+        {activeTab === "registrations" && (
           <div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
@@ -150,29 +171,27 @@ const AdminDashboard = () => {
                 <div className="relative w-full sm:w-64">
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <input className="w-full rounded-xl border border-border bg-card pl-9 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                    placeholder="Search name, email, college..." value={regSearch} onChange={(e) => setRegSearch(e.target.value)} />
+                    placeholder="Search..." value={regSearch} onChange={(e) => setRegSearch(e.target.value)} />
                 </div>
               </div>
               <button onClick={downloadCSV} disabled={filteredRegistrations.length === 0}
                 className="flex items-center gap-2 rounded-xl bg-accent-green/15 border border-accent-green/30 px-4 py-2.5 text-sm font-bold text-accent-green transition-all hover:bg-accent-green/25 disabled:opacity-40 whitespace-nowrap">
-                <Download size={14} /> Download CSV ({filteredRegistrations.length})
+                <Download size={14} /> CSV ({filteredRegistrations.length})
               </button>
             </div>
             <div className="rounded-2xl border border-border bg-card overflow-hidden">
               {loading ? <div className="p-8 text-center text-muted-foreground">Loading...</div> : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border bg-muted/30">
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">#</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Phone</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">College</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Dept/Year</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event</th>
-                      </tr>
-                    </thead>
+                    <thead><tr className="border-b border-border bg-muted/30">
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">#</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Phone</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">College</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Dept/Year</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event</th>
+                    </tr></thead>
                     <tbody>
                       {filteredRegistrations.map((reg, i) => (
                         <tr key={reg.id || i} className="border-b border-border/50 hover:bg-muted/20 transition-colors">
@@ -188,19 +207,57 @@ const AdminDashboard = () => {
                     </tbody>
                   </table>
                   {filteredRegistrations.length === 0 && !loading && (
-                    <div className="p-8 text-center text-muted-foreground">
-                      {registrations.length === 0 ? <>No registrations yet.</> : "No registrations match your filter."}
-                    </div>
+                    <div className="p-8 text-center text-muted-foreground">No registrations found.</div>
                   )}
                 </div>
               )}
             </div>
           </div>
-        ) : (
+        )}
+
+        {/* Contacts/Messages Tab */}
+        {activeTab === "contacts" && (
+          <div>
+            <div className="rounded-2xl border border-border bg-card overflow-hidden">
+              {loading ? <div className="p-8 text-center text-muted-foreground">Loading...</div> : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead><tr className="border-b border-border bg-muted/30">
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">#</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Subject</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Message</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
+                    </tr></thead>
+                    <tbody>
+                      {contacts.map((c, i) => (
+                        <tr key={c.id || i} className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                          <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{i + 1}</td>
+                          <td className="px-4 py-3 font-medium text-foreground">{c.name}</td>
+                          <td className="px-4 py-3 text-muted-foreground">{c.email}</td>
+                          <td className="px-4 py-3 text-muted-foreground">{c.subject}</td>
+                          <td className="px-4 py-3 text-muted-foreground max-w-[250px] truncate">{c.message}</td>
+                          <td className="px-4 py-3 text-right">
+                            <button onClick={() => c.id && handleDelete(c.id)} className="p-1.5 rounded-lg text-muted-foreground hover:text-accent-red hover:bg-accent-red/10 transition-colors"><Trash2 size={14} /></button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {contacts.length === 0 && !loading && <div className="p-8 text-center text-muted-foreground">No messages yet.</div>}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* CRUD Tabs: events, team, faculty, sponsors */}
+        {(activeTab === "events" || activeTab === "team" || activeTab === "faculty" || activeTab === "sponsors") && (
           <>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground font-heading">
-                {activeTab === "events" ? "All Events" : activeTab === "team" ? "Team Members" : "Faculty Members"}
+                {activeTab === "events" ? "All Events" : activeTab === "team" ? "Team Members" : activeTab === "faculty" ? "Faculty Members" : "Sponsors & Partners"}
               </h2>
               <button onClick={() => { setShowForm(true); setEditItem(null); }}
                 className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition-all hover:shadow-glow">
@@ -217,10 +274,10 @@ const AdminDashboard = () => {
                         <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">ID</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name/Title</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                          {activeTab === "events" ? "Date" : "Role"}
+                          {activeTab === "events" ? "Date" : activeTab === "sponsors" ? "Tier" : "Role"}
                         </th>
                         <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                          {activeTab === "events" ? "Token" : activeTab === "team" ? "Token No" : "Email"}
+                          {activeTab === "events" ? "Token" : activeTab === "team" ? "Token No" : activeTab === "sponsors" ? "Website" : "Email"}
                         </th>
                         <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
                       </tr>
@@ -238,9 +295,9 @@ const AdminDashboard = () => {
                           </td>
                           <td className="px-4 py-3 text-right">
                             <div className="flex items-center justify-end gap-1">
-                              <button onClick={() => { setEditItem(item); setShowForm(true); }} className="p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors" title="Edit"><Edit2 size={14} /></button>
-                              <button onClick={() => { setImageEditItem(item); setShowImageEdit(true); }} className="p-1.5 rounded-lg text-muted-foreground hover:text-accent-cyan hover:bg-accent-cyan/10 transition-colors" title="Edit Images"><ImageIcon size={14} /></button>
-                              <button onClick={() => item.id && handleDelete(item.id)} className="p-1.5 rounded-lg text-muted-foreground hover:text-accent-red hover:bg-accent-red/10 transition-colors" title="Delete"><Trash2 size={14} /></button>
+                              <button onClick={() => { setEditItem(item); setShowForm(true); }} className="p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"><Edit2 size={14} /></button>
+                              <button onClick={() => { setImageEditItem(item); setShowImageEdit(true); }} className="p-1.5 rounded-lg text-muted-foreground hover:text-accent-cyan hover:bg-accent-cyan/10 transition-colors"><ImageIcon size={14} /></button>
+                              <button onClick={() => item.id && handleDelete(item.id)} className="p-1.5 rounded-lg text-muted-foreground hover:text-accent-red hover:bg-accent-red/10 transition-colors"><Trash2 size={14} /></button>
                             </div>
                           </td>
                         </tr>
@@ -283,14 +340,27 @@ const AdminDashboard = () => {
                           </td>
                         </tr>
                       ))}
+                      {activeTab === "sponsors" && sponsors.map((item) => (
+                        <tr key={item.id} className="border-b border-border/50 hover:bg-muted/20 transition-colors">
+                          <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{item.id}</td>
+                          <td className="px-4 py-3 font-medium text-foreground">{item.name}</td>
+                          <td className="px-4 py-3 text-muted-foreground">{item.tier}</td>
+                          <td className="px-4 py-3 text-muted-foreground text-xs truncate max-w-[200px]">{item.website}</td>
+                          <td className="px-4 py-3 text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <button onClick={() => { setEditItem(item); setShowForm(true); }} className="p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"><Edit2 size={14} /></button>
+                              <button onClick={() => item.id && handleDelete(item.id)} className="p-1.5 rounded-lg text-muted-foreground hover:text-accent-red hover:bg-accent-red/10 transition-colors"><Trash2 size={14} /></button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                   {((activeTab === "events" && events.length === 0) ||
                     (activeTab === "team" && team.length === 0) ||
-                    (activeTab === "faculty" && faculty.length === 0)) && !loading && (
-                    <div className="p-8 text-center text-muted-foreground">
-                      No data found. Backend: <code className="text-primary">{API.BASE}</code>
-                    </div>
+                    (activeTab === "faculty" && faculty.length === 0) ||
+                    (activeTab === "sponsors" && sponsors.length === 0)) && !loading && (
+                    <div className="p-8 text-center text-muted-foreground">No data found.</div>
                   )}
                 </div>
               )}
@@ -298,32 +368,37 @@ const AdminDashboard = () => {
           </>
         )}
 
-        {/* Add/Edit Form Modal */}
+        {/* Add/Edit Form Modal — FIXED: proper z-index, pointer-events, scroll */}
         {showForm && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/90 backdrop-blur-md p-4" onClick={() => setShowForm(false)}>
-            <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-card animate-[scaleIn_0.3s_ease-out] max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-heading text-lg font-bold text-foreground">{editItem ? "Edit" : "Add"} {activeTab.slice(0, -1)}</h3>
-                <button onClick={() => setShowForm(false)} className="p-1 text-muted-foreground hover:text-foreground"><X size={20} /></button>
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowForm(false)}>
+            <div className="relative w-full max-w-lg mx-4 rounded-2xl border border-border bg-card shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between p-5 border-b border-border shrink-0">
+                <h3 className="font-heading text-lg font-bold text-foreground">{editItem ? "Edit" : "Add"} {activeTab === "sponsors" ? "Sponsor" : activeTab.slice(0, -1)}</h3>
+                <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X size={20} /></button>
               </div>
-              {activeTab === "events" && <EventForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
-              {activeTab === "team" && <TeamForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
-              {activeTab === "faculty" && <FacultyForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
+              <div className="overflow-y-auto p-5 flex-1">
+                {activeTab === "events" && <EventForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
+                {activeTab === "team" && <TeamForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
+                {activeTab === "faculty" && <FacultyForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
+                {activeTab === "sponsors" && <SponsorForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
+              </div>
             </div>
           </div>
         )}
 
         {/* Image Edit Modal */}
         {showImageEdit && imageEditItem && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/90 backdrop-blur-md p-4" onClick={() => setShowImageEdit(false)}>
-            <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-card animate-[scaleIn_0.3s_ease-out] max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-4">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowImageEdit(false)}>
+            <div className="relative w-full max-w-lg mx-4 rounded-2xl border border-border bg-card shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between p-5 border-b border-border shrink-0">
                 <h3 className="font-heading text-lg font-bold text-foreground">Edit Images</h3>
-                <button onClick={() => setShowImageEdit(false)} className="p-1 text-muted-foreground hover:text-foreground"><X size={20} /></button>
+                <button onClick={() => setShowImageEdit(false)} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X size={20} /></button>
               </div>
-              {activeTab === "events" && <EventImageEdit item={imageEditItem} onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
-              {activeTab === "team" && <MemberImageEdit item={imageEditItem} type="team" onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
-              {activeTab === "faculty" && <MemberImageEdit item={imageEditItem} type="faculty" onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
+              <div className="overflow-y-auto p-5 flex-1">
+                {activeTab === "events" && <EventImageEdit item={imageEditItem} onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
+                {activeTab === "team" && <MemberImageEdit item={imageEditItem} type="team" onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
+                {activeTab === "faculty" && <MemberImageEdit item={imageEditItem} type="faculty" onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
+              </div>
             </div>
           </div>
         )}
@@ -372,8 +447,7 @@ const EventForm = ({ item, onSuccess }: { item: any; onSuccess: () => void }) =>
           <option value="Technical">Technical</option><option value="Esports">Esports</option><option value="Sports">Sports</option><option value="Fun">Fun</option>
         </select>
         <select className="rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none" value={form.token} onChange={(e) => setForm({ ...form, token: e.target.value })}>
-          <option value="1">Token 1 (Active/Upcoming)</option>
-          <option value="0">Token 0 (Hidden/Past)</option>
+          <option value="1">Active</option><option value="0">Hidden</option>
         </select>
       </div>
       <textarea className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none resize-none" rows={3} placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
@@ -390,7 +464,7 @@ const EventForm = ({ item, onSuccess }: { item: any; onSuccess: () => void }) =>
           </div>
         </>
       )}
-      <button type="submit" disabled={submitting} className="valorant-btn-cyan w-full text-center disabled:opacity-50">
+      <button type="submit" disabled={submitting} className="w-full rounded-xl bg-primary text-primary-foreground py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50">
         {submitting ? "Saving..." : item?.id ? "Update Event" : "Create Event"}
       </button>
     </form>
@@ -451,7 +525,7 @@ const TeamForm = ({ item, onSuccess }: { item: any; onSuccess: () => void }) => 
           <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} className="text-sm text-muted-foreground" />
         </div>
       )}
-      <button type="submit" disabled={submitting} className="valorant-btn-cyan w-full text-center disabled:opacity-50">
+      <button type="submit" disabled={submitting} className="w-full rounded-xl bg-primary text-primary-foreground py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50">
         {submitting ? "Saving..." : item?.id ? "Update Member" : "Add Member"}
       </button>
     </form>
@@ -498,8 +572,56 @@ const FacultyForm = ({ item, onSuccess }: { item: any; onSuccess: () => void }) 
           <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} className="text-sm text-muted-foreground" />
         </div>
       )}
-      <button type="submit" disabled={submitting} className="valorant-btn-cyan w-full text-center disabled:opacity-50">
+      <button type="submit" disabled={submitting} className="w-full rounded-xl bg-primary text-primary-foreground py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50">
         {submitting ? "Saving..." : item?.id ? "Update Faculty" : "Add Faculty"}
+      </button>
+    </form>
+  );
+};
+
+/* ========== SPONSOR FORM ========== */
+const SponsorForm = ({ item, onSuccess }: { item: any; onSuccess: () => void }) => {
+  const [form, setForm] = useState<any>(item || { name: "", website: "", tier: "Gold" });
+  const [logo, setLogo] = useState<File | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      if (item?.id) {
+        const { logoUrl, id, ...body } = form;
+        await fetch(`${API.SPONSORS}/${item.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      } else {
+        const fd = new FormData();
+        const { logoUrl, id, ...body } = form;
+        fd.append("data", new Blob([JSON.stringify(body)], { type: "application/json" }));
+        if (logo) fd.append("logo", logo);
+        await fetch(API.SPONSORS, { method: "POST", body: fd });
+      }
+      onSuccess();
+    } catch (err) { console.error(err); }
+    finally { setSubmitting(false); }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <input className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none" placeholder="Sponsor Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+      <input className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none" placeholder="Website URL" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} />
+      <select className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none" value={form.tier} onChange={(e) => setForm({ ...form, tier: e.target.value })}>
+        <option value="Platinum">Platinum</option>
+        <option value="Gold">Gold</option>
+        <option value="Silver">Silver</option>
+        <option value="Partner">Partner</option>
+      </select>
+      {!item?.id && (
+        <div>
+          <label className="block text-xs font-semibold text-muted-foreground mb-1">Logo Image</label>
+          <input type="file" accept="image/*" onChange={(e) => setLogo(e.target.files?.[0] || null)} className="text-sm text-muted-foreground" />
+        </div>
+      )}
+      <button type="submit" disabled={submitting} className="w-full rounded-xl bg-primary text-primary-foreground py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50">
+        {submitting ? "Saving..." : item?.id ? "Update Sponsor" : "Add Sponsor"}
       </button>
     </form>
   );
@@ -511,10 +633,6 @@ const EventImageEdit = ({ item, onSuccess }: { item: any; onSuccess: () => void 
   const [galleryImages, setGalleryImages] = useState<FileList | null>(null);
   const [keptImages, setKeptImages] = useState<string[]>(item.gallery || []);
   const [submitting, setSubmitting] = useState(false);
-
-  const removeGalleryImage = (url: string) => {
-    setKeptImages(prev => prev.filter(u => u !== url));
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -533,17 +651,11 @@ const EventImageEdit = ({ item, onSuccess }: { item: any; onSuccess: () => void 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <p className="text-xs text-muted-foreground">Editing images for: <span className="text-primary font-semibold">{item.title}</span></p>
-
-      {/* Current cover */}
       <div>
         <label className="block text-xs font-semibold text-muted-foreground mb-2">Cover Image</label>
-        {item.coverImage && (
-          <img src={item.coverImage} alt="Cover" className="h-32 w-full object-cover rounded-xl border border-border mb-2" />
-        )}
+        {item.coverImage && <img src={item.coverImage} alt="Cover" className="h-32 w-full object-cover rounded-xl border border-border mb-2" />}
         <input type="file" accept="image/*" onChange={(e) => setCoverImage(e.target.files?.[0] || null)} className="text-sm text-muted-foreground" />
       </div>
-
-      {/* Current gallery */}
       <div>
         <label className="block text-xs font-semibold text-muted-foreground mb-2">Gallery Images</label>
         {keptImages.length > 0 && (
@@ -551,24 +663,22 @@ const EventImageEdit = ({ item, onSuccess }: { item: any; onSuccess: () => void 
             {keptImages.map((url, i) => (
               <div key={i} className="relative group">
                 <img src={url} alt="" className="h-20 w-20 object-cover rounded-lg border border-border" />
-                <button type="button" onClick={() => removeGalleryImage(url)}
+                <button type="button" onClick={() => setKeptImages(prev => prev.filter(u => u !== url))}
                   className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent-red text-white text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
               </div>
             ))}
           </div>
         )}
         <input type="file" accept="image/*" multiple onChange={(e) => setGalleryImages(e.target.files)} className="text-sm text-muted-foreground" />
-        <p className="text-[10px] text-muted-foreground mt-1">New images will be added alongside kept images.</p>
       </div>
-
-      <button type="submit" disabled={submitting} className="valorant-btn-cyan w-full text-center disabled:opacity-50">
+      <button type="submit" disabled={submitting} className="w-full rounded-xl bg-primary text-primary-foreground py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50">
         {submitting ? "Uploading..." : "Update Images"}
       </button>
     </form>
   );
 };
 
-/* ========== MEMBER IMAGE EDIT (Team/Faculty) ========== */
+/* ========== MEMBER IMAGE EDIT ========== */
 const MemberImageEdit = ({ item, type, onSuccess }: { item: any; type: "team" | "faculty"; onSuccess: () => void }) => {
   const [image, setImage] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -590,14 +700,12 @@ const MemberImageEdit = ({ item, type, onSuccess }: { item: any; type: "team" | 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <p className="text-xs text-muted-foreground">Editing image for: <span className="text-primary font-semibold">{item.name}</span></p>
-      {item.imageUrl && (
-        <img src={item.imageUrl} alt={item.name} className="h-32 w-32 object-cover rounded-xl border border-border mx-auto" />
-      )}
+      {item.imageUrl && <img src={item.imageUrl} alt={item.name} className="h-32 w-32 object-cover rounded-xl border border-border mx-auto" />}
       <div>
         <label className="block text-xs font-semibold text-muted-foreground mb-1">New Image</label>
         <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} className="text-sm text-muted-foreground" required />
       </div>
-      <button type="submit" disabled={submitting} className="valorant-btn-cyan w-full text-center disabled:opacity-50">
+      <button type="submit" disabled={submitting} className="w-full rounded-xl bg-primary text-primary-foreground py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50">
         {submitting ? "Uploading..." : "Update Image"}
       </button>
     </form>
