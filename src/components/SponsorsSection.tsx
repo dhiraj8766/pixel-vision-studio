@@ -1,19 +1,43 @@
-const sponsors = [
+import { useState, useEffect } from "react";
+import { API } from "@/config/api";
+
+interface Sponsor {
+  id: number; name: string; logoUrl: string; website: string; tier: string;
+}
+
+const fallbackSponsors = [
   { name: "Google", logo: "" },
   { name: "Microsoft", logo: "" },
   { name: "GitHub", logo: "" },
   { name: "Notion", logo: "" },
   { name: "Vercel", logo: "" },
   { name: "AWS", logo: "" },
-  { name: "DigitalOcean", logo: "" },
-  { name: "JetBrains", logo: "" },
 ];
 
 const SponsorsSection = () => {
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        const res = await fetch(API.SPONSORS);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.length > 0) setSponsors(data);
+        }
+      } catch { /* use fallback */ }
+    };
+    fetchSponsors();
+  }, []);
+
+  const displaySponsors = sponsors.length > 0
+    ? sponsors.map(s => ({ name: s.name, logo: s.logoUrl, url: s.website }))
+    : fallbackSponsors.map(s => ({ name: s.name, logo: s.logo, url: "#" }));
+
   return (
     <section className="relative bg-background px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16 overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
-      
+
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mb-8 sm:mb-12 text-center">
           <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-primary font-heading">
@@ -27,17 +51,15 @@ const SponsorsSection = () => {
           </p>
         </div>
 
-        {/* Infinite scroll marquee */}
         <div className="relative overflow-hidden py-4 sm:py-8">
           <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-background to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-background to-transparent z-10" />
-          
+
           <div className="flex animate-[marquee_20s_linear_infinite] gap-4 sm:gap-8">
-            {[...sponsors, ...sponsors].map((sponsor, index) => (
-              <div
-                key={index}
-                className="flex h-14 w-28 sm:h-20 sm:w-44 flex-shrink-0 items-center justify-center rounded-lg sm:rounded-xl border border-border/50 bg-card/50 transition-all hover:border-primary/30 hover:shadow-glow"
-              >
+            {[...displaySponsors, ...displaySponsors].map((sponsor, index) => (
+              <a key={index} href={sponsor.url && sponsor.url !== "#" ? sponsor.url : undefined}
+                target="_blank" rel="noopener noreferrer"
+                className="flex h-14 w-28 sm:h-20 sm:w-44 flex-shrink-0 items-center justify-center rounded-lg sm:rounded-xl border border-border/50 bg-card/50 transition-all hover:border-primary/30 hover:shadow-glow">
                 {sponsor.logo ? (
                   <img src={sponsor.logo} alt={sponsor.name} className="h-6 sm:h-8 w-auto opacity-40 grayscale transition-all hover:opacity-80 hover:grayscale-0" loading="lazy" />
                 ) : (
@@ -45,12 +67,11 @@ const SponsorsSection = () => {
                     {sponsor.name}
                   </span>
                 )}
-              </div>
+              </a>
             ))}
           </div>
         </div>
 
-        {/* CTA */}
         <div className="mt-8 sm:mt-12 text-center">
           <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 rounded-xl sm:rounded-2xl border border-dashed border-border/50 bg-card/30 px-5 sm:px-8 py-4 sm:py-5">
             <div className="text-center sm:text-left">
