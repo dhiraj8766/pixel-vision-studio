@@ -16,7 +16,7 @@ interface TeamMember {
 }
 
 const SocialRow = ({ social }: { social: Record<string, string> }) => (
-  <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-2">
+  <div className="flex items-center justify-center gap-1.5 mt-2">
     {Object.entries(social || {}).map(([key, url]) => {
       const Icon = socialIconMap[key.toLowerCase()];
       if (!Icon || !url) return null;
@@ -159,7 +159,7 @@ const TeamPage = () => {
           </div>
         )}
       </div>
-      <ProfileModal profile={selectedProfile ? { ...selectedProfile, image: selectedProfile.imageUrl, social: selectedProfile.socials } : null} onClose={() => setSelectedProfile(null)} />
+      <ProfileModal profile={selectedProfile ? { ...selectedProfile, image: selectedProfile.imageUrl, social: selectedProfile.socials, hidePhone: true } : null} onClose={() => setSelectedProfile(null)} />
     </div>
   );
 };

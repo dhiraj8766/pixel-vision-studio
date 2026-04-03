@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
-import { Instagram, Linkedin, Github, Twitter, Mail, MapPin, ArrowUpRight } from "lucide-react";
+import { Instagram, Linkedin, Twitter, Mail, MapPin, ArrowUpRight, Facebook, MessageCircle } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
 
 const Footer = () => {
   return (
     <footer className="relative border-t border-border bg-card/30 px-4 py-10 sm:px-6 sm:py-16 md:px-10 lg:px-16">
       <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
-      
+
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="grid gap-8 sm:gap-10 grid-cols-2 md:grid-cols-4">
-          {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <img src={picselLogo} alt="PICSEL" className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-border" />
@@ -27,7 +26,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="mb-3 sm:mb-4 text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Navigate</h4>
             <div className="flex flex-col gap-1.5 sm:gap-2">
@@ -46,7 +44,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Resources */}
           <div>
             <h4 className="mb-3 sm:mb-4 text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Resources</h4>
             <div className="flex flex-col gap-1.5 sm:gap-2">
@@ -62,24 +59,19 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Social */}
           <div>
             <h4 className="mb-3 sm:mb-4 text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-foreground font-heading">Connect</h4>
             <div className="flex flex-wrap gap-2 sm:gap-3">
               {[
-                { name: "Instagram", icon: Instagram, url: "#" },
-                { name: "LinkedIn", icon: Linkedin, url: "#" },
-                { name: "GitHub", icon: Github, url: "#" },
-                { name: "Twitter", icon: Twitter, url: "#" },
+                { name: "Instagram", icon: Instagram, url: "https://instagram.com/picsel_kdkce" },
+                { name: "LinkedIn", icon: Linkedin, url: "https://linkedin.com/company/picsel-kdkce" },
+                { name: "Twitter/X", icon: Twitter, url: "https://twitter.com/picsel_kdkce" },
+                { name: "Facebook", icon: Facebook, url: "https://facebook.com/picsel.kdkce" },
+                { name: "WhatsApp", icon: MessageCircle, url: "https://wa.me/919876543210" },
               ].map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer"
                   className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary hover:shadow-glow"
-                  aria-label={social.name}
-                >
+                  aria-label={social.name}>
                   <social.icon size={14} />
                 </a>
               ))}
@@ -94,8 +86,8 @@ const Footer = () => {
           <span>© {new Date().getFullYear()} PICSEL Club — KDKCE. All rights reserved.</span>
           <div className="flex items-center gap-3">
             <span className="text-muted-foreground/50">Crafted with ❤️ by PICSEL Dev Team</span>
-            <Link to="/admin" className="opacity-30 transition-opacity hover:opacity-100 text-[9px] uppercase tracking-[0.28em] text-primary">
-              Portal
+            <Link to="/admin" className="opacity-20 transition-opacity hover:opacity-80 text-[9px] uppercase tracking-[0.28em] text-muted-foreground hover:text-primary">
+              ⚡
             </Link>
           </div>
         </div>

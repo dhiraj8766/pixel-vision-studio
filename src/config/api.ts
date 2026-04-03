@@ -13,4 +13,6 @@ export const API = {
   FACULTY: `${API_BASE_URL}/faculty`,
   FACULTY_IMAGES: (id: number) => `${API_BASE_URL}/faculty/images/${id}`,
   REGISTRATIONS: `${API_BASE_URL}/registrations`,
+  CONTACTS: `${API_BASE_URL}/contacts`,
+  SPONSORS: `${API_BASE_URL}/sponsors`,
 };

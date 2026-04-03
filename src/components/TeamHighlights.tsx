@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Crown, Shield, Users } from "lucide-react";
 import { API } from "@/config/api";
 
 interface TeamMember {
@@ -16,8 +16,7 @@ const TeamHighlights = () => {
         const res = await fetch(API.TEAM);
         if (res.ok) {
           const data: TeamMember[] = await res.json();
-          const sortedTeam = [...data].sort((a, b) => a.tokenNo - b.tokenNo || a.name.localeCompare(b.name));
-          setTeam(sortedTeam);
+          setTeam([...data].sort((a, b) => a.tokenNo - b.tokenNo || a.name.localeCompare(b.name)));
         }
       } catch (err) { console.error("Failed to fetch team:", err); }
     };
@@ -26,81 +25,102 @@ const TeamHighlights = () => {
 
   if (team.length === 0) return null;
 
-  const tokenLabel = (tokenNo: number) => {
-    if (tokenNo === 1) return "President";
-    if (tokenNo === 2) return "Core Team";
-    return "Member";
-  };
-
-  const tokenColor = (tokenNo: number) => {
-    if (tokenNo === 1) return "border-accent-yellow/40 bg-accent-yellow/10 text-accent-yellow";
-    if (tokenNo === 2) return "border-primary/40 bg-primary/10 text-primary";
-    return "border-border bg-muted/50 text-muted-foreground";
+  const getBadge = (tokenNo: number) => {
+    if (tokenNo === 1) return { icon: Crown, label: "President", cls: "from-amber-500/20 to-yellow-500/20 text-amber-400 border-amber-500/30" };
+    if (tokenNo === 2) return { icon: Shield, label: "Core", cls: "from-primary/20 to-accent-cyan/20 text-primary border-primary/30" };
+    return { icon: Users, label: "Member", cls: "from-muted to-muted text-muted-foreground border-border" };
   };
 
   return (
-    <section className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16">
+    <section className="relative overflow-hidden px-4 py-16 sm:px-6 sm:py-24 md:px-10 lg:px-16">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+        backgroundSize: '32px 32px',
+      }} />
+
       <div className="relative z-10 mx-auto max-w-6xl">
-        {/* Header */}
-        <div className="mb-8 text-center sm:mb-12">
-          <span className="mb-3 inline-flex rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-[10px] uppercase tracking-[0.28em] text-primary font-heading sm:text-xs">
-            Our Team
-          </span>
+        <div className="mb-10 flex flex-col items-center text-center sm:mb-14">
+          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
+            <Users className="h-6 w-6 text-primary" />
+          </div>
           <h2 className="font-heading text-2xl font-bold text-foreground sm:text-4xl md:text-5xl">
-            The People Behind PICSEL
+            Meet Our Team
           </h2>
-          <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground sm:text-base">
-            A passionate crew of innovators, coders, and creators.
+          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
+            The passionate minds driving innovation at PICSEL
           </p>
         </div>
 
-        {/* Marquee */}
-        <div className="relative overflow-hidden rounded-2xl">
-          <div className="absolute left-0 top-0 bottom-0 z-10 w-12 bg-gradient-to-r from-background to-transparent pointer-events-none sm:w-20" />
-          <div className="absolute right-0 top-0 bottom-0 z-10 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none sm:w-20" />
-
-          <div className="flex animate-[marquee_35s_linear_infinite] gap-5 hover:[animation-play-state:paused]">
-            {[...team, ...team].map((member, index) => (
-              <div
-                key={`${member.id}-${index}`}
-                className="group w-[200px] shrink-0 text-center sm:w-[220px]"
-              >
-                {/* Avatar */}
-                <div className="relative mx-auto mb-3 h-28 w-28 overflow-hidden rounded-full border-2 border-border bg-muted transition-all group-hover:border-primary/50 group-hover:shadow-glow sm:h-32 sm:w-32">
-                  {member.imageUrl ? (
-                    <img
-                      src={member.imageUrl}
-                      alt={member.name}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-3xl font-bold text-primary font-heading">
-                      {member.name.charAt(0)}
+        {/* Marquee Row 1 - left */}
+        <div className="relative overflow-hidden mb-4">
+          <div className="absolute left-0 top-0 bottom-0 z-10 w-16 bg-gradient-to-r from-background to-transparent pointer-events-none sm:w-24" />
+          <div className="absolute right-0 top-0 bottom-0 z-10 w-16 bg-gradient-to-l from-background to-transparent pointer-events-none sm:w-24" />
+          <div className="flex animate-[marquee_40s_linear_infinite] gap-4 hover:[animation-play-state:paused]">
+            {[...team, ...team].map((member, index) => {
+              const badge = getBadge(member.tokenNo);
+              const BadgeIcon = badge.icon;
+              return (
+                <div key={`${member.id}-${index}`}
+                  className="group relative w-[260px] shrink-0 overflow-hidden rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-[0_8px_32px_-8px_hsl(var(--primary)/0.15)]">
+                  <div className="flex items-center gap-4">
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted">
+                      {member.imageUrl ? (
+                        <img src={member.imageUrl} alt={member.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xl font-bold text-primary/60 font-heading bg-primary/5">{member.name.charAt(0)}</div>
+                      )}
                     </div>
-                  )}
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-heading text-sm font-bold text-foreground truncate">{member.name}</h3>
+                      <p className="text-xs text-muted-foreground truncate mt-0.5">{member.role}</p>
+                      <div className={`mt-1.5 inline-flex items-center gap-1 rounded-md border bg-gradient-to-r px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${badge.cls}`}>
+                        <BadgeIcon size={9} /> {badge.label}
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+        </div>
 
-                {/* Info */}
-                <h3 className="font-heading text-sm font-bold text-foreground sm:text-base">{member.name}</h3>
-                <p className="text-xs text-primary font-medium">{member.role}</p>
-                <span className={`mt-1.5 inline-flex rounded-full border px-2.5 py-0.5 text-[9px] uppercase tracking-wider font-semibold ${tokenColor(member.tokenNo)}`}>
-                  {tokenLabel(member.tokenNo)}
-                </span>
-              </div>
-            ))}
+        {/* Marquee Row 2 - right (reverse) */}
+        <div className="relative overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 z-10 w-16 bg-gradient-to-r from-background to-transparent pointer-events-none sm:w-24" />
+          <div className="absolute right-0 top-0 bottom-0 z-10 w-16 bg-gradient-to-l from-background to-transparent pointer-events-none sm:w-24" />
+          <div className="flex animate-[marquee_40s_linear_infinite_reverse] gap-4 hover:[animation-play-state:paused]">
+            {[...team.slice().reverse(), ...team.slice().reverse()].map((member, index) => {
+              const badge = getBadge(member.tokenNo);
+              const BadgeIcon = badge.icon;
+              return (
+                <div key={`rev-${member.id}-${index}`}
+                  className="group relative w-[260px] shrink-0 overflow-hidden rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-[0_8px_32px_-8px_hsl(var(--primary)/0.15)]">
+                  <div className="flex items-center gap-4">
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted">
+                      {member.imageUrl ? (
+                        <img src={member.imageUrl} alt={member.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xl font-bold text-primary/60 font-heading bg-primary/5">{member.name.charAt(0)}</div>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-heading text-sm font-bold text-foreground truncate">{member.name}</h3>
+                      <p className="text-xs text-muted-foreground truncate mt-0.5">{member.role}</p>
+                      <div className={`mt-1.5 inline-flex items-center gap-1 rounded-md border bg-gradient-to-r px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${badge.cls}`}>
+                        <BadgeIcon size={9} /> {badge.label}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* CTA */}
-        <div className="mt-8 text-center sm:mt-10">
-          <Link to="/team">
-            <div className="hidden md:inline-block valorant-btn-wrapper">
-              <button className="valorant-btn flex items-center gap-2">View Full Team <ArrowRight size={16} /></button>
-            </div>
-            <button className="btn-mobile-primary md:hidden flex items-center gap-2 mx-auto text-sm">
-              View Full Team <ArrowRight size={14} />
-            </button>
+        <div className="mt-10 text-center sm:mt-12">
+          <Link to="/team" className="group inline-flex items-center gap-3 rounded-full border border-border/60 bg-card/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 hover:shadow-glow">
+            View Full Team <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </div>
