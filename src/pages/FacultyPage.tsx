@@ -68,7 +68,6 @@ const FacultyPage = () => {
                   <div className="flex-1 p-4 sm:p-5 pt-0 sm:pt-5">
                     <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">{f.role}</span>
                     <h3 className="text-base sm:text-lg font-bold text-foreground font-heading">{f.name}</h3>
-                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-2">{f.message}</p>
                     <div className="mt-3 flex items-center gap-3 flex-wrap">
                       {f.email && (
                         <a href={`mailto:${f.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
@@ -94,7 +93,7 @@ const FacultyPage = () => {
           </div>
         )}
       </div>
-      <ProfileModal profile={selectedProfile ? { ...selectedProfile, image: selectedProfile.imageUrl, description: selectedProfile.message } : null} onClose={() => setSelectedProfile(null)} />
+      <ProfileModal profile={selectedProfile ? { ...selectedProfile, image: selectedProfile.imageUrl } : null} onClose={() => setSelectedProfile(null)} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, Calendar, Clock, MapPin } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
 import hero1 from "@/assets/heroimg/hero1.jpg";
 import hero2 from "@/assets/heroimg/hero2.jpg";
@@ -23,9 +23,7 @@ const HeroSection = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [events, setEvents] = useState<EventData[]>([]);
   const [activeEventIndex, setActiveEventIndex] = useState(0);
-  const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
 
-  // Fetch upcoming events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -66,14 +64,11 @@ const HeroSection = () => {
       }} />
       <div className="absolute top-0 left-0 w-full h-[60%] overflow-hidden pointer-events-none">
         <div className="absolute -top-[30%] left-[5%] w-[90%] h-[400px] sm:h-[500px] lg:h-[600px] rounded-full bg-gradient-to-r from-primary/10 via-accent-cyan/8 to-accent-purple/10 blur-[80px] sm:blur-[120px] animate-[float_25s_ease-in-out_infinite]" />
-        <div className="absolute top-[10%] -right-[10%] w-[60%] h-[300px] sm:h-[400px] rounded-full bg-gradient-to-l from-accent-purple/8 via-primary/6 to-transparent blur-[100px] animate-[float_18s_ease-in-out_infinite_reverse]" />
       </div>
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{
         backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
         backgroundSize: '60px 60px',
       }} />
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-gradient-to-bl from-accent-cyan/8 to-transparent rounded-full blur-[60px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] bg-gradient-to-tr from-primary/6 to-transparent rounded-full blur-[80px] pointer-events-none" />
 
       <div className="absolute top-5 left-4 sm:left-6 md:left-10 lg:left-16 z-20 flex items-center gap-2.5">
         <img src={picselLogo} alt="PICSEL" className="h-9 w-9 rounded-full border border-border/30 shadow-lg" />
@@ -147,7 +142,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Event Carousel - from API */}
+        {/* Event Carousel */}
         {activeEvent && (
           <div className="mt-6 sm:mt-8">
             <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -157,72 +152,44 @@ const HeroSection = () => {
                 <span className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-border bg-secondary transition-all group-hover:bg-primary group-hover:border-primary"><ArrowRight size={14} /></span>
               </Link>
             </div>
-            <div className="relative h-48 sm:h-56 md:h-64 lg:h-72 overflow-hidden rounded-xl sm:rounded-2xl shadow-card border border-border/20 cursor-pointer"
-              style={{ backgroundImage: activeEvent.coverImage ? `url(${activeEvent.coverImage})` : undefined, backgroundSize: "cover", backgroundPosition: "center", backgroundColor: activeEvent.coverImage ? undefined : "hsl(var(--muted))" }}
-              onClick={() => setSelectedEvent(activeEvent)}>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/20" />
-              <div className="absolute inset-0 flex items-end p-4 sm:p-6 md:p-8">
-                <div className="flex w-full flex-col gap-3 sm:gap-4 md:flex-row md:items-end md:justify-between">
-                  <div className="flex flex-col gap-2 sm:gap-3">
-                    <h3 className="text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-foreground md:text-3xl font-heading">{activeEvent.title}</h3>
-                    <p className="max-w-sm text-xs sm:text-sm text-secondary-foreground line-clamp-2">{activeEvent.description}</p>
-                    <Link to={`/register?event=${encodeURIComponent(activeEvent.title)}&eventId=${activeEvent.id}`} className="inline-block w-fit">
-                      <button className="hidden md:block valorant-btn text-xs py-2 px-5">Register Now</button>
-                      <button className="btn-mobile-primary md:hidden text-xs py-1.5 px-4">Register Now</button>
-                    </Link>
+
+            {/* Event Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {events.slice(0, 3).map((ev, index) => (
+                <Link key={ev.id} to={`/register?event=${encodeURIComponent(ev.title)}&eventId=${ev.id}`}
+                  className={`group relative overflow-hidden rounded-xl border border-border/30 bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-[0_8px_32px_-8px_hsl(var(--primary)/0.2)] ${index === 0 ? 'sm:col-span-2 lg:col-span-1' : ''}`}>
+                  <div className="relative h-40 sm:h-44 overflow-hidden">
+                    {ev.coverImage ? (
+                      <img src={ev.coverImage} alt={ev.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                    ) : (
+                      <div className="h-full w-full bg-muted flex items-center justify-center text-muted-foreground">
+                        <Calendar size={32} className="opacity-30" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
+                    {index === activeEventIndex && (
+                      <div className="absolute top-0 left-0 h-0.5 bg-primary animate-[progressFill_5s_linear] w-full" />
+                    )}
                   </div>
-                  <div className="flex flex-row md:flex-col items-start md:items-end gap-2 md:gap-0 md:text-right">
-                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-accent-yellow">Upcoming</span>
-                    <span className="flex items-center gap-1 text-sm sm:text-base font-bold text-foreground md:mt-1"><Calendar size={12} /> {activeEvent.date}</span>
-                    <span className="flex items-center gap-1 text-xs sm:text-sm text-foreground"><Clock size={12} /> {activeEvent.time}</span>
+                  <div className="p-4">
+                    <h3 className="text-sm font-bold text-foreground font-heading line-clamp-1">{ev.title}</h3>
+                    <p className="mt-1 text-xs text-muted-foreground line-clamp-1">{ev.description}</p>
+                    <div className="mt-3 flex items-center gap-3 text-[10px] text-muted-foreground">
+                      <span className="flex items-center gap-1"><Calendar size={10} /> {ev.date}</span>
+                      <span className="flex items-center gap-1"><Clock size={10} /> {ev.time}</span>
+                    </div>
+                    <div className="mt-3">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[10px] font-semibold text-primary">
+                        Register Now <ArrowRight size={10} />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-3 sm:mt-4 flex gap-2 sm:gap-3">
-              {events.map((ev, index) => (
-                <button key={ev.id} onClick={() => setActiveEventIndex(index)}
-                  className={`relative h-12 w-16 sm:h-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl border transition-all ${
-                    index === activeEventIndex ? "border-primary/60 ring-2 ring-primary/20 scale-105" : "border-border opacity-50"
-                  }`}>
-                  {ev.coverImage ? (
-                    <img src={ev.coverImage} alt={ev.title} className="h-full w-full object-cover" loading="lazy" />
-                  ) : (
-                    <div className="h-full w-full bg-muted flex items-center justify-center text-[8px] text-muted-foreground">{ev.title.charAt(0)}</div>
-                  )}
-                  {index === activeEventIndex && <div className="absolute bottom-0 left-0 h-1 bg-primary animate-[progressFill_5s_linear]" style={{ width: "100%" }} />}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
         )}
       </div>
-
-      {/* Event Popup */}
-      {selectedEvent && (
-        <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-md p-0 sm:p-4" onClick={() => setSelectedEvent(null)}>
-          <div className="w-full sm:max-w-lg overflow-hidden rounded-t-2xl sm:rounded-2xl border-t sm:border border-border/30 bg-background shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[85vh] sm:max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="relative h-40 sm:h-56">
-              {selectedEvent.coverImage ? (
-                <img src={selectedEvent.coverImage} alt={selectedEvent.title} className="h-full w-full object-cover" />
-              ) : <div className="h-full w-full bg-muted" />}
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-              <button onClick={() => setSelectedEvent(null)} className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur-sm hover:bg-muted">✕</button>
-            </div>
-            <div className="p-4 sm:p-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground font-heading">{selectedEvent.title}</h2>
-              <div className="mt-2 sm:mt-3 flex gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-                <span className="flex items-center gap-1"><Calendar size={12} /> {selectedEvent.date}</span>
-                <span className="flex items-center gap-1"><Clock size={12} /> {selectedEvent.time}</span>
-              </div>
-              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-muted-foreground">{selectedEvent.description}</p>
-              <Link to={`/register?event=${encodeURIComponent(selectedEvent.title)}&eventId=${selectedEvent.id}`} className="mt-4 sm:mt-6 block">
-                <button className="rounded-full bg-primary text-primary-foreground w-full py-2.5 sm:py-3 text-sm font-semibold hover:bg-primary/90 transition-colors">Register Now</button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
