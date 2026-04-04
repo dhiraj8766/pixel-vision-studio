@@ -9,6 +9,7 @@ interface Event {
   id?: number; title: string; date: string; time: string; location: string;
   description: string; eventType: string; registerUrl: string; token: string;
   coverImage: string; gallery?: string[];
+  registrationOpen?: boolean; googleFormUrl?: string;
 }
 
 interface TeamMember {
@@ -91,6 +92,7 @@ const AdminDashboard = () => {
     else if (activeTab === "faculty") url = API.FACULTY;
     else if (activeTab === "sponsors") url = API.SPONSORS;
     else if (activeTab === "contacts") url = API.CONTACTS;
+    else if (activeTab === "registrations") url = API.REGISTRATIONS;
     else return;
     try { await fetch(`${url}/${id}`, { method: "DELETE" }); fetchData(); }
     catch (err) { console.error("Delete failed:", err); }
@@ -191,6 +193,7 @@ const AdminDashboard = () => {
                       <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">College</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Dept/Year</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</th>
                     </tr></thead>
                     <tbody>
                       {filteredRegistrations.map((reg, i) => (
@@ -202,6 +205,9 @@ const AdminDashboard = () => {
                           <td className="px-4 py-3 text-muted-foreground max-w-[150px] truncate">{reg.college}</td>
                           <td className="px-4 py-3 text-muted-foreground text-xs">{reg.department}<br /><span className="text-[10px] text-primary">{reg.year}</span></td>
                           <td className="px-4 py-3"><span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{reg.eventTitle}</span></td>
+                          <td className="px-4 py-3 text-right">
+                            <button onClick={() => reg.id && handleDelete(reg.id)} className="p-1.5 rounded-lg text-muted-foreground hover:text-accent-red hover:bg-accent-red/10 transition-colors"><Trash2 size={14} /></button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -252,7 +258,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* CRUD Tabs: events, team, faculty, sponsors */}
+        {/* CRUD Tabs */}
         {(activeTab === "events" || activeTab === "team" || activeTab === "faculty" || activeTab === "sponsors") && (
           <>
             <div className="flex items-center justify-between mb-4">
@@ -368,15 +374,15 @@ const AdminDashboard = () => {
           </>
         )}
 
-        {/* Add/Edit Form Modal — FIXED: proper z-index, pointer-events, scroll */}
+        {/* Add/Edit Form Modal — FIXED: body scroll locked, form scrolls properly */}
         {showForm && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowForm(false)}>
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm overflow-hidden" onClick={() => setShowForm(false)}>
             <div className="relative w-full max-w-lg mx-4 rounded-2xl border border-border bg-card shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between p-5 border-b border-border shrink-0">
                 <h3 className="font-heading text-lg font-bold text-foreground">{editItem ? "Edit" : "Add"} {activeTab === "sponsors" ? "Sponsor" : activeTab.slice(0, -1)}</h3>
                 <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X size={20} /></button>
               </div>
-              <div className="overflow-y-auto p-5 flex-1">
+              <div className="overflow-y-auto p-5 flex-1 overscroll-contain">
                 {activeTab === "events" && <EventForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
                 {activeTab === "team" && <TeamForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
                 {activeTab === "faculty" && <FacultyForm item={editItem} onSuccess={() => { setShowForm(false); fetchData(); }} />}
@@ -388,13 +394,13 @@ const AdminDashboard = () => {
 
         {/* Image Edit Modal */}
         {showImageEdit && imageEditItem && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowImageEdit(false)}>
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm overflow-hidden" onClick={() => setShowImageEdit(false)}>
             <div className="relative w-full max-w-lg mx-4 rounded-2xl border border-border bg-card shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between p-5 border-b border-border shrink-0">
                 <h3 className="font-heading text-lg font-bold text-foreground">Edit Images</h3>
                 <button onClick={() => setShowImageEdit(false)} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><X size={20} /></button>
               </div>
-              <div className="overflow-y-auto p-5 flex-1">
+              <div className="overflow-y-auto p-5 flex-1 overscroll-contain">
                 {activeTab === "events" && <EventImageEdit item={imageEditItem} onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
                 {activeTab === "team" && <MemberImageEdit item={imageEditItem} type="team" onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
                 {activeTab === "faculty" && <MemberImageEdit item={imageEditItem} type="faculty" onSuccess={() => { setShowImageEdit(false); fetchData(); }} />}
@@ -409,21 +415,34 @@ const AdminDashboard = () => {
 
 /* ========== EVENT FORM ========== */
 const EventForm = ({ item, onSuccess }: { item: any; onSuccess: () => void }) => {
-  const [form, setForm] = useState<any>(item || { title: "", date: "", time: "", location: "", description: "", eventType: "Technical", registerUrl: "", token: "1" });
+  const [form, setForm] = useState<any>(item || {
+    title: "", date: "", time: "", location: "", description: "",
+    eventType: "Technical", registerUrl: "", token: "1",
+    registrationOpen: true, googleFormUrl: "",
+  });
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [galleryImages, setGalleryImages] = useState<FileList | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [regMode, setRegMode] = useState<"website" | "google">(
+    item?.googleFormUrl ? "google" : "website"
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const submitData = {
+        ...form,
+        googleFormUrl: regMode === "google" ? form.googleFormUrl : "",
+        registerUrl: regMode === "website" ? form.registerUrl : "",
+      };
+
       if (item?.id) {
-        const { coverImage: _, gallery: __, id, ...body } = form;
+        const { coverImage: _, gallery: __, id, ...body } = submitData;
         await fetch(`${API.EVENTS}/${item.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       } else {
         const fd = new FormData();
-        const { coverImage: _, gallery: __, id, ...body } = form;
+        const { coverImage: _, gallery: __, id, ...body } = submitData;
         fd.append("data", new Blob([JSON.stringify(body)], { type: "application/json" }));
         if (coverImage) fd.append("coverImage", coverImage);
         if (galleryImages) Array.from(galleryImages).forEach(f => fd.append("galleryImages", f));
@@ -451,7 +470,35 @@ const EventForm = ({ item, onSuccess }: { item: any; onSuccess: () => void }) =>
         </select>
       </div>
       <textarea className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none resize-none" rows={3} placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
-      <input className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none" placeholder="Register URL (optional)" value={form.registerUrl} onChange={(e) => setForm({ ...form, registerUrl: e.target.value })} />
+
+      {/* Registration Toggle */}
+      <div className="rounded-xl border border-border bg-background p-3 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-semibold text-muted-foreground">Registration</span>
+          <button type="button" onClick={() => setForm({ ...form, registrationOpen: !form.registrationOpen })}
+            className={`relative w-10 h-5 rounded-full transition-colors ${form.registrationOpen ? "bg-primary" : "bg-border"}`}>
+            <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.registrationOpen ? "left-5" : "left-0.5"}`} />
+          </button>
+        </div>
+        {form.registrationOpen && (
+          <>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setRegMode("website")}
+                className={`flex-1 rounded-lg py-1.5 text-[10px] font-semibold transition-colors ${regMode === "website" ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground hover:text-foreground"}`}>
+                Website Form
+              </button>
+              <button type="button" onClick={() => setRegMode("google")}
+                className={`flex-1 rounded-lg py-1.5 text-[10px] font-semibold transition-colors ${regMode === "google" ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground hover:text-foreground"}`}>
+                Google Form
+              </button>
+            </div>
+            {regMode === "google" && (
+              <input className="w-full rounded-lg border border-border bg-card px-3 py-2 text-xs text-foreground focus:border-primary focus:outline-none" placeholder="Google Form URL" value={form.googleFormUrl || ""} onChange={(e) => setForm({ ...form, googleFormUrl: e.target.value })} />
+            )}
+          </>
+        )}
+      </div>
+
       {!item?.id && (
         <>
           <div>

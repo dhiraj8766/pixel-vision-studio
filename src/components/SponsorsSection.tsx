@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
+import { Handshake, ArrowRight } from "lucide-react";
 import { API } from "@/config/api";
 
 interface Sponsor {
   id: number; name: string; logoUrl: string; website: string; tier: string;
 }
 
-const fallbackSponsors = [
-  { name: "Google", logo: "" },
-  { name: "Microsoft", logo: "" },
-  { name: "GitHub", logo: "" },
-  { name: "Notion", logo: "" },
-  { name: "Vercel", logo: "" },
-  { name: "AWS", logo: "" },
-];
+const tierOrder = ["Platinum", "Gold", "Silver", "Partner"];
 
 const SponsorsSection = () => {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
@@ -25,64 +19,82 @@ const SponsorsSection = () => {
           const data = await res.json();
           if (data.length > 0) setSponsors(data);
         }
-      } catch { /* use fallback */ }
+      } catch { /* fallback */ }
     };
     fetchSponsors();
   }, []);
 
-  const displaySponsors = sponsors.length > 0
-    ? sponsors.map(s => ({ name: s.name, logo: s.logoUrl, url: s.website }))
-    : fallbackSponsors.map(s => ({ name: s.name, logo: s.logo, url: "#" }));
+  const groupedSponsors = tierOrder.map(tier => ({
+    tier,
+    sponsors: sponsors.filter(s => s.tier === tier),
+  })).filter(g => g.sponsors.length > 0);
 
   return (
-    <section className="relative bg-background px-4 py-14 sm:px-6 sm:py-20 md:px-10 lg:px-16 overflow-hidden">
-      <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
+    <section className="relative bg-background px-4 py-16 sm:px-6 sm:py-24 md:px-10 lg:px-16 overflow-hidden">
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div className="mb-8 sm:mb-12 text-center">
-          <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-primary font-heading">
-            Ecosystem
-          </span>
-          <h2 className="font-heading text-2xl sm:text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
+        <div className="mb-10 sm:mb-14 text-center">
+          <div className="mb-4 mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-accent-yellow/20 bg-accent-yellow/10">
+            <Handshake className="h-6 w-6 text-accent-yellow" />
+          </div>
+          <h2 className="font-heading text-2xl sm:text-4xl font-bold text-foreground md:text-5xl">
             Our Sponsors & Partners
           </h2>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-lg text-sm sm:text-base text-muted-foreground">
-            Empowering our vision through their generous support and collaboration.
+          <p className="mx-auto mt-3 max-w-lg text-sm sm:text-base text-muted-foreground">
+            Empowering our vision through their generous support.
           </p>
         </div>
 
-        <div className="relative overflow-hidden py-4 sm:py-8">
-          <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-background to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-background to-transparent z-10" />
-
-          <div className="flex animate-[marquee_20s_linear_infinite] gap-4 sm:gap-8">
-            {[...displaySponsors, ...displaySponsors].map((sponsor, index) => (
-              <a key={index} href={sponsor.url && sponsor.url !== "#" ? sponsor.url : undefined}
-                target="_blank" rel="noopener noreferrer"
-                className="flex h-14 w-28 sm:h-20 sm:w-44 flex-shrink-0 items-center justify-center rounded-lg sm:rounded-xl border border-border/50 bg-card/50 transition-all hover:border-primary/30 hover:shadow-glow">
-                {sponsor.logo ? (
-                  <img src={sponsor.logo} alt={sponsor.name} className="h-6 sm:h-8 w-auto opacity-40 grayscale transition-all hover:opacity-80 hover:grayscale-0" loading="lazy" />
-                ) : (
-                  <span className="text-xs sm:text-sm font-medium text-muted-foreground/60 hover:text-foreground transition-colors font-heading">
-                    {sponsor.name}
-                  </span>
-                )}
-              </a>
+        {/* Grouped by tier */}
+        {groupedSponsors.length > 0 ? (
+          <div className="space-y-8">
+            {groupedSponsors.map(group => (
+              <div key={group.tier}>
+                <h3 className="text-[10px] font-bold uppercase tracking-[3px] text-muted-foreground mb-4 text-center font-heading">{group.tier}</h3>
+                <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+                  {group.sponsors.map(sponsor => (
+                    <a key={sponsor.id} href={sponsor.website && sponsor.website !== "#" ? sponsor.website : undefined}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex h-16 w-32 sm:h-20 sm:w-44 items-center justify-center rounded-xl border border-border/50 bg-card/50 transition-all hover:border-primary/30 hover:shadow-glow hover:-translate-y-0.5">
+                      {sponsor.logoUrl ? (
+                        <img src={sponsor.logoUrl} alt={sponsor.name} className="h-8 sm:h-10 w-auto opacity-50 grayscale transition-all hover:opacity-90 hover:grayscale-0" loading="lazy" />
+                      ) : (
+                        <span className="text-xs sm:text-sm font-medium text-muted-foreground/60 hover:text-foreground transition-colors font-heading">
+                          {sponsor.name}
+                        </span>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
-        </div>
-
-        <div className="mt-8 sm:mt-12 text-center">
-          <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 rounded-xl sm:rounded-2xl border border-dashed border-border/50 bg-card/30 px-5 sm:px-8 py-4 sm:py-5">
-            <div className="text-center sm:text-left">
-              <p className="text-sm font-semibold text-foreground">Want to sponsor PICSEL?</p>
-              <p className="text-xs text-muted-foreground">Partner with the best tech community at KDKCE</p>
+        ) : (
+          /* Marquee fallback */
+          <div className="relative overflow-hidden py-4 sm:py-8">
+            <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-background to-transparent z-10" />
+            <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-background to-transparent z-10" />
+            <div className="flex animate-[marquee_20s_linear_infinite] gap-6 sm:gap-8">
+              {["Google", "Microsoft", "GitHub", "Notion", "Vercel", "AWS", "Google", "Microsoft", "GitHub", "Notion", "Vercel", "AWS"].map((name, i) => (
+                <div key={i} className="flex h-16 w-32 sm:h-20 sm:w-44 flex-shrink-0 items-center justify-center rounded-xl border border-border/50 bg-card/50">
+                  <span className="text-xs sm:text-sm font-medium text-muted-foreground/40 font-heading">{name}</span>
+                </div>
+              ))}
             </div>
-            <a href="mailto:picsel@kdkce.edu" className="hidden md:block">
-              <button className="valorant-btn-cyan text-xs py-2 px-4">Get in Touch</button>
-            </a>
-            <a href="mailto:picsel@kdkce.edu" className="md:hidden">
-              <button className="btn-mobile-primary text-xs py-2 px-4">Contact</button>
+          </div>
+        )}
+
+        {/* CTA */}
+        <div className="mt-10 sm:mt-14 text-center">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 rounded-2xl border border-dashed border-primary/20 bg-primary/5 px-6 sm:px-8 py-5 sm:py-6">
+            <div className="text-center sm:text-left">
+              <p className="text-sm font-bold text-foreground font-heading">Want to sponsor PICSEL?</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Partner with the best tech community at KDKCE</p>
+            </div>
+            <a href="mailto:picsel@kdkce.edu"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition-colors">
+              Get in Touch <ArrowRight size={14} />
             </a>
           </div>
         </div>

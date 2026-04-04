@@ -68,16 +68,18 @@ const FacultyPage = () => {
                   <div className="flex-1 p-4 sm:p-5 pt-0 sm:pt-5">
                     <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">{f.role}</span>
                     <h3 className="text-base sm:text-lg font-bold text-foreground font-heading">{f.name}</h3>
-                    <div className="mt-3 flex items-center gap-3 flex-wrap">
+                    <div className="mt-3 space-y-1">
                       {f.email && (
-                        <a href={`mailto:${f.email}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
-                          <Mail size={11} /> Email
-                        </a>
+                        <p onClick={(e) => e.stopPropagation()} className="text-[10px] sm:text-xs text-muted-foreground flex items-center gap-1.5">
+                          <Mail size={11} className="text-primary/60" />
+                          <a href={`mailto:${f.email}`} className="hover:text-primary transition-colors">{f.email}</a>
+                        </p>
                       )}
                       {f.mobile && (
-                        <a href={`tel:${f.mobile}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[10px] sm:text-xs text-muted-foreground hover:text-primary transition-colors">
-                          <Phone size={11} /> Call
-                        </a>
+                        <p onClick={(e) => e.stopPropagation()} className="text-[10px] sm:text-xs text-muted-foreground flex items-center gap-1.5">
+                          <Phone size={11} className="text-primary/60" />
+                          <a href={`tel:${f.mobile}`} className="hover:text-primary transition-colors">{f.mobile}</a>
+                        </p>
                       )}
                     </div>
                   </div>
