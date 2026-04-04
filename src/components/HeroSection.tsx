@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Clock, MapPin } from "lucide-react";
+import { ArrowRight, Calendar, Clock, MapPin, X, ExternalLink } from "lucide-react";
 import picselLogo from "@/assets/picsel-logo.png";
 import hero1 from "@/assets/heroimg/hero1.jpg";
 import hero2 from "@/assets/heroimg/hero2.jpg";
@@ -15,7 +15,8 @@ const heroImages = [
 
 interface EventData {
   id: number; title: string; description: string; date: string; time: string;
-  coverImage: string; registerUrl: string; location: string;
+  coverImage: string; registerUrl: string; location: string; eventType: string;
+  registrationOpen?: boolean; googleFormUrl?: string;
 }
 
 const HeroSection = () => {
@@ -23,6 +24,7 @@ const HeroSection = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [events, setEvents] = useState<EventData[]>([]);
   const [activeEventIndex, setActiveEventIndex] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -51,6 +53,13 @@ const HeroSection = () => {
 
   const activeEvent = events.length > 0 ? events[activeEventIndex] : null;
 
+  const getRegisterLink = (ev: EventData) => {
+    if (ev.googleFormUrl) return ev.googleFormUrl;
+    return `/register?event=${encodeURIComponent(ev.title)}&eventId=${ev.id}`;
+  };
+
+  const isExternal = (ev: EventData) => !!ev.googleFormUrl;
+
   return (
     <section className="relative min-h-screen px-4 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-12 md:px-10 md:pt-28 lg:px-16 overflow-hidden">
       <div className="absolute inset-0 bg-background" />
@@ -58,8 +67,7 @@ const HeroSection = () => {
         background: `
           radial-gradient(ellipse 80% 60% at 10% 0%, hsl(var(--accent-cyan) / 0.12) 0%, transparent 60%),
           radial-gradient(ellipse 70% 50% at 90% 10%, hsl(var(--accent-purple) / 0.15) 0%, transparent 55%),
-          radial-gradient(ellipse 50% 70% at 50% 100%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
-          radial-gradient(ellipse 60% 40% at 80% 80%, hsl(var(--accent-red) / 0.06) 0%, transparent 50%)
+          radial-gradient(ellipse 50% 70% at 50% 100%, hsl(var(--primary) / 0.08) 0%, transparent 50%)
         `
       }} />
       <div className="absolute top-0 left-0 w-full h-[60%] overflow-hidden pointer-events-none">
@@ -142,8 +150,8 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Event Carousel */}
-        {activeEvent && (
+        {/* Events Section - One at a time with slide */}
+        {events.length > 0 && (
           <div className="mt-6 sm:mt-8">
             <div className="flex items-center justify-between mb-4 sm:mb-6">
               <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-[2px] sm:tracking-[3px] text-accent-yellow font-heading">Upcoming Events</h2>
@@ -153,43 +161,119 @@ const HeroSection = () => {
               </Link>
             </div>
 
-            {/* Event Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {events.slice(0, 3).map((ev, index) => (
-                <Link key={ev.id} to={`/register?event=${encodeURIComponent(ev.title)}&eventId=${ev.id}`}
-                  className={`group relative overflow-hidden rounded-xl border border-border/30 bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-[0_8px_32px_-8px_hsl(var(--primary)/0.2)] ${index === 0 ? 'sm:col-span-2 lg:col-span-1' : ''}`}>
-                  <div className="relative h-40 sm:h-44 overflow-hidden">
-                    {ev.coverImage ? (
-                      <img src={ev.coverImage} alt={ev.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            {/* Single Event Display */}
+            {activeEvent && (
+              <div
+                className="group relative overflow-hidden rounded-2xl border border-border/30 bg-card/80 backdrop-blur-sm cursor-pointer transition-all duration-500 hover:border-primary/30 hover:shadow-[0_12px_48px_-12px_hsl(var(--primary)/0.2)]"
+                onClick={() => setSelectedEvent(activeEvent)}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-[40%_60%]">
+                  <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+                    {activeEvent.coverImage ? (
+                      <img src={activeEvent.coverImage} alt={activeEvent.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                     ) : (
                       <div className="h-full w-full bg-muted flex items-center justify-center text-muted-foreground">
-                        <Calendar size={32} className="opacity-30" />
+                        <Calendar size={40} className="opacity-20" />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
-                    {index === activeEventIndex && (
-                      <div className="absolute top-0 left-0 h-0.5 bg-primary animate-[progressFill_5s_linear] w-full" />
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-sm font-bold text-foreground font-heading line-clamp-1">{ev.title}</h3>
-                    <p className="mt-1 text-xs text-muted-foreground line-clamp-1">{ev.description}</p>
-                    <div className="mt-3 flex items-center gap-3 text-[10px] text-muted-foreground">
-                      <span className="flex items-center gap-1"><Calendar size={10} /> {ev.date}</span>
-                      <span className="flex items-center gap-1"><Clock size={10} /> {ev.time}</span>
-                    </div>
-                    <div className="mt-3">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[10px] font-semibold text-primary">
-                        Register Now <ArrowRight size={10} />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/50 hidden md:block" />
+                    <div className="absolute top-3 left-3">
+                      <span className="rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+                        {activeEvent.eventType || "Event"}
                       </span>
                     </div>
                   </div>
-                </Link>
-              ))}
-            </div>
+                  <div className="p-5 sm:p-6 md:p-8 flex flex-col justify-center">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground font-heading line-clamp-2">{activeEvent.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{activeEvent.description}</p>
+                    <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1.5"><Calendar size={13} /> {activeEvent.date}</span>
+                      <span className="flex items-center gap-1.5"><Clock size={13} /> {activeEvent.time}</span>
+                      <span className="flex items-center gap-1.5"><MapPin size={13} /> {activeEvent.location}</span>
+                    </div>
+                    <div className="mt-5 flex items-center gap-3">
+                      {isExternal(activeEvent) ? (
+                        <a href={getRegisterLink(activeEvent)} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition-colors">
+                          Register <ExternalLink size={12} />
+                        </a>
+                      ) : (
+                        <Link to={getRegisterLink(activeEvent)} onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition-colors">
+                          Register Now <ArrowRight size={12} />
+                        </Link>
+                      )}
+                      <button onClick={(e) => { e.stopPropagation(); setSelectedEvent(activeEvent); }}
+                        className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors">
+                        Details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {/* Progress bar */}
+                <div className="absolute bottom-0 left-0 h-0.5 bg-primary/30 w-full">
+                  <div className="h-full bg-primary animate-[progressFill_5s_linear]" style={{ width: "100%" }} />
+                </div>
+              </div>
+            )}
+
+            {/* Event dots */}
+            {events.length > 1 && (
+              <div className="flex justify-center gap-2 mt-4">
+                {events.map((_, i) => (
+                  <button key={i} onClick={() => setActiveEventIndex(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${i === activeEventIndex ? "w-6 bg-primary" : "w-1.5 bg-border hover:bg-muted-foreground"}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
+
+      {/* Event Detail Popup */}
+      {selectedEvent && (
+        <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4" onClick={() => setSelectedEvent(null)}>
+          <div className="w-full sm:max-w-lg overflow-hidden rounded-t-2xl sm:rounded-2xl border-t sm:border border-border/30 bg-card shadow-2xl animate-[scaleIn_0.3s_ease-out] max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            {selectedEvent.coverImage && (
+              <div className="relative h-48 sm:h-56">
+                <img src={selectedEvent.coverImage} alt={selectedEvent.title} className="h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
+              </div>
+            )}
+            <div className="absolute top-3 right-3 z-10">
+              <button onClick={() => setSelectedEvent(null)} className="flex h-8 w-8 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur-sm hover:bg-background transition-colors">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="p-5 sm:p-6">
+              <span className="inline-block rounded-full bg-primary/10 border border-primary/20 px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary mb-3">
+                {selectedEvent.eventType || "Event"}
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground font-heading">{selectedEvent.title}</h2>
+              <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5"><Calendar size={13} /> {selectedEvent.date}</span>
+                <span className="flex items-center gap-1.5"><Clock size={13} /> {selectedEvent.time}</span>
+                <span className="flex items-center gap-1.5"><MapPin size={13} /> {selectedEvent.location}</span>
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{selectedEvent.description}</p>
+              <div className="mt-6">
+                {isExternal(selectedEvent) ? (
+                  <a href={getRegisterLink(selectedEvent)} target="_blank" rel="noopener noreferrer"
+                    className="block w-full rounded-xl bg-primary text-primary-foreground text-center py-3 text-sm font-bold hover:bg-primary/90 transition-colors">
+                    Register Now <ExternalLink size={14} className="inline ml-1" />
+                  </a>
+                ) : (
+                  <Link to={getRegisterLink(selectedEvent)}
+                    className="block w-full rounded-xl bg-primary text-primary-foreground text-center py-3 text-sm font-bold hover:bg-primary/90 transition-colors">
+                    Register Now
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
